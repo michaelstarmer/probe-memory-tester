@@ -1,0 +1,12 @@
+version: '3.6'
+
+services:
+  cron:
+    build: ./cron
+    network_mode: "host"
+    container_name: cron
+    volumes:
+      - ./cron/MemTester:/app/
+    ports:
+      - 3333:3333
+

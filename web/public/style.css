@@ -1,0 +1,76 @@
+html, body {
+    background-color: rgb(28, 30, 31);
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    color: rgb(187, 181, 172);
+    position: relative;
+  }
+
+  body:before {
+    content: '';
+    background: #5A45FF;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    position: absolute;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: #5A45FF;
+    text-decoration: none;
+  }
+
+  main {
+    max-width: 620px;
+    margin: auto;
+    height: 100vh;
+    padding: 30px 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: 50px;
+    line-height: 50px;
+    margin-bottom: 10px;
+    color: rgb(217, 214, 209);
+  }
+
+  .subtitle {
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  main ul {
+    list-style: none;
+  }
+
+  main li {
+    margin-bottom: 5px;
+    position: relative;
+    padding-left: 25px;
+  }
+
+  main li:before {
+    content: '—';
+    position: absolute;
+    left: 0;
+  }
+
+  main code {
+    font-size: 16px;
+    background: #e6e2ff;
+  }
+.desktop {
+
+}

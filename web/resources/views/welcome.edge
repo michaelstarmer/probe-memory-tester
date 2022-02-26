@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdonisJS - A fully featured web framework for Node.js</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+  </style>
+</head>
+<body>
+
+  <main>
+    <div>
+      <h1 class="title"> {{probeData.ip}} </h1>
+      <p class="subtitle">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>RAM</td>
+            <td>{{ probeData.memory }}GB</td>
+            
+          </tr>
+          <tr>
+            <td>Versjon</td>
+            <td>{{probeData.swVersion}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+        @each(job in jobs)
+        <h3>Jobb {{job.id}}</h3>
+        <ul>
+          <li>
+            <strong>RAM:</strong> {{job.memory}}
+          </li>
+          <li>
+            <strong>XML config:</strong> {{job.xmlConfig}}
+
+          </li>
+        </ul>
+        @endeach
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
