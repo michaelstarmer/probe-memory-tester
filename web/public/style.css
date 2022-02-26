@@ -31,8 +31,8 @@ html, body {
     margin: auto;
     height: 100vh;
     padding: 30px 30px;
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    justify-content: center; */
   }
 
   .title {

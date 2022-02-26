@@ -14,38 +14,44 @@
 <body>
 
   <main>
-    <div>
-      <h1 class="title"> {{probeData.ip}} </h1>
+    <div class="container mb-5">
+
+      <h1 class="title text-center"> {{probeData.ip}} </h1>
       <p class="subtitle">
       </p>
-      <table class="table">
-        <tbody>
-          <tr>
-            <td>RAM</td>
-            <td>{{ probeData.memory }}GB</td>
-            
-          </tr>
-          <tr>
-            <td>Versjon</td>
-            <td>{{probeData.swVersion}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>RAM</td>
+                <td>{{ probeData.memory }}GB</td>
+                
+              </tr>
+              <tr>
+                <td>Versjon</td>
+                <td>{{probeData.swVersion}}</td>
+              </tr>
+            </tbody>
+          </table>
 
-      <div>
-        @each(job in jobs)
-        <h3>Jobb {{job.id}}</h3>
-        <ul>
-          <li>
-            <strong>RAM:</strong> {{job.memory}}
-          </li>
-          <li>
-            <strong>XML config:</strong> {{job.xmlConfig}}
-
-          </li>
-        </ul>
-        @endeach
+        </div>
       </div>
+    </div>
+
+    <div class="container">
+      @each(job in jobs)
+      <h5>Test konfigurasjon {{job.id}}</h5>
+      <ul>
+        <li>
+          <strong>RAM:</strong> {{job.memory}}
+        </li>
+        <li>
+          <strong>XML config:</strong> {{job.xmlConfig.filename}}
+
+        </li>
+      </ul>
+      @endeach
     </div>
 
   </main>

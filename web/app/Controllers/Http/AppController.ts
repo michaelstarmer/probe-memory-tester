@@ -10,7 +10,8 @@ export default class AppController {
     {
         const parser = new xml2js.Parser()
 
-        const jobs = await Job.query().withScopes(scopes => scopes.ignoreCompleted())
+        const jobs = await Job.query().preload('xmlConfig').withScopes(scopes => scopes.ignoreCompleted())
+        
         const probeIp = await ProbeConfig.findByOrFail('key', 'ip')
         console.log(probeIp.toJSON())
         console.log(jobs)
@@ -25,7 +26,7 @@ export default class AppController {
             const json = await parser.parseStringPromise(payload.data);
             const probeData = {
                 ip: probeIp.value,
-                memory: Math.round(Number(json.Status.Resources[0].ram_free) / 1e+4),
+                memory: Math.round(Number(json.Status.Resources[0].ram_free) / 1e+6),
                 swVersion: json.Status.System[0].software_version
             }
 

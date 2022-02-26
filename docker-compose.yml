@@ -9,4 +9,4 @@ services:
       - ./cron/MemTester:/app/
     ports:
       - 3333:3333
-
+    working_dir: /app

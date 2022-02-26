@@ -6,6 +6,7 @@ from probe.probe_eii import Probe
 from db_adapter import Queue
 import requests
 import logging
+import os
 
 
 # testspecs = [
@@ -54,6 +55,7 @@ if __name__ == '__main__':
             print(f'# RAM  : {memory}GB')
             print('#######################################################')
             print("Importing new xml-config...")
+            print("CWD:", os.getcwd())
             probe.import_config(xml)
             print("Probe configuration: OK")
             vm.set_memory(memory)

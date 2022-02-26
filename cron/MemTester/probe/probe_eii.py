@@ -1,3 +1,4 @@
+from concurrent.futures import process
 import readline
 from urllib import response
 from matplotlib.font_manager import json_dump
@@ -5,6 +6,8 @@ import requests
 import json
 import xmltodict
 import traceback, logging
+import os
+
 
 class ProbeRequest:
 
@@ -72,7 +75,8 @@ class Probe:
 
 
     def import_config(self, xmlFile):
-        file = open(xmlFile, 'rb')
+        file = open(f'{xmlFile}', 'rb')
+        print("Work dir:", os.getcwd())
         try:
             result = ProbeRequest.post(f'{self.api_base}/core/importExport/data.xml', open(xmlFile, 'rb'))
             return result
