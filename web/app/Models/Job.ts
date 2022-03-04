@@ -26,6 +26,8 @@ export default class Job extends BaseModel {
     query.whereNull('completed_at')
   })
 
+  
+
   // @beforeFind()
   // public static ignoreCompleted (query: ModelQueryBuilderContract<typeof Job>) {
   //   query.whereNull('completed_at') 

@@ -23,19 +23,57 @@
         <div class="col-12 col-lg-6 d-flex flex-column justify-content-between">
 
           <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="desktop vm-card">
+
+              <img src="/bridgelogo.webp" class="mb-4" alt="...">
+              <h4 class="desktop-title mb-5">{{probeData.ip}}</h4>
+            </div>
+            <div class="card-body mb-2 p-0 text-center">
+              
+              @if(probeData.isAvailable)
+                <div class="status-lamp status-lamp--green">&nbsp;</div>
+                <div class="inline-block"> Available</div>
+              @else
+                <div class="status-lamp status-lamp--red">&nbsp; </div>
+                <div class="inline-block"> Busy...</div>
+              @endif
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">RAM: 32 GB</li>
-              <li class="list-group-item"></li>
-              <li class="list-group-item">A third item</li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>VM:</strong>
+                  </div>
+                  <div class="col-8">
+                    {{probeData.vmName}}
+                    
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>Versjon :</strong>
+                  </div>
+                  <div class="col-8">
+                    {{probeData.swVersion}}
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>RAM:</strong>
+                  </div>
+                  <div class="col-8">
+                    {{probeData.memory}} GB
+                  </div>
+                </div>
+              </li>
             </ul>
             <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              {{--  <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a>  --}}
             </div>
           </div>
         </div>
@@ -47,42 +85,29 @@
       
     </div>
 
+    @if(jobs)
     <div class="container-fluid">
-      @each(job in jobs)
-      <h5>Test konfigurasjon {{job.id}}</h5>
-      <ol class="list-group list-group-numbered">
+      <ul class="list-group list-group">
+        @each(job in jobs)
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Cras justo odio
+            <div class="fw-bold">Test {{job.id}}: {{ job.memory }}GB</div>
+            {{ job.xmlConfig.description  }}
           </div>
-          <span class="badge bg-primary rounded-pill">14</span>
+          @if(job.status == 'completed')
+          <span class="badge bg-success rounded-pill">Done</span>
+          @elseif(job.status == 'running')
+          <span class="badge bg-info rounded-pill">Running</span>
+          @else
+          <span class="badge bg-secondary rounded-pill">Queued</span>
+          @endif
         </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Cras justo odio
-          </div>
-          <span class="badge bg-primary rounded-pill">14</span>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
-            <div class="fw-bold">Subheading</div>
-            Cras justo odio
-          </div>
-          <span class="badge bg-primary rounded-pill">14</span>
-        </li>
-      </ol>
-      <ul>
-        <li>
-          <strong>RAM:</strong> {{job.memory}}
-        </li>
-        <li>
-          <strong>XML config:</strong> {{job.xmlConfig.filename}}
-
-        </li>
+        @endeach
+        
       </ul>
-      @endeach
+      @endif
+
+      
     </div>
     <div class="container my-3">
 

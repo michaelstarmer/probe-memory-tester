@@ -16,7 +16,7 @@ import os
 
 if __name__ == '__main__':
     queue = Queue(host='10.0.28.98', database='memtest', username='memtest', password='ldap2retro')
-    probe_ip = queue.probeIp()
+    probe_ip = queue.probeIp() or '10.0.28.109'
     vm = ProbeVM("10.0.28.202", "root", "sw-probe-memtest", password="ldap2retro!")
     probe = Probe(probe_ip)
     job = {}

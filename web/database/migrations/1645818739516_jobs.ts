@@ -8,7 +8,7 @@ export default class Jobs extends BaseSchema {
       table.increments('id')
       table.integer('memory').notNullable()
       table.integer('xml_file_id').unsigned().references('id').inTable('xml_files')
-      table.enum('status', ['waiting', 'running', 'completed']).notNullable().defaultTo('waiting')
+      table.enum('status', ['waiting', 'running', 'completed', 'failed']).notNullable().defaultTo('waiting')
       table.datetime('completed_at')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
