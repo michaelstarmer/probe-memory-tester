@@ -6,7 +6,14 @@ export default class JobsController
     public async next_job({ response }: HttpContextContract)
     {
         try {
-            let query = await Job.query().preload('xmlConfig').withScopes(scopes => scopes.ignoreCompleted()).first()
+            let runningJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
+            if (runningJob)
+            {
+                await runningJob.merge({ status: 'completed' }).save()
+                console.log("Set running job to done!")
+            }
+
+            let query = await Job.query().preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
             console.log(query)
             let payload = {
                 id: query?.id,
@@ -38,4 +45,17 @@ export default class JobsController
             
         }
     }
+
+    public async active_job({ response })
+    {
+        const job = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
+        if (!job)
+        {
+            return response.json({  })
+        }
+        return response.json(job)
+        
+    }
+
+    
 }

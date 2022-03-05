@@ -25,5 +25,9 @@ import Route from '@ioc:Adonis/Core/Route'
 // })
 
 Route.get('/', 'AppController.index')
-Route.get('/api/queue/next', 'JobsController.next_job')
+
 Route.post('/api/queue', 'JobsController.create_job')
+Route.get('/api/queue/next', 'JobsController.next_job')
+Route.get('/api/queue/active', 'JobsController.active_job')
+Route.post('/api/stats', 'SystemStatController.create')
+Route.post('/api/stats/job/:jobId', 'SystemStatController.create_by_job')
