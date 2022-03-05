@@ -1,5 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
+import { DateTime } from 'luxon';
+const moment = require('moment')
 
 export default class JobsController
 {
@@ -13,7 +15,7 @@ export default class JobsController
                 console.log("Set running job to done!")
             }
 
-            let query = await Job.query().preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
+            let query = await Job.query().whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`).preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
             console.log(query)
             let payload = {
                 id: query?.id,
@@ -24,7 +26,7 @@ export default class JobsController
 
             if (query)
                 return response.json(payload)
-            return response.json({ success: false })
+            return response.json({ error: 'No jobs found.' })
         } catch (error) {
             console.error(error)
             return response.json({ success: false, error })
