@@ -20,7 +20,6 @@ def get_memory_usage():
         return response['mem']
     except Exception as e:
         print("error!", e)
-        exit(1)
         
         
 def get_cpu_usage():
@@ -34,7 +33,6 @@ def get_cpu_usage():
         return response['cpu']
     except Exception as e:
         print("error!", e)
-        exit(1)
         
         
 def get_amps():
@@ -42,10 +40,10 @@ def get_amps():
         response = requests.get(f'{API_BASE}/amps')
         if response.status_code != 200:
             sys.exit(f"Bad request ({response.status_code})!")
-        return json.loads(response.content)
+        data = json.loads(response.content)
+        return { 'ott': data[0], 'ewe': data[1], 'vidana': data[0], 'etr': data[0] }
     except Exception as e:
         print("error!", e)
-        exit(1)
         
         
 def get_current_job_id():
@@ -57,7 +55,6 @@ def get_current_job_id():
         return job['id']
     except Exception as e:
         print("error!", e)
-        exit(1)
         
         
 def add_job_stats(data):
@@ -70,6 +67,18 @@ def add_job_stats(data):
         print("error!", e)
         return False
         
+
+def add_btech_stats(job_id, data):
+    try:
+        print(data)
+        response = requests.post(f'http://localhost:3333/api/stats/btech/{job_id}', data)        
+        if response.status_code != 200:
+            sys.exit(f"Bad request ({response.status_code})!")
+        return True
+    except Exception as e:
+        print("error!", e)
+        return False
+
 
 def get_processes_by_mem():
     try:
@@ -84,15 +93,17 @@ def get_processes_by_mem():
 
 cpu = get_cpu_usage()
 mem = get_memory_usage()
-data = {'cpu': cpu, 'mem': mem}
 # mem_proc = get_processes_by_mem()
 
+job_id = get_current_job_id()
+btech_stats = get_amps()
 
-# print(json.dumps(mem_proc, indent=2))
-# for proc in mem_proc:
-#     if proc['memory_percent']:
-#         print(proc['name'], proc['memory_percent'])
-# exit()
+if job_id:
+    for proc in btech_stats.values():
+        print('add btech stats:', proc)
+        add_btech_stats(job_id, data=proc)
+
+data = {'cpu': cpu, 'mem': mem}
 add_job = add_job_stats(data)
 if add_job:
     print('\nAdded stats to active job:')
