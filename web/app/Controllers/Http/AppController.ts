@@ -16,7 +16,7 @@ export default class AppController {
             statsQuery.groupLimit(10)
             })
             .preload('btechProcs', procsQuery => {
-                procsQuery.first()
+                procsQuery.groupLimit(4)
             })
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');

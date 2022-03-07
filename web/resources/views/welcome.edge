@@ -109,11 +109,24 @@
           </h2>
           <div id="flush-{{job.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-              <div>
-                <strong>Probe config: </strong>{{job.xmlConfig.description}}
+              <div class="text-center my-2">
+                <strong></strong>{{job.xmlConfig.description}}
               </div>
+
+              <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2">
+                  @if(job.btechProcs.length)
+                  @each(proc in job.btechProcs)
+                  <div class="col-12 col-lg-6 py-1">
+                    <strong>{{proc.name}} ({{proc.count}}):</strong> {{proc.result}}
+                  </div>
+                  @endeach
+                  @endif
+                </div>
+              </div>
+
               <div>
-                
+
               </div>
               @if(job.systemStats && job.systemStats.length)
               <table class="table table-borderless">
