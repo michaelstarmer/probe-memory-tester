@@ -10,7 +10,7 @@ export default class AppController {
     {
         const parser = new xml2js.Parser()
 
-        const jobs = await Job.query().preload('xmlConfig').withScopes(scopes => scopes.ignoreCompleted())
+        const jobs = await Job.query().preload('xmlConfig')
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
