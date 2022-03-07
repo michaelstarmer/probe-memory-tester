@@ -23,7 +23,7 @@ export default class Job extends BaseModel {
   public updatedAt: DateTime
 
   public static ignoreCompleted = scope((query) => {
-    query.whereNull('completed_at')
+    query.whereNot('status', 'completed')
   })
 
   
