@@ -10,7 +10,9 @@ export default class AppController {
     {
         const parser = new xml2js.Parser()
 
-        const jobs = await Job.query().preload('xmlConfig')
+        const jobs = await Job.query().preload('xmlConfig').preload('systemStats', statsQuery => {
+            statsQuery.limit(10)
+        })
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
@@ -59,6 +61,12 @@ export default class AppController {
             console.log(JSON.stringify(json.Status.Resources[0]))
             console.log(payload.data.url)
             console.log({probeData})
+
+            for (const j of jobs)
+            {
+                console.log(j)
+                console.log(j.systemStats)
+            }
             
             return view.render('welcome', {jobs, probeData})
         } catch (error) {

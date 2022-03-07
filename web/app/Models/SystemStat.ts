@@ -3,6 +3,17 @@ import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Job from './Job'
 
 export default class SystemStat extends BaseModel {
+  static get dates () {
+    return super.dates.concat(['data_emissao'])
+  }
+
+  static formatDates (field, value) {
+    if (field === 'data_emissao') {
+        return value.format('DD-MM-YYYY')
+      }
+    return super.formatDates(field, value)
+}
+
   @column({ isPrimary: true })
   public id: number
 
