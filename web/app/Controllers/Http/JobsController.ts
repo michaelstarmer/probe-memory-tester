@@ -9,24 +9,31 @@ export default class JobsController
     {
         try {
             let runningJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
+            
+
+            let waitingJob = await Job.query().whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`).preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
+            if (!waitingJob)
+            {
+                return response.json({ error: 'No jobs found.' })
+            }
+            
             if (runningJob)
             {
                 await runningJob.merge({ status: 'completed' }).save()
                 console.log("Set running job to done!")
             }
 
-            let query = await Job.query().whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`).preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
-            console.log(query)
+            await waitingJob?.merge({ status: 'running' })
+            console.log(waitingJob)
             let payload = {
-                id: query?.id,
-                memory: query?.memory,
-                xmlFile: query?.xmlConfig.filename,
-                created_at: query?.createdAt,
+                id: waitingJob?.id,
+                memory: waitingJob?.memory,
+                xmlFile: waitingJob?.xmlConfig.filename,
+                created_at: waitingJob?.createdAt,
             }
 
-            if (query)
-                return response.json(payload)
-            return response.json({ error: 'No jobs found.' })
+            return response.json(payload)
+            
         } catch (error) {
             console.error(error)
             return response.json({ success: false, error })
