@@ -61,7 +61,7 @@ if __name__ == '__main__':
             vm.set_memory(memory)
             print("VM configuration   : OK")
             print("\nProbe updated and running new settings for 90 seconds.")
-            queue.setJobCompleted(id=jobId)
+            # queue.setJobCompleted(id=jobId)
     except Exception as e:
         print("memtester error!", e)
         exit(1)
