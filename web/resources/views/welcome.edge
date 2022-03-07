@@ -109,8 +109,12 @@
           </h2>
           <div id="flush-{{job.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-              
-              <strong>Probe config: </strong>{{job.xmlConfig.description}}
+              <div>
+                <strong>Probe config: </strong>{{job.xmlConfig.description}}
+              </div>
+              <div>
+                
+              </div>
               @if(job.systemStats && job.systemStats.length)
               <table class="table table-borderless">
                 <thead>

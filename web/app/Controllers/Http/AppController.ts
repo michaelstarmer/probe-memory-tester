@@ -10,9 +10,14 @@ export default class AppController {
     {
         const parser = new xml2js.Parser()
 
-        const jobs = await Job.query().preload('xmlConfig').preload('systemStats', statsQuery => {
+        const jobs = await Job.query()
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => {
             statsQuery.groupLimit(10)
-        })
+            })
+            .preload('btechProcs', procsQuery => {
+                procsQuery.first()
+            })
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
@@ -37,8 +42,6 @@ export default class AppController {
         try {
             const payload = await axios.get(`http://${probeIp.value}/probe/status`);
             
-            console.log(probeIp.toJSON())
-            console.log(activeJobsCount)
 
             if (activeJobsCount == 0) {
                 isAvailable = true;
@@ -54,6 +57,18 @@ export default class AppController {
                 memory: Math.round(Number(json.Status.Resources[0].ram_free) / 1e+6),
                 swVersion: json.Status.System[0].software_version,
                 isAvailable,
+            }
+
+            for (const job of jobs)
+            {
+                if (job.btechProcs)
+                {
+                    console.log('Btech procs on job:', job.btechProcs.length)
+                    for (const proc of job.btechProcs)
+                    {
+                        console.log(`${proc.name}:`, proc)
+                    }
+                }
             }
 
             

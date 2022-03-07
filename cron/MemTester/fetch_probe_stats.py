@@ -41,7 +41,7 @@ def get_amps():
         if response.status_code != 200:
             sys.exit(f"Bad request ({response.status_code})!")
         data = json.loads(response.content)
-        return { 'ott': data[0], 'ewe': data[1], 'vidana': data[0], 'etr': data[0] }
+        return { 'ott': data[0], 'ewe': data[1], 'vidana': data[2], 'etr': data[3] }
     except Exception as e:
         print("error!", e)
         
