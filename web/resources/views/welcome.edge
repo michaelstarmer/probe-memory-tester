@@ -118,7 +118,9 @@
                 <tbody>
                   @each(stat in job.systemStats)
                   <tr>
-                    <th scope="row">{{stat.createdAt.toFormat('MM-DD HH:mm:ss')}}</th>
+                    <th scope="row" data-toggle="tooltip" data-placement="top" title="{{stat.createdAt.setLocale('no').toFormat('DDD')}}">
+                      {{stat.createdAt.toFormat('HH:mm:ss')}}
+                    </th>
                     <td>{{stat.cpu}}%</td>
                     <td>{{stat.mem}}%</td>
                   </tr>

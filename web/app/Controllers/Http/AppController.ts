@@ -11,7 +11,7 @@ export default class AppController {
         const parser = new xml2js.Parser()
 
         const jobs = await Job.query().preload('xmlConfig').preload('systemStats', statsQuery => {
-            statsQuery.limit(10)
+            statsQuery.groupLimit(10)
         })
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
@@ -37,9 +37,6 @@ export default class AppController {
         try {
             const payload = await axios.get(`http://${probeIp.value}/probe/status`);
             console.log(probeIp.toJSON())
-            console.log(jobs)
-            
-
             console.log(activeJobsCount)
 
             if (activeJobsCount == 0) {
@@ -64,8 +61,12 @@ export default class AppController {
 
             for (const j of jobs)
             {
-                console.log(j)
-                console.log(j.systemStats)
+                console.log('Job:', j.id)
+                console.log('stat count:', j.systemStats.length)
+                // if (j.systemStats)
+                // {
+                //     console.log(j.systemStats)
+                // }
             }
             
             return view.render('welcome', {jobs, probeData})
