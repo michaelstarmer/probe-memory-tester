@@ -1,10 +1,12 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
-import { DateTime } from 'luxon';
 const moment = require('moment')
 
 export default class JobsController
 {
+
+
+
     public async next_job({ response }: HttpContextContract)
     {
         try {
@@ -58,9 +60,10 @@ export default class JobsController
     public async active_job({ response })
     {
         const job = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
+        await job?.load('xmlConfig')
         if (!job)
         {
-            return response.json({  })
+            return response.json({})
         }
         return response.json(job)
         

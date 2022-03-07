@@ -71,10 +71,28 @@ def add_job_stats(data):
         return False
         
 
+def get_processes_by_mem():
+    try:
+        response = requests.get(f'{API_BASE}/processlist')
+        if response.status_code != 200:
+            sys.exit(f"Bad request ({response.status_code})!")
+        return json.loads(response.content)
+    except Exception as e:
+        print("error!", e)
+        return False
+
+
 cpu = get_cpu_usage()
 mem = get_memory_usage()
-
 data = {'cpu': cpu, 'mem': mem}
+# mem_proc = get_processes_by_mem()
+
+
+# print(json.dumps(mem_proc, indent=2))
+# for proc in mem_proc:
+#     if proc['memory_percent']:
+#         print(proc['name'], proc['memory_percent'])
+# exit()
 add_job = add_job_stats(data)
 if add_job:
     print('\nAdded stats to active job:')

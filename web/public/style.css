@@ -28,7 +28,7 @@ html, body {
   main {
     max-width: 778px;
     margin: auto;
-    height: 100vh;
+    min-height: 100vh;
     padding: 30px 30px;
     /* display: flex;
     justify-content: center; */
@@ -112,4 +112,8 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+table.table tbody th {
+  font-weight: 100;
 }

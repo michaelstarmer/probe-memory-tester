@@ -36,6 +36,7 @@ export default class AppController {
         
         try {
             const payload = await axios.get(`http://${probeIp.value}/probe/status`);
+            
             console.log(probeIp.toJSON())
             console.log(activeJobsCount)
 
@@ -55,19 +56,6 @@ export default class AppController {
                 isAvailable,
             }
 
-            console.log(JSON.stringify(json.Status.Resources[0]))
-            console.log(payload.data.url)
-            console.log({probeData})
-
-            for (const j of jobs)
-            {
-                console.log('Job:', j.id)
-                console.log('stat count:', j.systemStats.length)
-                // if (j.systemStats)
-                // {
-                //     console.log(j.systemStats)
-                // }
-            }
             
             return view.render('welcome', {jobs, probeData})
         } catch (error) {

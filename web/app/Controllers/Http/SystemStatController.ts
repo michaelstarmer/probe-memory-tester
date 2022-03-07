@@ -4,6 +4,19 @@ import SystemStat from 'App/Models/SystemStat';
 
 export default class SystemStatController
 {
+    public async stats_by_job_id({ params, request, response })
+    {
+        const { jobId } = params;
+        console.log(request.params)
+        if (!jobId)
+        {
+            return response.status(400).json({ error: 'Missing parameter: jobId' });
+        }
+        const stats = await SystemStat.query().where('job_id', jobId);
+        console.log(`Found ${stats.length} jobs.`);
+        return response.json(stats);
+    }
+
     public async create({ request, response }: HttpContextContract)
     {
         const activeJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();

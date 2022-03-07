@@ -20,6 +20,9 @@ export default class Job extends BaseModel {
   @column()
   public status: string
 
+  @column.dateTime()
+  public startAt: DateTime
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
