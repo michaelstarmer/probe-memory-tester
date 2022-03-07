@@ -34,4 +34,6 @@ Route.post('/api/stats', 'SystemStatController.create')
 Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')
 Route.post('/api/stats/job/:jobId', 'SystemStatController.create_by_job')
 
+Route.post('/api/stats/btech/:jobId', 'BtechProcController.create')
+
 Route.get('apidoc', async ({ view }) => view.render('api-doc'))

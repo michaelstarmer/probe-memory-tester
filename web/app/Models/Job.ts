@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
+import BtechProc from './BtechProc'
 
 export default class Job extends BaseModel {
 
@@ -31,6 +32,9 @@ export default class Job extends BaseModel {
 
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
+
+  @hasMany(() => BtechProc)
+  public btechProcs: HasMany<typeof BtechProc>
 
   public static ignoreCompleted = scope((query) => {
     query.whereNot('status', 'completed')
