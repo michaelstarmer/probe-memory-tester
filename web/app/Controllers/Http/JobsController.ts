@@ -50,19 +50,29 @@ export default class JobsController
             if (!payload.memory || !payload.xmlFileId)
                 return response.json({ error: 'Missing parameters (memory or xmlFile)' })
             
-            const created = await Job.create({
+            const newJob = new Job()
+            newJob.merge({
                 memory: payload.memory,
                 xmlFileId: payload.xmlFileId
             })
 
             if (payload.startAt)
             {
-                created.startAt = DateTime.now()
+                let parsedISO = DateTime.fromISO(payload.startAt)
+                console.log({parsedISO})
+                if (!parsedISO)
+                {
+                    console.log("Could not parse iso date", parsedISO)
+                    return response.status(400).json({ error: 'Incorrect value for ISO field: startAt' })
+                }
+                newJob.startAt = parsedISO;
             }
+            await newJob.save()
 
-            return response.json(created)
+            return response.json(newJob)
         } catch (error) {
-            
+            console.error('save job error!', error)
+            return response.status(400).json({ error })
         }
     }
 
