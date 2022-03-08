@@ -12,7 +12,7 @@ export default class Job extends BaseModel {
   @column()
   public memory: number
 
-  @column({ columnName: 'xml_file_id' })
+  @column({ columnName: 'xml_file_id', serializeAs: null })
   public xmlFileId: string
 
   @belongsTo(() => XmlFile, {serializeAs: 'xmlConfig'})

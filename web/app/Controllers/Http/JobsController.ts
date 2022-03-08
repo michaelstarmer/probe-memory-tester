@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
+import XmlFile from 'App/Models/XmlFile';
 import { DateTime } from 'luxon';
 const moment = require('moment')
 
@@ -86,6 +87,18 @@ export default class JobsController
         }
         return response.json(job)
         
+    }
+
+    public async get_all_xml({ response })
+    {
+        const xmlFiles = await XmlFile.all();
+        try {
+
+            return response.json(xmlFiles)
+
+        } catch (error) {
+            return response.status(400).json({ error })
+        }
     }
 
     
