@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
 import BtechProc from './BtechProc'
@@ -23,6 +23,15 @@ export default class Job extends BaseModel {
 
   @column.dateTime()
   public startAt: DateTime
+
+  @beforeSave()
+  public static async checkStartTime (job: Job)
+  {
+    if (!job.$dirty.startAt)
+    {
+      job.startAt = DateTime.now()
+    }
+  }
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

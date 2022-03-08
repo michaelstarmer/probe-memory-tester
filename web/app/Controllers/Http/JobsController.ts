@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
+import { DateTime } from 'luxon';
 const moment = require('moment')
 
 export default class JobsController
@@ -44,13 +45,21 @@ export default class JobsController
 
     public async create_job({ request, response }: HttpContextContract)
     {
-        const payload = request.only(['memory', 'xmlFileId']);
+        const payload = request.only(['memory', 'xmlFileId', 'startAt']);
         try {
             if (!payload.memory || !payload.xmlFileId)
                 return response.json({ error: 'Missing parameters (memory or xmlFile)' })
             
-            const created = await Job.create({ memory: payload.memory, xmlFileId: payload.xmlFileId })
-            console.log("Success");
+            const created = await Job.create({
+                memory: payload.memory,
+                xmlFileId: payload.xmlFileId
+            })
+
+            if (payload.startAt)
+            {
+                created.startAt = DateTime.now()
+            }
+
             return response.json(created)
         } catch (error) {
             

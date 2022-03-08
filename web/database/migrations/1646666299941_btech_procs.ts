@@ -10,9 +10,6 @@ export default class BtechProcs extends BaseSchema {
       table.string('name').notNullable()
       table.string('result').notNullable()
       table.integer('count')
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
