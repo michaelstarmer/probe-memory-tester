@@ -8,6 +8,7 @@ export default class Jobs extends BaseSchema {
       table.increments('id')
       table.integer('memory').notNullable()
       table.integer('xml_file_id').unsigned().references('id').inTable('xml_files')
+      table.text('version')
       table.enum('status', ['waiting', 'running', 'completed', 'failed']).notNullable().defaultTo('waiting')
       table.integer('duration').comment('minutes')
       table.datetime('start_at', { useTz: true })

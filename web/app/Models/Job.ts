@@ -21,6 +21,9 @@ export default class Job extends BaseModel {
   public xmlConfig: BelongsTo<typeof XmlFile>
 
   @column()
+  public version: string
+
+  @column()
   public status: string
 
   @column()
@@ -28,7 +31,10 @@ export default class Job extends BaseModel {
 
   @computed()
   public get remaining() {
-    const _start = this.startAt.toJSDate()
+    if (!this.startAt)
+      return
+    console.log('startAt:', this.startAt)
+    let _start = this.startAt
     const _end = moment(_start).add(String(this.duration), 'minutes')
     const _now = moment()
     const diffMinutes = _end.diff(_now, 'minutes')

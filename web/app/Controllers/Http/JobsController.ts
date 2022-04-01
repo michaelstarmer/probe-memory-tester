@@ -1,7 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
 import XmlFile from 'App/Models/XmlFile';
-import { DateTime } from 'luxon';
 const moment = require('moment')
 
 export default class JobsController {
@@ -35,8 +34,7 @@ export default class JobsController {
             }
 
             if (runningJob) {
-                console.log('\n\nRemaining:', runningJob.remaining)
-                console.log("Set running job to done!")
+
                 if (!runningJob.remaining) {
                     await runningJob.merge({ status: 'completed' }).save()
                 }
@@ -46,7 +44,7 @@ export default class JobsController {
             }
 
             await waitingJob?.merge({ status: 'running' })
-            console.log('\nREMAINING:', waitingJob.remaining)
+            await waitingJob.save()
             // console.log(waitingJob)
             let payload = {
                 id: waitingJob?.id,
@@ -54,6 +52,7 @@ export default class JobsController {
                 xmlFile: waitingJob?.xmlConfig.filename,
                 created_at: waitingJob?.createdAt,
                 startAt: waitingJob?.startAt,
+                duration: waitingJob?.duration,
                 remaining: waitingJob?.remaining,
             }
 
@@ -66,7 +65,7 @@ export default class JobsController {
     }
 
     public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration']);
+        const payload = request.only(['memory', 'xmlFileId', 'duration', 'version', 'startAt']);
         try {
             if (!payload.memory || !payload.xmlFileId)
                 return response.json({ error: 'Missing parameters (memory or xmlFile)' })
@@ -74,7 +73,9 @@ export default class JobsController {
             const newJob = new Job()
             newJob.merge({
                 memory: payload.memory,
-                xmlFileId: payload.xmlFileId
+                xmlFileId: payload.xmlFileId,
+                version: payload.version,
+                startAt: payload.startAt,
             })
 
             if (payload.duration) {
