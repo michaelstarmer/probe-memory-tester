@@ -1,0 +1,6 @@
+matplotlib
+xmltodict
+requests
+argparse
+paramiko
+mysql-connector-python

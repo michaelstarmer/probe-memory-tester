@@ -1,0 +1,142 @@
+No new jobs in queue.
+Running memory test:
+	- RAM: 1, config: /root/MemTester/200-streams.xml
+
+#####################################################
+# Running memory test for the following configuration: 
+# Probe: /root/MemTester/200-streams.xml streams
+# RAM  : 24GB
+#######################################################
+Importing new xml-config...
+Probe configuration: OK
+
+Powering off VM...
+Setting memory to 24
+
+Powered on: sw-probe-memtest
+
+Done!
+VM configuration   : OK
+
+Probe updated and running new settings for 90 seconds.
+Job 1 complete.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.
+No new jobs in queue.

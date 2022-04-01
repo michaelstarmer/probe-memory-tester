@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Probe Memory Tester</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <main>
+
+    <div class="container-fluid my-5">
+      <div class="row justify-content-md-center">
+
+
+
+        <div class="col-12 col-lg-6 d-flex flex-column justify-content-between">
+
+          <div class="card" style="width: 18rem;">
+            <div class="desktop vm-card">
+
+              <img src="/bridgelogo.webp" class="mb-4" alt="...">
+              <h4 class="desktop-title mb-5">
+                @if(probeData.ip)
+                {{probeData.ip}}
+                @else
+                N/A
+                @endif
+              </h4>
+            </div>
+            <div class="card-body mb-2 p-0 text-center">
+
+              @if(probeData.isOffline)
+              <div class="status-lamp status-lamp--red">&nbsp; </div>
+              <div class="inline-block"> Offline</div>
+              @else
+              <div class="status-lamp status-lamp--green">&nbsp;</div>
+              <div class="inline-block"> Online</div>
+              @endif
+              {{--  <div class="status-lamp status-lamp--orange">&nbsp; </div>
+              <div class="inline-block"> Busy...</div>  --}}
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>Host (vm):</strong>
+                  </div>
+                  <div class="col-8">
+                    {{--  {{probeData.vmName}} --}}
+
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>Version:</strong>
+                  </div>
+                  <div class="col-8">
+                    @if(probeData.swVersion)
+                    {{probeData.swVersion}}
+                    @else
+                    N/A
+                    @endif
+                  </div>
+                </div>
+              </li>
+              {{--  <li class="list-group-item">
+                <div class="row">
+                  <div class="col-4">
+                    <strong>RAM:</strong>
+                  </div>
+                  <div class="col-8">
+                    {{probeData.memory}} GB
+          </div>
+        </div>
+        </li> --}}
+        </ul>
+        <div class="card-body">
+          <a href="/host/edit" class="btn btn-warning btn-sm">Edit host</a>
+          @if(!probeData.isOffline)
+          <a href="http://{{probeData.ip}}" class="btn btn-primary btn-sm">Probe UI</a>
+          <a href="http://{{probeData.ip}}:8080/monitorix-cgi/monitorix.cgi?mode=localhost&graph=all&when=1day&color=black"
+            target="_blank" class="btn btn-primary btn-sm">Monitor</a>
+
+          @endif
+          {{--  <a href="#" class="card-link">Another link</a>  --}}
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="container-fluid mb-5">
+
+
+    </div>
+    <div id="graphs">
+
+    </div>
+
+
+
+    <div class="container my-3">
+
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+        @each(job in jobs)
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#flush-{{job.id}}" aria-expanded="false" aria-controls="flush-{{job.id}}">
+              <span>
+                {{ job.startAt && job.startAt.setLocale('no').toFormat('f')}} - &nbsp;
+              </span>
+              <strong>{{ job.memory }}GB RAM</strong>
+              @if(job.status == 'completed')
+              <span class="badge bg-success rounded-pill mx-3">Done</span>
+              @elseif(job.status == 'running')
+              <span class="badge bg-info rounded-pill mx-3">Running</span>
+              @else
+              <span class="badge bg-secondary rounded-pill mx-3">Queued</span>
+              @endif
+            </button>
+          </h2>
+          <div id="flush-{{job.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+            data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+              <div class="text-center my-2">
+                <strong></strong>{{job.xmlConfig.description}}
+              </div>
+
+              <div class="container">
+                <div class="row row-cols-1 row-cols-lg-2">
+                  @if(job.btechProcs.length)
+                  @each(proc in job.btechProcs)
+                  <div class="col-12 col-lg-6 py-1">
+                    <strong>{{proc.name}} ({{proc.count}}):</strong> {{proc.result}}
+                  </div>
+                  @endeach
+                  @endif
+                </div>
+              </div>
+
+              @if(job.systemStats && job.systemStats.length)
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">CPU</th>
+                    <th scope="col">RAM</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @each(stat in job.systemStats)
+                  <tr>
+                    <th scope="row" data-toggle="tooltip" data-placement="top"
+                      title="{{stat.createdAt.setLocale('no').toFormat('DDD')}}">
+                      {{stat.createdAt.toFormat('HH:mm:ss')}}
+                    </th>
+                    <td>{{stat.cpu}}%</td>
+                    <td>{{stat.mem}}%</td>
+                  </tr>
+                  @endeach
+                </tbody>
+              </table>
+              @endif
+              {{--  Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.  --}}
+            </div>
+          </div>
+        </div>
+        @endeach
+
+      </div>
+    </div>
+
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function createGraph(jobs)
+    {
+
+      let test = document.getElementById('jobChart-0')
+      console.log('test', test)
+      console.log(jobs)
+      let datasets = []
+      let chartDiv = document.getElementById('graphs')
+      for (const [idx,job] of jobs.entries())
+      {
+        /* get element */
+        let jobCtx = document.getElementById(`job-${idx}`);
+        
+        if (!jobCtx)
+        {
+          console.log('element not found. creating new.')
+          /* create element */
+          jobCtx = chartDiv.appendChild(document.createElement('div'))
+          jobCtx.setAttribute('id', `job-${idx}`)
+        } else {
+          console.log('element found!')
+        }
+
+        jobCtx.classList.add('my-5')
+        jobCtx.innerHTML = '<h1>RAM set: ' + job.memory + 'GB</h1>'
+        let ctx = jobCtx.appendChild(document.createElement('canvas'));
+        console.log(ctx)
+        
+        console.log("Job id:", idx)
+        console.log('getElementById:', `jobChart-${idx}`)
+        
+        let cpu = job.systemStats.map(it => it.cpu)
+        let mem = job.systemStats.map(it => it.mem)
+
+        let t = {
+          label: 'test',
+          data: mem,
+        }
+
+        console.log(t)
+
+        console.log('job cpu:', cpu)
+        let jobChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: job.systemStats.map(it => it.timestamp),
+            datasets: [
+              {
+                label: 'CPU %',
+                data: cpu,
+                borderColor: 'rgba(0, 0, 0, 0.8)',
+                // borderWidth: 1,
+                fill: false,
+                tension: 0.1
+              },
+              {
+              label: 'MEM %',
+              data: mem,
+              borderColor: 'rgba(255, 10, 20, 0.8)',
+              // borderWidth: 1,
+              fill: false,
+              tension: 0.1
+              },
+          ]
+          },
+          options: {
+            scales: {
+              yAxis: {
+                beginAtZero: true,
+              },
+              xAxis: {
+                display: true,
+                type: 'time',
+                time: {
+                  parser: 'MM/DD/YYYY HH:mm',
+                  tooltipFormat: 'll HH:mm',
+                  unit: 'minute',
+                  unitStepSize: 20,
+                  displayFormats: {
+                    'hour': 'HH:mm'
+                  }
+                }
+              }
+
+            }
+          }
+        }) 
+      }
+    }
+
+    function fetchAndGenerateChart()
+    {
+      fetch('/api/jobs')
+      .then(res => res.json())
+      .then(response => {
+        console.log(response)
+        createGraph(response)
+      })
+      .catch(e => console.log(e))
+    }
+
+    /* Initial setup */
+    fetchAndGenerateChart()
+
+    /* Update every minute */
+    setInterval(() => {
+      console.log('[ INTERVAL ] Fetching jobs')
+      fetchAndGenerateChart()
+    }, 1000*60)
+
+    
+  
+
+  </script>
+</body>
+
+</html>
