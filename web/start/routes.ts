@@ -27,7 +27,7 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', 'AppController.index').as('home')
 
 Route.get('/api/jobs', 'JobsController.get_all_jobs')
-
+Route.post('/api/jobs/create', 'JobsController.create_job')
 Route.post('/api/queue', 'JobsController.create_job')
 Route.get('/api/queue/next', 'JobsController.next_job')
 Route.get('/api/queue/active', 'JobsController.active_job')

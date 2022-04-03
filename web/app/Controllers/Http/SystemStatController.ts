@@ -31,7 +31,7 @@ export default class SystemStatController
             {
                 return response.json({ error: 'Missing required values (mem/cpu).' });
             }
-
+            console.log('create stats')
             await activeJob.related('systemStats').create({ cpu, mem, alerts })
         } catch (error) {
             console.error('create SystemStat error!', error);

@@ -6,6 +6,7 @@ import requests
 import json
 import sys
 import subprocess
+import os, time
 
 HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
@@ -13,11 +14,12 @@ PORT = 3333
 
 API_HOST = f'http://10.0.28.187:{PORT}/api'
 
+print('LOCAL TIME:', time.strftime('%c'))
 
 def get_proc_mem():
     # total/free/used
     result = subprocess.run(
-        [f'ssh -q root@{HOST} ' + """top -bn 1 | awk '/Mem :/ {print $4 " " $6 " " $8}'"""], check=True, capture_output=True, text=True, shell=True)
+        [f'ssh -o StrictHostKeyChecking=no -i ./keys/memtester root@{HOST} ' + """cd; top -bn 1 | awk '/Mem :/ {print $4 " " $6 " " $8}'"""], check=True, capture_output=True, text=True, shell=True)
     result.check_returncode()
     print(result.stdout.split())
     return result.stdout.split()
@@ -26,7 +28,8 @@ def get_proc_mem():
 def get_proc_cpu():
     # total/free/used
     result = subprocess.run(
-        [f'ssh -q root@{HOST} ' + """cd; top -bn 1 | awk '/^%Cpu/ {print $4 " " $6 " " $8}'"""],
+        [f'ssh -o StrictHostKeyChecking=no -p elvis root@{HOST} ' +
+            """cd; top -bn 1 | awk '/^%Cpu/ {print $4 " " $6 " " $8}'"""],
         check=True, capture_output=True, text=True, shell=True)
     result.check_returncode()
     return result.stdout.split()
@@ -49,7 +52,7 @@ def get_memory_usage():
         response = json.loads(response.content)
         return response['mem']
     except Exception as e:
-        print("error!", e)
+        print("error mem!", e)
 
 
 def get_cpu_usage():
@@ -62,7 +65,7 @@ def get_cpu_usage():
         response = json.loads(response.content)
         return response['cpu']
     except Exception as e:
-        print("error!", e)
+        print("error cpu!", e)
 
 
 def get_amps():
@@ -84,17 +87,19 @@ def get_current_job_id():
         job = json.loads(response.content)
         return job['id']
     except Exception as e:
-        print("error!", e)
+        print("error job id!", e)
 
 
 def add_job_stats(data):
     try:
         response = requests.post(f'{API_HOST}/stats', data)
         if response.status_code != 200:
+            print(response)
             sys.exit(f"Bad request ({response.status_code})!")
+        print(response)
         return True
     except Exception as e:
-        print("error!", e)
+        print("error - add job stats!", e)
         return False
 
 
@@ -140,7 +145,8 @@ print('')
 print('CPU usr:', float(cpu_usr))
 print('CPU sys:', float(cpu_sys))
 job_id = get_current_job_id()
-data = {'cpu': float(cpu_usr), 'mem': mem_pct}
+data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
+print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
 exit(0)

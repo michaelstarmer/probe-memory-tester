@@ -15,9 +15,6 @@ export default class AppController {
             .preload('systemStats', statsQuery => {
                 statsQuery.groupLimit(10)
             })
-            .preload('btechProcs', procsQuery => {
-                procsQuery.groupLimit(4)
-            })
         const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
         const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
@@ -47,14 +44,7 @@ export default class AppController {
                 probeData.swVersion = json.Status.System[0].software_version;
             }
 
-            for (const job of jobs) {
-                if (job.btechProcs) {
-                    console.log('Btech procs on job:', job.btechProcs.length)
-                    for (const proc of job.btechProcs) {
-                        console.log(`${proc.name}:`, proc)
-                    }
-                }
-            }
+            
 
 
 

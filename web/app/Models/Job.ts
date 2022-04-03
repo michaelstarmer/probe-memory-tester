@@ -1,18 +1,23 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, beforeFetch, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
-import BtechProc from './BtechProc'
-import moment from 'moment'
+import moment, { duration } from 'moment'
 import { format, subMinutes } from 'date-fns'
+import Snapshot from './Snapshot'
 
 export default class Job extends BaseModel {
+
+  // static get 
 
   @column({ isPrimary: true })
   public id: number
 
   @column()
   public memory: number
+
+  @column()
+  public cpu: number
 
   @column({ columnName: 'xml_file_id', serializeAs: null })
   public xmlFileId: string
@@ -21,7 +26,10 @@ export default class Job extends BaseModel {
   public xmlConfig: BelongsTo<typeof XmlFile>
 
   @column()
-  public version: string
+  public version: Number
+
+  @belongsTo(() => Snapshot)
+  public snapshot: BelongsTo<typeof Snapshot>
 
   @column()
   public status: string
@@ -39,30 +47,32 @@ export default class Job extends BaseModel {
     const _now = moment()
     const diffMinutes = _end.diff(_now, 'minutes')
 
-    return diffMinutes > 0 ? diffMinutes : 0;
+    if (diffMinutes <= 0)
+    {
+      return 0;
+    }
+
+    return diffMinutes;
   }
 
-  @column.dateTime()
+  @column.dateTime({ autoUpdate: false })
   public startAt: DateTime
 
   @beforeSave()
   public static async checkStartTime(job: Job) {
-    if (!job.$dirty.startAt) {
+    if (!job.startAt && !job.$dirty.startAt) {
       job.startAt = DateTime.now()
     }
   }
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: false })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: false })
   public updatedAt: DateTime
-
+/*  */
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
-
-  @hasMany(() => BtechProc)
-  public btechProcs: HasMany<typeof BtechProc>
 
   public static ignoreCompleted = scope((query) => {
     query.whereNot('status', 'completed')
@@ -76,8 +86,9 @@ export default class Job extends BaseModel {
     query.where('status', 'waiting')
   })
 
-  // @beforeFind()
-  // public static ignoreCompleted (query: ModelQueryBuilderContract<typeof Job>) {
-  //   query.whereNull('completed_at') 
+  // @beforeFetch()
+  // public static async updateStatus (query: ModelQueryBuilderContract<typeof Job>) {
+  //   query.whereIn('status', ['waiting', 'running']).andWhere('duration',)
+
   // }
 }

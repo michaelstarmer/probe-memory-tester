@@ -20,7 +20,7 @@ RUN npm run build
 
 RUN cp .env ./build/.env
 
-
+ENV TZ = 'Europe/Amsterdam'
 
 WORKDIR /app/build
 RUN yarn install --production

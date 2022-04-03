@@ -6,7 +6,7 @@ export default class ProbeConfigSeeder extends BaseSeeder {
     // Write your database queries inside the run method
     try {
       await ProbeConfig.createMany([
-        { key: 'probe_ip', value: '' },
+        { key: 'probe_ip', value: '10.0.28.239' },
         { key: 'vm_name', value: 'sw-probe-memtest' },
         { key: 'job_interval', value: '3000' },
 

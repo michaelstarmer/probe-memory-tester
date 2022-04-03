@@ -41,12 +41,13 @@ const databaseConfig: DatabaseConfig = {
         user: Env.get('MYSQL_USER'),
         password: Env.get('MYSQL_PASSWORD', ''),
         database: Env.get('MYSQL_DB_NAME'),
+        timezone: 'Europe/Oslo',
       },
       migrations: {
         naturalSort: true,
       },
       healthCheck: false,
-      debug: false,
+      debug: true,
     },
 
   }

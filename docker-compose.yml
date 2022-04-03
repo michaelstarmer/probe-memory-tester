@@ -9,7 +9,8 @@ services:
       - ./cron/MemTester:/app/
     working_dir: /app
     environment:
-      - PRODUCTION='true'
+      ENV: production
+
   web:
     build: ./web
     container_name: web

@@ -7,8 +7,23 @@ from probe.probe_eii import Probe
 from db_adapter import Queue
 import requests
 import logging
+from sys import stdin, stdout, stderr
+import paramiko
 
-
+def set_snapshot(sid):
+    # sshpass -p "$vmpwd" ssh "$vmhost" vim-cmd vmsvc/snapshot.revert "$vmid" "$snapid" true || exit 1
+    vmid = 29
+    snapid = sid
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('10.0.28.202', username='root', password='ldap2retro!')
+    try:
+        (stdin, stdout, stderr) = ssh.exec_command(f'vim-cmd vmsvc/snapshot.revert {vmid} {sid}')
+        type(stdin)
+        print('Snapshot updated.')
+    except Exception as e:
+        print('error!', e)
+    
 if __name__ == '__main__':
     queue = Queue(host='10.0.28.187', database='memtest',
                   username='memtest', password='ldap2retro')
@@ -23,8 +38,6 @@ if __name__ == '__main__':
     # ProbeVM: {probe_ip} #
     #######################
     """)
-    # vm = ProbeVM(probe_ip, "root", "sw-probe-memtest",
-    #              password="ldap2retro!")
 
     probe = Probe(probe_ip)
     job = {}
@@ -50,17 +63,25 @@ if __name__ == '__main__':
 
     jobId = job.get('id')
     memory = job.get('memory')
-    xml = job.get('xmlFile')
+    xml = job.get('xmlConfig')['filename']
+    print(xml)
+    
+    snapshot_id = job.get('version')
+    print(f'\nSnapshot ID: {snapshot_id}')
     queue.log(jobId, 'running')
     print("Running memory test:")
     print(f'\t- RAM: {memory}, config: {xml}')
 
-    if (os.getenv('PRODUCTION')):
-        xml = f'/app/{xml}'
-
     if not os.path.exists(xml):
         print('XML-file not found:', xml)
+        print('Assuming prod.')
+        xml = f'/app/{xml}'
         exit(1)
+        
+    if not xml:
+        print("Missing xml")
+        exit(1)
+    
 
     try:
         print("\n#####################################################")
@@ -69,9 +90,10 @@ if __name__ == '__main__':
         print(f'# RAM  : {memory}GB')
         print('#######################################################')
         print("Importing new xml-config...")
+        set_snapshot(snapshot_id)
         probe.import_config(xml)
         print("Probe configuration: OK")
-        stress.set_memory(RHOST=probe_ip, MEMORY=memory, DURATION=10)
+        stress.set_memory(RHOST=probe_ip, MEMORY=memory, DURATION=60)
         print("VM configuration   : OK")
         print("\nProbe updated and running new settings for 90 seconds.")
         # queue.setJobCompleted(id=jobId)

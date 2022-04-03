@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
 import XmlFile from 'App/Models/XmlFile';
+import Snapshot from 'App/Models/Snapshot';
 const moment = require('moment')
 
 export default class JobsController {
@@ -12,9 +13,9 @@ export default class JobsController {
                 statsQuery.groupLimit(50)
                 statsQuery.orderBy('created_at', 'asc')
             })
-            .preload('btechProcs', procsQuery => {
-                procsQuery.groupLimit(4)
-            })
+            
+        
+            
 
         try {
             return response.json(jobs);
@@ -28,7 +29,9 @@ export default class JobsController {
             let runningJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
 
 
-            let waitingJob = await Job.query().whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`).preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
+            let waitingJob = await Job.query()
+            .whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`)
+            .preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
             if (!waitingJob) {
                 return response.json({ error: 'No jobs found.' })
             }
@@ -37,26 +40,22 @@ export default class JobsController {
 
                 if (!runningJob.remaining) {
                     await runningJob.merge({ status: 'completed' }).save()
+                    return response.json(runningJob)
                 }
                 if (waitingJob) {
                     await runningJob.merge({ status: 'completed' }).save()
+                    return response.json(runningJob)
+
                 }
+                console.log({runningJob})
             }
 
-            await waitingJob?.merge({ status: 'running' })
-            await waitingJob.save()
-            // console.log(waitingJob)
-            let payload = {
-                id: waitingJob?.id,
-                memory: waitingJob?.memory,
-                xmlFile: waitingJob?.xmlConfig.filename,
-                created_at: waitingJob?.createdAt,
-                startAt: waitingJob?.startAt,
-                duration: waitingJob?.duration,
-                remaining: waitingJob?.remaining,
-            }
+            await waitingJob?.merge({ status: 'running' }).save()
 
-            return response.json(payload)
+            console.log({waitingJob})
+            
+
+            return response.json(waitingJob)
 
         } catch (error) {
             console.error(error)
@@ -65,16 +64,34 @@ export default class JobsController {
     }
 
     public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration', 'version', 'startAt']);
+        const payload = request.only(['memory', 'xmlFileId', 'duration', 'version', 'startAt', 'cpu']);
+
         try {
-            if (!payload.memory || !payload.xmlFileId)
-                return response.json({ error: 'Missing parameters (memory or xmlFile)' })
+            if (!payload.memory || !payload.xmlFileId || !payload.version)
+                return response.json({ error: 'Missing parameters. Required: memory, xmlFileId, duration, version, startAt' })
+
+            if (!payload.duration)
+                return response.json({ error: 'Missing parameter: duration' })
+
+            const snapshot = await Snapshot.query().where('name', payload.version).first();
+            if (!snapshot)
+            {
+                return response.json({ error: 'Version does not exist as snapshot.' })
+            } else {
+                console.log('found snapshot:', snapshot)
+            }
+
+            if (!payload.cpu)
+            {
+                payload.cpu = 8
+            }
 
             const newJob = new Job()
             newJob.merge({
                 memory: payload.memory,
+                cpu: payload.cpu,
                 xmlFileId: payload.xmlFileId,
-                version: payload.version,
+                version: snapshot.snapshotId,
                 startAt: payload.startAt,
             })
 
@@ -94,6 +111,7 @@ export default class JobsController {
     public async active_job({ response }) {
         const job = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
         await job?.load('xmlConfig')
+        
         if (!job) {
             return response.json({})
         }
