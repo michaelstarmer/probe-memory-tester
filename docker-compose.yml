@@ -9,10 +9,33 @@ services:
       - ./cron/MemTester:/app/
     working_dir: /app
     environment:
-      ENV: production
+      API_HOST: 'http://web'
+
 
   web:
     build: ./web
     container_name: web
     ports:
       - 3333:3333
+
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    volumes:
+      - /apps/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ldap2retro
+      - MYSQL_PASSWORD=ldap2retro
+      - MYSQL_USER=memtest
+      - MYSQL_DATABASE=memtest
+      - TZ=Europe/Oslo
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+02:00']
+
+networks:
+  default:
+    external:
+      name: memtest_net

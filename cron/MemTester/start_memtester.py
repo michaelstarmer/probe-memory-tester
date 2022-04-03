@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import json
+from cron.MemTester.fetch_probe_stats import API_HOST
 from vm_edit_mem import ProbeVM
 import stress
 from probe.probe_eii import Probe
@@ -9,6 +10,8 @@ import requests
 import logging
 from sys import stdin, stdout, stderr
 import paramiko
+
+API_HOST = os.getenv('API_HOST', 'http://localhost:3333')
 
 def set_snapshot(sid):
     # sshpass -p "$vmpwd" ssh "$vmhost" vim-cmd vmsvc/snapshot.revert "$vmid" "$snapid" true || exit 1
@@ -43,7 +46,7 @@ if __name__ == '__main__':
     job = {}
 
     try:
-        response = requests.get('http://localhost:3333/api/queue/next')
+        response = requests.get(f'{API_HOST}/api/queue/next')
         if response.status_code != 200:
             print(
                 f'Bad request - {response.status_code} (localhost:3333/api/queue/next)')

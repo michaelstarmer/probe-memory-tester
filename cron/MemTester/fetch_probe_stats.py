@@ -12,7 +12,7 @@ HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
-API_HOST = f'http://10.0.28.187:{PORT}/api'
+API_HOST = os.getenv('API_HOST', 'http://localhost:3333')
 
 print('LOCAL TIME:', time.strftime('%c'))
 
