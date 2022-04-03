@@ -1,7 +1,6 @@
 from datetime import datetime
 import os
 import json
-from cron.MemTester.fetch_probe_stats import API_HOST
 from vm_edit_mem import ProbeVM
 import stress
 from probe.probe_eii import Probe
