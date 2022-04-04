@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import json
+from time import sleep
 from vm_edit_mem import ProbeVM
 import stress
 from probe.probe_eii import Probe
@@ -12,6 +13,7 @@ import paramiko
 
 API_HOST = os.getenv('API_HOST', 'http://localhost:3333')
 
+
 def set_snapshot(sid):
     # sshpass -p "$vmpwd" ssh "$vmhost" vim-cmd vmsvc/snapshot.revert "$vmid" "$snapid" true || exit 1
     vmid = 29
@@ -20,12 +22,29 @@ def set_snapshot(sid):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect('10.0.28.202', username='root', password='ldap2retro!')
     try:
-        (stdin, stdout, stderr) = ssh.exec_command(f'vim-cmd vmsvc/snapshot.revert {vmid} {sid}')
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'vim-cmd vmsvc/snapshot.revert {vmid} {sid} true || exit 1')
         type(stdin)
         print('Snapshot updated.')
     except Exception as e:
         print('error!', e)
-    
+
+
+def power_on_vm(vmid):
+    # sshpass -p "$vmpwd" ssh "$vmhost" vim-cmd vmsvc/snapshot.revert "$vmid" "$snapid" true || exit 1
+
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('10.0.28.202', username='root', password='ldap2retro!')
+    try:
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'vim-cmd vmsvc/power.on "{vmid}" || exit 1')
+        type(stdin)
+        print('VM Powered On.')
+    except Exception as e:
+        print('error!', e)
+
+
 if __name__ == '__main__':
     queue = Queue(host='10.0.28.187', database='memtest',
                   username='memtest', password='ldap2retro')
@@ -66,11 +85,13 @@ if __name__ == '__main__':
     jobId = job.get('id')
     memory = job.get('memory')
     xml = job.get('xmlConfig')['filename']
+    duration = int(job.get('duration'))
+    duration_minutes = duration * 60
     print(xml)
-    
+
     snapshot_id = job.get('version')
     print(f'\nSnapshot ID: {snapshot_id}')
-    queue.log(jobId, 'running')
+
     print("Running memory test:")
     print(f'\t- RAM: {memory}, config: {xml}')
 
@@ -79,11 +100,10 @@ if __name__ == '__main__':
         print('Assuming prod.')
         xml = f'/app/{xml}'
         exit(1)
-        
+
     if not xml:
         print("Missing xml")
         exit(1)
-    
 
     try:
         print("\n#####################################################")
@@ -91,13 +111,20 @@ if __name__ == '__main__':
         print(f'# Probe: {xml} streams')
         print(f'# RAM  : {memory}GB')
         print('#######################################################')
-        print("Importing new xml-config...")
         set_snapshot(snapshot_id)
+        sleep(10)
+        print("Snapshot set: OK")
+        power_on_vm(vmid=29)
+        print("Wait 30 sec. while probe restarting...")
+        sleep(30.0)
+        print("Importing new xml-config...")
         probe.import_config(xml)
-        print("Probe configuration: OK")
-        stress.set_memory(RHOST=probe_ip, MEMORY=memory, DURATION=60)
         print("VM configuration   : OK")
-        print("\nProbe updated and running new settings for 90 seconds.")
+        queue.log(jobId, 'running')
+        print(
+            f"\nProbe updated. Setting new memory for duration: {duration_minutes} minutes.")
+        stress.set_memory(RHOST=probe_ip, MEMORY=memory,
+                          DURATION=duration_minutes)
         # queue.setJobCompleted(id=jobId)
     except Exception as e:
         print("memtester error!", e)

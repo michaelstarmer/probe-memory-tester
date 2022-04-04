@@ -11,20 +11,18 @@ services:
     environment:
       API_HOST: 'http://web'
 
-
   web:
     build: ./web
     container_name: web
     ports:
       - 3333:3333
 
-
   mariadb:
     image: mariadb
     container_name: mariadb
     restart: unless-stopped
     ports:
-      - 0.0.0.0:3306:3306
+      - 3306:3306
     volumes:
       - /apps/mysql:/var/lib/mysql
     environment:
@@ -33,9 +31,10 @@ services:
       - MYSQL_USER=memtest
       - MYSQL_DATABASE=memtest
       - TZ=Europe/Oslo
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+02:00']
-
-networks:
-  default:
-    external:
-      name: memtest_net
+    command:
+      [
+        'mysqld',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-time-zone=+02:00'
+      ]

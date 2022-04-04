@@ -29,11 +29,11 @@ def set_memory(RHOST, MEMORY, DURATION):
             [f'ssh', '-o', 'StrictHostKeyChecking=no', '-i', 'keys/memtester',
                 f'{RUSER}@{RHOST}', 'cd;', 'stress-ng', '--vm-bytes', f'{MEMORY}G', '--vm-keep', '--vm', '1', '--timeout', f'{DURATION}', '&', 'disown'],
             capture_output=True, text=True)
-        
+
         print(result.stdout.split())
         print(result.stderr.split())
         return result.stdout.split()
-        
+
         print('#### End test ####')
     except Exception as e:
         print('ssh connect error!', e)
