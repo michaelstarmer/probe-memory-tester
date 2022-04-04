@@ -69,7 +69,7 @@ def get_mem_usage_percent():
     memory = get_proc_mem()
     m_used = memory[2].replace(',', '')
     m_total = memory[0].replace(',', '')
-    return float(m_used) / float(m_total) * 100
+    return int(float(m_used) / float(m_total) * 100)
 
 
 def get_memory_usage():
@@ -126,7 +126,7 @@ def add_job_stats(data):
         if response.status_code != 200:
             print(response)
             sys.exit(f"Bad request ({response.status_code})!")
-        print(response)
+        # print(response)
         return True
     except Exception as e:
         print("error - add job stats!", e)
@@ -171,10 +171,10 @@ print('mem %:', mem_pct)
 c = get_proc_cpu()
 print(c)
 cpu_usr = c[0]
-# cpu_sys = float(c[1])
+cpu_sys = c[1]
 print('')
 print('CPU usr:', float(cpu_usr))
-# print('CPU sys:', float(cpu_sys))
+print('CPU sys:', float(cpu_sys))
 job_id = get_current_job_id()
 if not job_id:
     sys.exit('No active jobs to log.')
