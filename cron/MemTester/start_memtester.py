@@ -99,7 +99,6 @@ if __name__ == '__main__':
         print('XML-file not found:', xml)
         print('Assuming prod.')
         xml = f'/app/{xml}'
-        exit(1)
 
     if not xml:
         print("Missing xml")
