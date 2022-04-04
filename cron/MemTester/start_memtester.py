@@ -11,7 +11,7 @@ import logging
 from sys import stdin, stdout, stderr
 import paramiko
 
-API_HOST = os.environ.get('API_HOST', 'http://localhost:3333')
+API_HOST = os.environ['API_HOST'] or 'http://localhost:3333'
 
 print(f'\nCRON API_HOST = {API_HOST}')
 
