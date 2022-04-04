@@ -13,9 +13,6 @@ export default class JobsController {
                 statsQuery.groupLimit(50)
                 statsQuery.orderBy('created_at', 'asc')
             })
-            
-        
-            
 
         try {
             return response.json(jobs);
@@ -30,8 +27,8 @@ export default class JobsController {
 
 
             let waitingJob = await Job.query()
-            .whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`)
-            .preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
+                .whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`)
+                .preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
             if (!waitingJob) {
                 return response.json({ error: 'No jobs found.' })
             }
@@ -47,13 +44,10 @@ export default class JobsController {
                     return response.json(runningJob)
 
                 }
-                console.log({runningJob})
             }
 
             await waitingJob?.merge({ status: 'running' }).save()
 
-            console.log({waitingJob})
-            
 
             return response.json(waitingJob)
 
@@ -74,15 +68,13 @@ export default class JobsController {
                 return response.json({ error: 'Missing parameter: duration' })
 
             const snapshot = await Snapshot.query().where('name', payload.version).first();
-            if (!snapshot)
-            {
+            if (!snapshot) {
                 return response.json({ error: 'Version does not exist as snapshot.' })
             } else {
                 console.log('found snapshot:', snapshot)
             }
 
-            if (!payload.cpu)
-            {
+            if (!payload.cpu) {
                 payload.cpu = 8
             }
 
@@ -111,7 +103,7 @@ export default class JobsController {
     public async active_job({ response }) {
         const job = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
         await job?.load('xmlConfig')
-        
+
         if (!job) {
             return response.json({})
         }
