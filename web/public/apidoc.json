@@ -5,7 +5,6 @@
         "version": "1.0.0",
         "title": "Btech Memory Tester",
         "termsOfService": "#"
-        
     },
     "host": "http://10.0.28.98:3333",
     "basePath": "/api",
@@ -24,8 +23,7 @@
         "http"
     ],
     "paths": {
-       
-        "/queue": {
+        "/jobs/create": {
             "post": {
                 "tags": [
                     "queue"
@@ -82,8 +80,6 @@
                 ]
             }
         },
-        
-
         "/queue/next": {
             "get": {
                 "tags": [
@@ -100,9 +96,7 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
-                    
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -127,7 +121,6 @@
                 ]
             }
         },
-
         "/queue/active": {
             "get": {
                 "tags": [
@@ -144,9 +137,7 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
-                    
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -176,9 +167,7 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
-                    
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -195,11 +184,8 @@
                 }
             }
         }
-        
     },
-    "securityDefinitions": {
-        
-    },
+    "securityDefinitions": {},
     "definitions": {
         "ApiResponse": {
             "type": "object",
@@ -246,6 +232,14 @@
                     "type": "integer",
                     "format": "int64"
                 },
+                "duration": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Probe version"
+                },
                 "xml_file_id": {
                     "type": "integer",
                     "format": "int64"
@@ -268,7 +262,6 @@
                     "type": "string",
                     "format": "date-time"
                 }
-                
             },
             "xml": {
                 "name": "q"
@@ -276,8 +269,7 @@
         },
         "Stat": {
             "type": "object",
-            "required": [
-            ],
+            "required": [],
             "properties": {
                 "id": {
                     "type": "integer",
@@ -307,7 +299,6 @@
                     "type": "string",
                     "format": "date-time"
                 }
-                
             },
             "xml": {
                 "name": "q"
