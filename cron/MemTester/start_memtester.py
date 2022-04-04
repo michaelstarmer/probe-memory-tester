@@ -61,6 +61,17 @@ def get_active_job():
         print("error job id!", e)
 
 
+def change_snapshot(vmid, snapshot_id):
+    set_snapshot(snapshot_id)
+    print('Set snapshot. Wait 10 sec...')
+    sleep(10)
+    print("Snapshot set.")
+    print("Restarting. Wait 60 sec...")
+    power_on_vm(vmid)
+    sleep(60.0)
+    print('Done. Snapshot changed.')
+
+
 if __name__ == '__main__':
     queue = Queue(host='10.0.28.187', database='memtest',
                   username='memtest', password='ldap2retro')
@@ -77,7 +88,9 @@ if __name__ == '__main__':
     """)
 
     probe = Probe(probe_ip)
-    job = {}
+    nextJob = {}
+
+    previous_job = get_active_job()
 
     try:
         response = requests.get(f'{API_HOST}/api/queue/next')
@@ -89,7 +102,6 @@ if __name__ == '__main__':
         payload = json.loads(response.content)
         print(payload)
         nextJob = payload
-        print('Fetched jon!', job)
 
     except Exception as e:
         logging.error(e)
@@ -107,7 +119,6 @@ if __name__ == '__main__':
     xml = job.get('xmlConfig')['filename']
     duration = int(job.get('duration'))
     duration_minutes = duration * 60
-    print(xml)
 
     snapshot_id = job.get('version')
     print(f'\nSnapshot ID: {snapshot_id}')
@@ -117,7 +128,6 @@ if __name__ == '__main__':
 
     if not os.path.exists(xml):
         print('XML-file not found:', xml)
-        print('Assuming prod.')
         xml = f'/app/{xml}'
 
     if not xml:
@@ -130,15 +140,15 @@ if __name__ == '__main__':
         print(f'# Probe: {xml} streams')
         print(f'# RAM  : {memory}GB')
         print('#######################################################')
-        set_snapshot(snapshot_id)
-        sleep(10)
-        print("Snapshot set: OK")
-        power_on_vm(vmid=29)
-        print("Wait 60 sec. while probe restarting...")
-        sleep(60.0)
+        if not previous_job:
+            change_snapshot(vmid=29, snapshot_id=snapshot_id)
+        elif previous_job and previous_job.get('version') != snapshot_id:
+            change_snapshot(vmid=29, snapshot_id=snapshot_id)
+        else:
+            print('Same version detected. Not loading snapshot.')
+
         print("Importing new xml-config...")
         probe.import_config(xml)
-        print("VM configuration   : OK")
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration_minutes} minutes.")
