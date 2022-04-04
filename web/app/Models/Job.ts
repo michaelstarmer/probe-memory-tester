@@ -59,7 +59,8 @@ export default class Job extends BaseModel {
 
   @beforeFind()
   public static async checkJobStatus(job: Job) {
-    if (moment().isAfter(moment(job.startAt).add(job.duration, 'minutes'))) {
+    const isExpired = moment().add(job.duration, 'minutes').isAfter(moment(job.startAt));
+    if (isExpired) {
       console.log('Job is expired. Setting complete')
       job.status = "completed"
       await job.save()
