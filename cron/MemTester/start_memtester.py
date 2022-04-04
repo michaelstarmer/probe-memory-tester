@@ -10,6 +10,7 @@ import requests
 import logging
 from sys import stdin, stdout, stderr
 import paramiko
+import sys
 
 API_HOST = 'http://localhost:3333'
 if os.environ.get('API_HOST'):
@@ -49,6 +50,17 @@ def power_on_vm(vmid):
         print('error!', e)
 
 
+def get_active_job():
+    try:
+        response = requests.get(f'{API_HOST}/api/queue/active')
+        if response.status_code != 200:
+            sys.exit(f"Bad request ({response.status_code})!")
+        job = json.loads(response.content)
+        return job
+    except Exception as e:
+        print("error job id!", e)
+
+
 if __name__ == '__main__':
     queue = Queue(host='10.0.28.187', database='memtest',
                   username='memtest', password='ldap2retro')
@@ -76,15 +88,19 @@ if __name__ == '__main__':
 
         payload = json.loads(response.content)
         print(payload)
-        job = payload
+        nextJob = payload
         print('Fetched jon!', job)
 
     except Exception as e:
         logging.error(e)
 
-    if not job.get('id'):
+    if not nextJob.get('id'):
         print('No new jobs in queue.')
         exit(0)
+
+    job = get_active_job()
+    if not job.get('id'):
+        sys.exit('No jobs to configure')
 
     jobId = job.get('id')
     memory = job.get('memory')
