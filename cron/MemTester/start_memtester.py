@@ -11,7 +11,7 @@ import logging
 from sys import stdin, stdout, stderr
 import paramiko
 
-API_HOST = os.getenv('API_HOST', 'http://localhost:3333')
+API_HOST = os.environ.get('API_HOST', 'http://localhost:3333')
 
 
 def set_snapshot(sid):
