@@ -111,16 +111,16 @@ if __name__ == '__main__':
         exit(0)
 
     job = get_active_job()
-    if not job.get('id'):
+    if not nextJob.get('id'):
         sys.exit('No jobs to configure')
 
-    jobId = job.get('id')
-    memory = job.get('memory')
-    xml = job.get('xmlConfig')['filename']
-    duration = int(job.get('duration'))
+    jobId = nextJob.get('id')
+    memory = nextJob.get('memory')
+    xml = nextJob.get('xmlConfig')['filename']
+    duration = int(nextJob.get('duration'))
     duration_minutes = duration * 60
 
-    snapshot_id = job.get('version')
+    snapshot_id = nextJob.get('version')
     print(f'\nSnapshot ID: {snapshot_id}')
 
     print("Running memory test:")
