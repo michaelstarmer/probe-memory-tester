@@ -176,6 +176,8 @@ print('')
 print('CPU usr:', float(cpu_usr))
 # print('CPU sys:', float(cpu_sys))
 job_id = get_current_job_id()
+if not job_id:
+    sys.exit('No active jobs to log.')
 data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
 print(data)
 if add_job_stats(data):
