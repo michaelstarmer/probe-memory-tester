@@ -8,33 +8,58 @@ import sys
 import subprocess
 import os
 import time
+import paramiko
 
 HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
-API_HOST = os.environ['API_HOST'] or 'http://localhost:3333'
+API_HOST = 'http://localhost:3333'
+if os.environ.get('API_HOST'):
+    API_HOST = os.environ['API_HOST']
 
 print('LOCAL TIME:', time.strftime('%c'))
 
 
 def get_proc_mem():
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('10.0.28.239', username='root', password='elvis')
+    try:
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
+            """awk '/Mem :/ {print $4 " " $6 " " $8}'""")
+        type(stdin)
+        return ''.join(stdout.readlines())
+    except Exception as e:
+        print('get proc mem error!', e)
     # total/free/used
-    result = subprocess.run(
-        [f'ssh -o StrictHostKeyChecking=no -i ./keys/memtester root@{HOST} ' + """cd; top -bn 1 | awk '/Mem :/ {print $4 " " $6 " " $8}'"""], check=True, capture_output=True, text=True, shell=True)
-    result.check_returncode()
-    print(result.stdout.split())
-    return result.stdout.split()
+    # result = subprocess.run(
+    #     [f'ssh -o StrictHostKeyChecking=no -i ./keys/memtester root@{HOST} ' + """cd; top -bn 1 | awk '/Mem :/ {print $4 " " $6 " " $8}'"""], check=True, capture_output=True, text=True, shell=True)
+    # result.check_returncode()
+    # print(result.stdout.split())
+    # return result.stdout.split()
 
 
 def get_proc_cpu():
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect('10.0.28.239', username='root', password='elvis')
+    try:
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
+            """awk '/^%Cpu/ {print $4 " " $6 " " $8}'""")
+        type(stdin)
+        return ''.join(stdout.readlines())
+    except Exception as e:
+        print('get proc mem error!', e)
     # total/free/used
-    result = subprocess.run(
-        [f'ssh -o StrictHostKeyChecking=no -p elvis root@{HOST} ' +
-            """cd; top -bn 1 | awk '/^%Cpu/ {print $4 " " $6 " " $8}'"""],
-        check=True, capture_output=True, text=True, shell=True)
-    result.check_returncode()
-    return result.stdout.split()
+    # result = subprocess.run(
+    #     [f'ssh -o StrictHostKeyChecking=no -p elvis root@{HOST} ' +
+    #         """cd; top -bn 1 | awk '/^%Cpu/ {print $4 " " $6 " " $8}'"""],
+    #     check=True, capture_output=True, text=True, shell=True)
+    # result.check_returncode()
+    # return result.stdout.split()
 
 
 def get_mem_usage_percent():
@@ -83,7 +108,7 @@ def get_amps():
 
 def get_current_job_id():
     try:
-        response = requests.get(f'{API_HOST}/queue/active')
+        response = requests.get(f'{API_HOST}/api/queue/active')
         if response.status_code != 200:
             sys.exit(f"Bad request ({response.status_code})!")
         job = json.loads(response.content)
@@ -94,7 +119,7 @@ def get_current_job_id():
 
 def add_job_stats(data):
     try:
-        response = requests.post(f'{API_HOST}/stats', data)
+        response = requests.post(f'{API_HOST}/api/stats', data)
         if response.status_code != 200:
             print(response)
             sys.exit(f"Bad request ({response.status_code})!")
@@ -109,7 +134,7 @@ def add_btech_stats(job_id, data):
     try:
         print(data)
         response = requests.post(
-            f'{API_HOST}/stats/btech/{job_id}', data)
+            f'{API_HOST}/api/stats/btech/{job_id}', data)
         if response.status_code != 200:
             sys.exit(f"Bad request ({response.status_code})!")
         return True
@@ -141,11 +166,12 @@ print('mem_used:', mem_used)
 print('mem %:', mem_pct)
 
 c = get_proc_cpu()
-cpu_usr = float(c[0].replace(',', '.'))
-cpu_sys = float(c[1].replace(',', '.'))
+print(c)
+cpu_usr = float(c[0])
+# cpu_sys = float(c[1])
 print('')
 print('CPU usr:', float(cpu_usr))
-print('CPU sys:', float(cpu_sys))
+# print('CPU sys:', float(cpu_sys))
 job_id = get_current_job_id()
 data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
 print(data)
