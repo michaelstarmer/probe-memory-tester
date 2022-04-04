@@ -13,6 +13,8 @@ import paramiko
 
 API_HOST = os.environ.get('API_HOST', 'http://localhost:3333')
 
+print(f'\nCRON API_HOST = {API_HOST}')
+
 
 def set_snapshot(sid):
     # sshpass -p "$vmpwd" ssh "$vmhost" vim-cmd vmsvc/snapshot.revert "$vmid" "$snapid" true || exit 1
