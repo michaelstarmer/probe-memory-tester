@@ -30,7 +30,9 @@ def get_proc_mem():
             f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
             """awk '/Mem :/ {print $4 " " $6 " " $8}'""")
         type(stdin)
-        return ''.join(stdout.readlines())
+        # print('get_proc_mem:', ''.join(stdout.readlines()).split())
+        mem_values = ''.join(stdout.readlines()).split()
+        return mem_values
     except Exception as e:
         print('get proc mem error!', e)
     # total/free/used
@@ -50,7 +52,8 @@ def get_proc_cpu():
             f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
             """awk '/^%Cpu/ {print $4 " " $6 " " $8}'""")
         type(stdin)
-        return ''.join(stdout.readlines())
+        cpu_values = ''.join(stdout.readlines()).split()
+        return cpu_values
     except Exception as e:
         print('get proc mem error!', e)
     # total/free/used
@@ -167,7 +170,7 @@ print('mem %:', mem_pct)
 
 c = get_proc_cpu()
 print(c)
-cpu_usr = float(c[0])
+cpu_usr = c[0]
 # cpu_sys = float(c[1])
 print('')
 print('CPU usr:', float(cpu_usr))
