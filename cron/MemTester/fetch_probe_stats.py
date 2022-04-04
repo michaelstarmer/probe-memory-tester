@@ -6,15 +6,17 @@ import requests
 import json
 import sys
 import subprocess
-import os, time
+import os
+import time
 
 HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
-API_HOST = os.getenv('API_HOST', 'http://localhost:3333')
+API_HOST = os.environ['API_HOST'] or 'http://localhost:3333'
 
 print('LOCAL TIME:', time.strftime('%c'))
+
 
 def get_proc_mem():
     # total/free/used
@@ -37,8 +39,8 @@ def get_proc_cpu():
 
 def get_mem_usage_percent():
     memory = get_proc_mem()
-    m_used = memory[2].replace(',','')
-    m_total = memory[0].replace(',','')
+    m_used = memory[2].replace(',', '')
+    m_total = memory[0].replace(',', '')
     return float(m_used) / float(m_total) * 100
 
 
@@ -140,7 +142,7 @@ print('mem %:', mem_pct)
 
 c = get_proc_cpu()
 cpu_usr = float(c[0].replace(',', '.'))
-cpu_sys = float(c[1].replace(',','.'))
+cpu_sys = float(c[1].replace(',', '.'))
 print('')
 print('CPU usr:', float(cpu_usr))
 print('CPU sys:', float(cpu_sys))
