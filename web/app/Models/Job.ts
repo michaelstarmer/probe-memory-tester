@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, beforeFetch, ModelQueryBuilderContract } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, beforeFetch, ModelQueryBuilderContract, beforeFind } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
 import moment, { duration } from 'moment'
@@ -57,15 +57,19 @@ export default class Job extends BaseModel {
   @column.dateTime({ autoUpdate: false })
   public startAt: DateTime
 
+  @beforeFind()
+  public static async checkJobStatus(job: Job) {
+    if (job.startAt.plus({ minutes: job.duration }).diffNow('minutes').minutes >= 0) {
+      console.log('Job is expired. Setting complete')
+      job.status = "completed"
+      await job.save()
+    }
+  }
+
   @beforeSave()
   public static async checkStartTime(job: Job) {
     if (!job.startAt && !job.$dirty.startAt) {
       job.startAt = DateTime.now()
-    }
-
-    if (job.startAt.plus({ minutes: job.duration }).diffNow('minutes').minutes >= 0) {
-      console.log('Job is expired. Setting complete')
-      job.status = "completed"
     }
   }
 
