@@ -35,7 +35,7 @@ export default class Job extends BaseModel {
   public status: string
 
   @column()
-  public duration: Number
+  public duration: number
 
   @computed()
   public get remaining() {
@@ -47,8 +47,7 @@ export default class Job extends BaseModel {
     const _now = moment()
     const diffMinutes = _end.diff(_now, 'minutes')
 
-    if (diffMinutes <= 0)
-    {
+    if (diffMinutes <= 0) {
       return 0;
     }
 
@@ -63,6 +62,11 @@ export default class Job extends BaseModel {
     if (!job.startAt && !job.$dirty.startAt) {
       job.startAt = DateTime.now()
     }
+
+    if (job.startAt.plus({ minutes: job.duration }).diffNow('minutes').minutes >= 0) {
+      console.log('Job is expired. Setting complete')
+      job.status = "completed"
+    }
   }
 
   @column.dateTime({ autoCreate: true, autoUpdate: false })
@@ -70,7 +74,7 @@ export default class Job extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: false })
   public updatedAt: DateTime
-/*  */
+  /*  */
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
 
