@@ -3,6 +3,7 @@ import sys
 from sys import stdin, stdout, stderr
 import argparse
 import subprocess
+import paramiko
 
 
 # RHOST = '10.0.28.239'
@@ -23,18 +24,16 @@ RUSER = 'root'
 
 
 def set_memory(RHOST, MEMORY, DURATION):
+
+    print('#### Start test ####')
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(RHOST, username='root', password='elvis')
     try:
-        print('#### Start test ####')
-        result = subprocess.run(
-            [f'ssh', '-o', 'StrictHostKeyChecking=no', '-i', 'keys/memtester',
-                f'{RUSER}@{RHOST}', 'cd;', 'stress-ng', '--vm-bytes', f'{MEMORY}G', '--vm-keep', '--vm', '1', '--timeout', f'{DURATION}', '&', 'disown'],
-            capture_output=True, text=True)
-
-        print(result.stdout.split())
-        print(result.stderr.split())
-        return result.stdout.split()
-
-        print('#### End test ####')
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'cd; stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION} & disown')
+        type(stdin)
+        print(stdout.readlines())
+        print('Snapshot updated.')
     except Exception as e:
-        print('ssh connect error!', e)
-        exit(1)
+        print('error!', e)
