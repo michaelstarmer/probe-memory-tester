@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, beforeFetch, ModelQueryBuilderContract, beforeFind } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, afterFind } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
 import moment, { duration } from 'moment'
@@ -57,7 +57,7 @@ export default class Job extends BaseModel {
   @column.dateTime({ autoUpdate: false })
   public startAt: DateTime
 
-  @beforeFind()
+  @afterFind()
   public static async checkJobStatus(job: Job) {
     const isExpired = moment().add(job.duration, 'minutes').isAfter(moment(job.startAt));
     console.log('[ HOOK ] @beforeFind checkJobStatus')
