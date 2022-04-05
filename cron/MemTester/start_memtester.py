@@ -151,9 +151,9 @@ if __name__ == '__main__':
         probe.import_config(xml)
         queue.log(jobId, 'running')
         print(
-            f"\nProbe updated. Setting new memory for duration: {duration_minutes} minutes.")
+            f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
-                          DURATION=duration_minutes)
+                          DURATION=duration)
         # queue.setJobCompleted(id=jobId)
     except Exception as e:
         print("memtester error!", e)
