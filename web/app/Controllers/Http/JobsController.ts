@@ -69,7 +69,8 @@ export default class JobsController {
 
             const snapshot = await Snapshot.query().where('name', payload.version).first();
             if (!snapshot) {
-                return response.json({ error: 'Version does not exist as snapshot.' })
+                const snapshots = await Snapshot.all()
+                return response.json({ error: 'Version does not exist as snapshot.', snapshots })
             } else {
                 console.log('found snapshot:', snapshot)
             }
