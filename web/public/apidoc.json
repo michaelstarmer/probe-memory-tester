@@ -6,18 +6,8 @@
         "title": "Btech Memory Tester",
         "termsOfService": "#"
     },
-    "host": "http://10.0.28.98:3333",
+    "host": "http://openvas.dev.btech:3333",
     "basePath": "/api",
-    "tags": [
-        {
-            "name": "memory",
-            "description": "Memory test",
-            "externalDocs": {
-                "description": "Test probe",
-                "url": "http://10.0.28.109"
-            }
-        }
-    ],
     "schemes": [
         "https",
         "http"
@@ -25,12 +15,9 @@
     "paths": {
         "/jobs/create": {
             "post": {
-                "tags": [
-                    "queue"
-                ],
-                "summary": "Add job",
-                "description": "",
-                "operationId": "addJob",
+                "summary": "Create job",
+                "description": "Add a new job to the queue for testing.",
+                "operationId": "createJob",
                 "consumes": [
                     "application/json",
                     "application/xml"
@@ -80,13 +67,40 @@
                 ]
             }
         },
+        "/jobs": {
+            "get": {
+                "summary": "Get jobs",
+                "description": "Returns all jobs in the queue irrespective of it's status (waiting/running/completed/failed).",
+                "operationId": "getJobs",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/JobResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
         "/queue/next": {
             "get": {
-                "tags": [
-                    "queue"
-                ],
                 "summary": "Start next job",
-                "description": "",
+                "description": "This endpoint will return the next job in queue and trigger it's start.",
                 "operationId": "nextJob",
                 "consumes": [
                     "application/json",
@@ -102,32 +116,19 @@
                         "description": "successful operation",
                         "schema": {
                             "type": "object",
-                            "items": {
-                                "$ref": "#/definitions/Job"
-                            }
+                            "$ref": "#/definitions/JobResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid status value"
                     }
-                },
-                "security": [
-                    {
-                        "petstore_auth": [
-                            "write:pets",
-                            "read:pets"
-                        ]
-                    }
-                ]
+                }
             }
         },
         "/queue/active": {
             "get": {
-                "tags": [
-                    "queue"
-                ],
                 "summary": "Get active job",
-                "description": "",
+                "description": "The job currently being run (if any).",
                 "operationId": "activeJob",
                 "consumes": [
                     "application/json",
@@ -142,7 +143,7 @@
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#/definitions/Job"
+                            "$ref": "#/definitions/JobResponse"
                         }
                     },
                     "400": {
@@ -153,11 +154,8 @@
         },
         "/stats/job/{jobId}": {
             "get": {
-                "tags": [
-                    "stats"
-                ],
-                "summary": "Get stats by job ID",
-                "description": "",
+                "summary": "Stats by job ID",
+                "description": "Returns all the recorded memory/cpu stats for a single job.",
                 "operationId": "statsByJobId",
                 "consumes": [
                     "application/json",
@@ -172,9 +170,9 @@
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "type": "object",
+                            "type": "array",
                             "items": {
-                                "$ref": "#/definitions/queue"
+                                "$ref": "#/definitions/Stat"
                             }
                         }
                     },
@@ -221,14 +219,17 @@
             "type": "object",
             "required": [
                 "memory",
-                "xml_file_id"
+                "xmlFileId",
+                "duration",
+                "version",
+                "startAt"
             ],
             "properties": {
-                "id": {
+                "memory": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "memory": {
+                "cpu": {
                     "type": "integer",
                     "format": "int64"
                 },
@@ -240,7 +241,44 @@
                     "type": "string",
                     "description": "Probe version"
                 },
-                "xml_file_id": {
+                "xmlFileId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "startAt": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "xml": {
+                "name": "q"
+            }
+        },
+        "JobResponse": {
+            "type": "object",
+            "required": [],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "memory": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "cpu": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "duration": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Probe version"
+                },
+                "xmlFileId": {
                     "type": "integer",
                     "format": "int64"
                 },
@@ -253,6 +291,14 @@
                         "completed",
                         "failed"
                     ]
+                },
+                "remaining": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "startAt": {
+                    "type": "string",
+                    "format": "date-time"
                 },
                 "created_at": {
                     "type": "string",
@@ -286,10 +332,6 @@
                 "mem": {
                     "type": "Number",
                     "format": "float"
-                },
-                "alerts": {
-                    "type": "string",
-                    "description": "Alerts (if any)"
                 },
                 "created_at": {
                     "type": "string",

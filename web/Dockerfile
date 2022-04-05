@@ -22,4 +22,5 @@ WORKDIR /app/build
 RUN yarn install --production
 # Install app dependencies
 EXPOSE 3333
+ENV TZ=Europe/Oslo
 CMD [ "npm", "start"]
