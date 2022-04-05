@@ -41,16 +41,23 @@ export default class Job extends BaseModel {
   public get remaining() {
     if (!this.startAt)
       return
-    let _start = this.startAt
-    const _end = moment(_start).add(String(this.duration), 'minutes')
-    const _now = moment()
-    const diffMinutes = _end.diff(_now, 'minutes')
 
-    if (diffMinutes <= 0) {
-      return 0;
+    // const isExpired = this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes') <= 0;
+    // const isWaiting = this.startAt.diffNow().as('minutes') > 0;
+    // const minutesRemaining = this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes');
+
+    // if (!isExpired && !isWaiting) {
+    //   return
+    // }
+
+    // if (isWaiting) {
+    //   console.log('Job is waiting.')
+    //   return
+    // }
+    if (this.status === "running") {
+      return Math.ceil(this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
     }
 
-    return diffMinutes;
   }
 
   @column.dateTime({ autoUpdate: false })
@@ -58,11 +65,9 @@ export default class Job extends BaseModel {
 
   @afterFind()
   public static async checkJobStatus(job: Job) {
-    // const isExpired = moment(job.startAt.toUTC()).add(job.duration, 'minutes').isBefore(moment());
     const isExpired = job.startAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
 
     if (isExpired) {
-      console.log('Job is expired. Setting complete')
       job.status = "completed"
       await job.save()
     }
@@ -96,9 +101,4 @@ export default class Job extends BaseModel {
     query.where('status', 'waiting')
   })
 
-  // @beforeFetch()
-  // public static async updateStatus (query: ModelQueryBuilderContract<typeof Job>) {
-  //   query.whereIn('status', ['waiting', 'running']).andWhere('duration',)
-
-  // }
 }
