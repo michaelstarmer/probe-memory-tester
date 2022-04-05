@@ -33,7 +33,7 @@ def set_memory(RHOST, MEMORY, DURATION):
         (stdin, stdout, stderr) = ssh.exec_command(
             f'cd; stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION} & disown')
         type(stdin)
-        print(stdout.readlines())
         print('Snapshot updated.')
+        return True
     except Exception as e:
         print('error!', e)
