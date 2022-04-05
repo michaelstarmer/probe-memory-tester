@@ -41,7 +41,6 @@ export default class Job extends BaseModel {
   public get remaining() {
     if (!this.startAt)
       return
-    console.log('startAt:', this.startAt)
     let _start = this.startAt
     const _end = moment(_start).add(String(this.duration), 'minutes')
     const _now = moment()
@@ -59,11 +58,9 @@ export default class Job extends BaseModel {
 
   @afterFind()
   public static async checkJobStatus(job: Job) {
-    const isExpired = moment(job.startAt).add(job.duration, 'minutes').isBefore(moment());
-    console.log('[ HOOK ] @beforeFind checkJobStatus')
-    console.log('moment()', moment())
-    console.log('moment(job.startAt).add(job.duration, minutes)', moment(job.startAt).add(job.duration, 'minutes'))
-    console.log('isExpired:', isExpired)
+    // const isExpired = moment(job.startAt.toUTC()).add(job.duration, 'minutes').isBefore(moment());
+    const isExpired = job.startAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
+
     if (isExpired) {
       console.log('Job is expired. Setting complete')
       job.status = "completed"
