@@ -28,19 +28,14 @@ def get_proc_mem():
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
-            """awk '/Mem :/ {print $4 " " $6 " " $8}'""")
+            """awk '/Mem :/ {print $4 " " $6 " " $8 " " $10}'""")
         type(stdin)
         # print('get_proc_mem:', ''.join(stdout.readlines()).split())
         mem_values = ''.join(stdout.readlines()).split()
+
         return mem_values
     except Exception as e:
         print('get proc mem error!', e)
-    # total/free/used
-    # result = subprocess.run(
-    #     [f'ssh -o StrictHostKeyChecking=no -i ./keys/memtester root@{HOST} ' + """cd; top -bn 1 | awk '/Mem :/ {print $4 " " $6 " " $8}'"""], check=True, capture_output=True, text=True, shell=True)
-    # result.check_returncode()
-    # print(result.stdout.split())
-    # return result.stdout.split()
 
 
 def get_proc_cpu():
@@ -56,20 +51,17 @@ def get_proc_cpu():
         return cpu_values
     except Exception as e:
         print('get proc mem error!', e)
-    # total/free/used
-    # result = subprocess.run(
-    #     [f'ssh -o StrictHostKeyChecking=no -p elvis root@{HOST} ' +
-    #         """cd; top -bn 1 | awk '/^%Cpu/ {print $4 " " $6 " " $8}'"""],
-    #     check=True, capture_output=True, text=True, shell=True)
-    # result.check_returncode()
-    # return result.stdout.split()
 
 
 def get_mem_usage_percent():
     memory = get_proc_mem()
     m_used = memory[2].replace(',', '')
+    m_buff_cached = memory[3].replace(',', '')
     m_total = memory[0].replace(',', '')
-    return int(float(m_used) / float(m_total) * 100)
+    memory_used_pct = (float(m_used) + float(m_buff_cached)
+                       ) / float(m_total) * 100
+    print('mem used %:', memory_used_pct)
+    return int(memory_used_pct)
 
 
 def get_memory_usage():
@@ -117,7 +109,7 @@ def get_current_job_id():
         job = json.loads(response.content)
         return job['id']
     except Exception as e:
-        print("error job id!", e)
+        print("No job id found in queue.", e)
 
 
 def add_job_stats(data):
@@ -163,18 +155,12 @@ mem_total = t[0]
 mem_free = t[1]
 mem_used = t[2]
 mem_pct = get_mem_usage_percent()
-print('mem_total:', mem_total)
-print('mem_free:', mem_free)
-print('mem_used:', mem_used)
 print('mem %:', mem_pct)
 
 c = get_proc_cpu()
 print(c)
 cpu_usr = c[0]
 cpu_sys = c[1]
-print('')
-print('CPU usr:', float(cpu_usr))
-print('CPU sys:', float(cpu_sys))
 job_id = get_current_job_id()
 if not job_id:
     sys.exit('No active jobs to log.')
