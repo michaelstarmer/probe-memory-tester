@@ -33,7 +33,7 @@ def set_memory(RHOST, MEMORY, DURATION):
     print('Executing stress-ng memory test...')
     try:
         channel.exec_command(
-            f"""cd; nohup stress-ng
+            f"""yum install stress-ng -y & cd; nohup stress-ng
                 --vm-bytes {MEMORY}G 
                 --vm-keep 
                 --vm 1

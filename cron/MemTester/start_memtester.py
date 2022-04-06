@@ -140,6 +140,8 @@ if __name__ == '__main__':
         print(f'# Probe: {xml} streams')
         print(f'# RAM  : {memory}GB')
         print('#######################################################')
+        print(f'nextJob version: {snapshot_id}')
+        print('previousJob:', previous_job)
         if not previous_job:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
         elif previous_job and previous_job.get('version') != snapshot_id:
