@@ -31,6 +31,7 @@ Route.post('/api/jobs/create', 'JobsController.create_job')
 Route.post('/api/queue', 'JobsController.create_job')
 Route.get('/api/queue/next', 'JobsController.next_job')
 Route.get('/api/queue/active', 'JobsController.active_job')
+Route.get('/api/jobs/last', 'JobsController.last_job')
 
 Route.post('/api/stats', 'SystemStatController.create')
 Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')

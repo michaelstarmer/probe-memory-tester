@@ -61,6 +61,17 @@ def get_active_job():
         print("error job id!", e)
 
 
+def get_last_job():
+    try:
+        response = requests.get(f'{API_HOST}/api/jobs/last')
+        if response.status_code != 200:
+            sys.exit(f"Bad request ({response.status_code})!")
+        job = json.loads(response.content)
+        return job
+    except Exception as e:
+        print("error job id!", e)
+
+
 def change_snapshot(vmid, snapshot_id):
     set_snapshot(snapshot_id)
     print('Set snapshot. Wait 10 sec...')
@@ -90,7 +101,7 @@ if __name__ == '__main__':
     probe = Probe(probe_ip)
     nextJob = {}
 
-    previous_job = get_active_job()
+    previous_job = get_last_job()
 
     try:
         response = requests.get(f'{API_HOST}/api/queue/next')

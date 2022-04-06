@@ -112,6 +112,17 @@ export default class JobsController {
 
     }
 
+    public async last_job({ response }) {
+        const lastJob = await Job.query().whereNot('status', 'waiting').first()
+        try {
+
+            return response.json(lastJob)
+        } catch (error) {
+            console.error(error)
+            return response.json(error);
+        }
+    }
+
     public async get_all_xml({ response }) {
         const xmlFiles = await XmlFile.all();
         try {
