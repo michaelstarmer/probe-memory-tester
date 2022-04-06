@@ -26,13 +26,14 @@ RUSER = 'root'
 def set_memory(RHOST, MEMORY, DURATION):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(RHOST, username='root', password='elvis', timeout=DURATION)
+    client.connect(RHOST, username='root',
+                   password='elvis', timeout=DURATION*60)
     transport = client.get_transport()
     channel = transport.open_session()
     print('Executing stress-ng memory test...')
     try:
         channel.exec_command(
-            f"""cd nohup stress-ng
+            f"""cd; nohup stress-ng
                 --vm-bytes {MEMORY}G 
                 --vm-keep 
                 --vm 1
