@@ -24,21 +24,20 @@ RUSER = 'root'
 
 
 def set_memory(RHOST, MEMORY, DURATION):
-
-    print('#### Start test ####')
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(RHOST, username='root', password='elvis')
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(RHOST, username='root', password='elvis', timeout=DURATION)
+    transport = client.get_transport()
+    channel = transport.open_session()
+    print('Executing stress-ng memory test...')
     try:
-        (stdin, stdout, stderr) = ssh.exec_command(
+        channel.exec_command(
             f"""cd nohup stress-ng
-            --vm-bytes {MEMORY}G 
-            --vm-keep 
-            --vm 1
-            --timeout {DURATION}M
-            > /dev/null 2 > /dev/null < /dev/null &""")
-        type(stdin)
-        print('Snapshot updated.')
-        return True
+                --vm-bytes {MEMORY}G 
+                --vm-keep 
+                --vm 1
+                --timeout {DURATION}M
+                > /dev/null 2 > /dev/null < /dev/null &""")
+        print('Memory test complete.')
     except Exception as e:
-        print('error!', e)
+        print('stress-ng error:', e)
