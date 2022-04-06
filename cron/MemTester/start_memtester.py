@@ -161,12 +161,13 @@ if __name__ == '__main__':
         else:
             print('Same version detected. Not loading snapshot.')
 
+        sleep(10)
         print("Importing new xml-config...")
         probe.import_config(xml)
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
-        sleep(30)
+        sleep(20)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
         print('Memory set!')

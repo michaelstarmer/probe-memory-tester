@@ -1,2 +1,2 @@
-*/5 * * * * /usr/local/bin/python3 /app/start_memtester.py > /proc/1/fd/1 2>/proc/1/fd/2
-*/2 * * * * /usr/local/bin/python3 /app/fetch_probe_stats.py > /proc/1/fd/1 2>/proc/1/fd/2
+*/2 * * * * /usr/local/bin/python3 /app/start_memtester.py > /proc/1/fd/1 2>/proc/1/fd/2
+*/1 * * * * /usr/local/bin/python3 /app/fetch_probe_stats.py > /proc/1/fd/1 2>/proc/1/fd/2
