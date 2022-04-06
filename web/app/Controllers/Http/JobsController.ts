@@ -114,8 +114,10 @@ export default class JobsController {
 
     public async last_job({ response }) {
         const lastJob = await Job.query().whereNot('status', 'waiting').first()
+        if (!lastJob) {
+            return response.json({})
+        }
         try {
-
             return response.json(lastJob)
         } catch (error) {
             console.error(error)
