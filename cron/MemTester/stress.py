@@ -31,7 +31,12 @@ def set_memory(RHOST, MEMORY, DURATION):
     ssh.connect(RHOST, username='root', password='elvis')
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
-            f'cd; stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M & disown')
+            f"""cd nohup stress-ng
+            --vm-bytes {MEMORY}G 
+            --vm-keep 
+            --vm 1
+            --timeout {DURATION}M
+            > /dev/null 2 > /dev/null < /dev/null &""")
         type(stdin)
         print('Snapshot updated.')
         return True
