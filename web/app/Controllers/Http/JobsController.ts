@@ -79,6 +79,8 @@ export default class JobsController {
                 payload.cpu = 8
             }
 
+            // const isConflictingWithJob = await 
+
             const newJob = new Job()
             newJob.merge({
                 memory: payload.memory,

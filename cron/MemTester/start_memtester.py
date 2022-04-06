@@ -79,7 +79,6 @@ def change_snapshot(vmid, snapshot_id):
     print("Snapshot set.")
     print("Restarting. Wait 60 sec...")
     power_on_vm(vmid)
-    sleep(60.0)
     print('Done. Snapshot changed.')
 
 
@@ -155,8 +154,10 @@ if __name__ == '__main__':
         print('previousJob:', previous_job)
         if not previous_job:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
+            sleep(90)
         elif previous_job and previous_job.get('version') != snapshot_id:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
+            sleep(90)
         else:
             print('Same version detected. Not loading snapshot.')
 
@@ -165,7 +166,7 @@ if __name__ == '__main__':
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
-        sleep(10)
+        sleep(30)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
         print('Memory set!')
