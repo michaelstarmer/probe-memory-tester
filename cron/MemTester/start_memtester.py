@@ -165,8 +165,10 @@ if __name__ == '__main__':
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
+        sleep(10)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
+        print('Memory set!')
         # queue.setJobCompleted(id=jobId)
     except Exception as e:
         print("memtester error!", e)

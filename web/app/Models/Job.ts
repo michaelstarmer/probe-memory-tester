@@ -80,10 +80,10 @@ export default class Job extends BaseModel {
     }
   }
 
-  @column.dateTime({ autoCreate: true, autoUpdate: false })
+  @column.dateTime({ autoCreate: true, autoUpdate: false, serializeAs: null })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: false })
+  @column.dateTime({ autoCreate: true, autoUpdate: false, serializeAs: null })
   public updatedAt: DateTime
   /*  */
   @hasMany(() => SystemStat)
