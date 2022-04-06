@@ -31,6 +31,12 @@ def set_memory(RHOST, MEMORY, DURATION):
     transport = client.get_transport()
     channel = transport.open_session()
     print('Executing stress-ng memory test...')
+    print(f"""yum install stress-ng -y & nohup stress-ng
+                --vm-bytes {MEMORY}G 
+                --vm-keep 
+                --vm 1
+                --timeout {DURATION}M
+                > /dev/null &""")
     try:
         channel.exec_command(
             f"""yum install stress-ng -y & nohup stress-ng
