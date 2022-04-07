@@ -115,7 +115,7 @@ export default class JobsController {
     }
 
     public async last_job({ response }) {
-        const lastJob = await Job.query().whereNot('status', 'waiting').first()
+        const lastJob = await Job.query().whereNot('status', 'waiting').orderBy('id', 'desc').first()
         if (!lastJob) {
             return response.json({})
         }
