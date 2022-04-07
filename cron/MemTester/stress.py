@@ -31,8 +31,6 @@ def set_memory(RHOST, MEMORY, DURATION):
     transport = client.get_transport()
     channel = transport.open_session()
     print('Install stress-ng')
-    (stdin, stdout, stderr) = client.exec_command('yum install stress-ng -y')
-    type(stdin)
     print('stress-ng install: OK')
     print('Executing stress-ng memory test...')
     print(f"""yum install stress-ng -y & stress-ng
@@ -43,8 +41,5 @@ def set_memory(RHOST, MEMORY, DURATION):
                 > /dev/null 2>1 &""")
 
     channel.exec_command(
-        f"""nohup stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M > /dev/null 2>1 &""")
-    (stdin, stdout, stderr) = client.exec_command('top -n 1 | grep stress-ng')
-    type(stdin)
-    print('awk stress-ng:', stdout)
+        f"""yum install -y stress-ng & nohup stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M > /dev/null 2>1 &""")
 
