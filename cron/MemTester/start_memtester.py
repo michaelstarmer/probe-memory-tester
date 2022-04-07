@@ -154,20 +154,20 @@ if __name__ == '__main__':
         print('previousJob:', previous_job)
         if not previous_job:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
+            print('Changing snapshot. Standby 90 sec.')
             sleep(90)
         elif previous_job and previous_job.get('version') != snapshot_id:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
+            print('Changing snapshot. Standby 90 sec.')
             sleep(90)
         else:
             print('Same version detected. Not loading snapshot.')
 
-        sleep(10)
         print("Importing new xml-config...")
         probe.import_config(xml)
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
-        sleep(20)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
         print('Memory set!')
