@@ -27,7 +27,7 @@ def set_memory(RHOST, MEMORY, DURATION):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(RHOST, username='root',
-                   password='elvis', timeout=DURATION*60)
+                   password='elvis')
     transport = client.get_transport()
     channel1 = transport.open_session()
 
@@ -42,4 +42,5 @@ def set_memory(RHOST, MEMORY, DURATION):
                 > /dev/null 2>1 &""")
     print('Run channel 1 (yum)')
     channel1.exec_command(
-        f'yum install -y stress-ng stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M > /dev/null 2>&1 &')
+        f'yum install -y stress-ng stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
+    print('Exec ok')
