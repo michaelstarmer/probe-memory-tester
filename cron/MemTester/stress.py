@@ -42,5 +42,5 @@ def set_memory(RHOST, MEMORY, DURATION):
                 > /dev/null 2>1 &""")
     print('Run channel 1 (yum)')
     channel1.exec_command(
-        f'yum install -y stress-ng stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
+        f'yum install -y stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
     print('Exec ok')
