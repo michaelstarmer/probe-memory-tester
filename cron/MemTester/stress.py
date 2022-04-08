@@ -29,8 +29,8 @@ def set_memory(RHOST, MEMORY, DURATION):
     client.connect(RHOST, username='root',
                    password='elvis', timeout=DURATION*60)
     transport = client.get_transport()
-    channel1 = transport.open_session(timeout=200)
-    
+    channel1 = transport.open_session()
+
     print('Install stress-ng')
     print('stress-ng install: OK')
     print('Executing stress-ng memory test...')
@@ -43,4 +43,3 @@ def set_memory(RHOST, MEMORY, DURATION):
     print('Run channel 1 (yum)')
     channel1.exec_command(
         f'yum install -y stress-ng stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M > /dev/null 2>&1 &')
-    
