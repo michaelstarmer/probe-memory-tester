@@ -32,6 +32,7 @@ def install_stress_ng(RHOST):
         (stdin, stdout, stderr) = ssh.exec_command(
             "yum install -y stress-ng")
         type(stdin)
+        print(stdout)
     except:
         print("The Error is ") + str(sys.exc_info()[0])
         sys.exit(1)
