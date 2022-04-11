@@ -426,7 +426,7 @@
         }
     },
     "externalDocs": {
-        "description": "Btech wiki URL",
-        "url": "http://trec.dev-btech"
+        "description": "Trac URL",
+        "url": "http://trac.dev.btech/trac/wiki/minnetester"
     }
 }

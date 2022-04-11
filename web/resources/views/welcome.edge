@@ -18,7 +18,11 @@
 
   <main>
 
+
+
     <div class="container-fluid my-5">
+      <div class="row justify-content-md-center">
+      </div>
       <div class="row justify-content-md-center">
 
 
@@ -37,7 +41,7 @@
                 @endif
               </h4>
             </div>
-            <div class="card-body mb-2 p-0 text-center">
+            <div class="card-body mb-1 p-0 text-center">
 
               @if(probeData.isOffline)
               <div class="status-lamp status-lamp--red">&nbsp; </div>
@@ -51,13 +55,18 @@
             </div>
 
             <div class="card-body text-center">
-              <a href="/host/edit" class="btn btn-warning btn-sm">Edit host</a>
+              <a href="/host/edit" class="btn btn-primary btn-sm">Edit host</a>
+              <a href="/apidoc" class="btn btn-primary btn-sm">API doc</a>
               @if(!probeData.isOffline)
-              <a href="http://{{probeData.ip}}" class="btn btn-primary btn-sm">Probe UI</a>
+              <a href="http://{{probeData.ip}}" class="btn btn-warning btn-sm">Probe UI</a>
               {{--  <a href="http://{{probeData.ip}}:8080/monitorix-cgi/monitorix.cgi?mode=localhost&graph=all&when=1day&color=black"
               target="_blank" class="btn btn-primary btn-sm">Monitor</a> --}}
               @endif
               {{--  <a href="#" class="card-link">Another link</a>  --}}
+            </div>
+            <div class="text-center mb-1">
+
+              <a href="http://trac.dev.btech/trac/wiki/minnetester">View in Trac</a>
             </div>
           </div>
         </div>
