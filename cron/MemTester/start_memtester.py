@@ -162,8 +162,6 @@ if __name__ == '__main__':
         else:
             print('Same version detected. Not loading snapshot.')
 
-        print("Importing new xml-config...")
-        probe.import_config(xml)
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
@@ -171,6 +169,10 @@ if __name__ == '__main__':
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
         print('Memory set!')
+
+        print("Importing new xml-config...")
+
+        probe.import_config(xml)
         # queue.setJobCompleted(id=jobId)
     except Exception as e:
         print("memtester error!", e)
