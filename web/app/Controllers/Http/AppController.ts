@@ -44,7 +44,7 @@ export default class AppController {
                 probeData.swVersion = json.Status.System[0].software_version;
             }
 
-            
+
 
 
 
@@ -56,6 +56,13 @@ export default class AppController {
 
         return view.render('welcome', { jobs, probeData })
 
+    }
+    async get_probe_config({ response }: HttpContextContract) {
+        const config = await ProbeConfig.all()
+        const payload = {}
+        config.forEach(it => payload[it.key] = it.value)
+
+        return response.json(payload)
     }
 
     async edit_host({ view, request }: HttpContextContract) {

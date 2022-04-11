@@ -33,13 +33,14 @@
             <div class="desktop vm-card">
 
               <img src="/bridgelogo.webp" class="mb-4" alt="...">
-              <h4 class="desktop-title mb-5">
+              <h4 class="desktop-title mb-3">
                 @if(probeData.ip)
                 {{probeData.ip}}
                 @else
                 N/A
                 @endif
               </h4>
+              <p style="font-size: 12px;">{{ probeData.swVersion }}</p>
             </div>
             <div class="card-body mb-1 p-0 text-center">
 
@@ -52,6 +53,7 @@
               @endif
               {{--  <div class="status-lamp status-lamp--orange">&nbsp; </div>
               <div class="inline-block"> Busy...</div>  --}}
+
             </div>
 
             <div class="card-body text-center">
@@ -188,10 +190,6 @@
         jobCtx.classList.add('my-5')
         jobCtx.innerHTML = '<h1>RAM set: ' + job.memory + 'GB</h1>'
         let ctx = jobCtx.appendChild(document.createElement('canvas'));
-        console.log(ctx)
-        
-        console.log("Job id:", idx)
-        console.log('getElementById:', `jobChart-${idx}`)
         
         let cpu = job.systemStats.map(it => it.cpu)
         let mem = job.systemStats.map(it => it.mem)
@@ -201,9 +199,7 @@
           data: mem,
         }
 
-        console.log(t)
 
-        console.log('job cpu:', cpu)
         let jobChart = new Chart(ctx, {
           type: 'line',
           data: {
@@ -256,12 +252,23 @@
     {
       fetch('/api/jobs')
       .then(res => res.json())
-      .then(response => {
-        console.log(response)
-        createGraph(response)
-      })
+      .then(response => createGraph(response))
       .catch(e => console.log(e))
     }
+
+    function fetchProbeConfig()
+    {
+      return new Promise((resolve, reject) => {
+        fetch('/api/probe-config')
+        .then(res => res.json())
+        .then(response => resolve(response))
+        .catch(e => reject(e))
+      })
+    }
+
+
+    // fetchProbeConfig()
+    //   .then(config => console.log(config))
 
     /* Initial setup */
     fetchAndGenerateChart()
