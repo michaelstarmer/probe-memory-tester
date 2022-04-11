@@ -78,7 +78,6 @@ class Probe:
 
     def import_config(self, xmlFile):
         file = open(f'{xmlFile}', 'rb')
-        print("Work dir:", os.getcwd())
         try:
             result = ProbeRequest.post(
                 f'{self.api_base}/core/importExport/data.xml', open(xmlFile, 'rb'))

@@ -80,6 +80,7 @@ def change_snapshot(vmid, snapshot_id):
     print("Restarting. Wait 60 sec...")
     power_on_vm(vmid)
     print('Done. Snapshot changed.')
+    sleep(180)
 
 
 if __name__ == '__main__':
@@ -154,12 +155,10 @@ if __name__ == '__main__':
         print('previousJob:', previous_job)
         if not previous_job:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
-            print('Changing snapshot. Standby 90 sec.')
-            sleep(180)
+            print('Changing snapshot. Standby while probe is booting.')
         elif previous_job and previous_job.get('version') != snapshot_id:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
-            print('Changing snapshot. Standby 90 sec.')
-            sleep(180)
+            print('Changing snapshot. Standby while probe is booting.')
         else:
             print('Same version detected. Not loading snapshot.')
 
