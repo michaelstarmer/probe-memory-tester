@@ -155,11 +155,11 @@ if __name__ == '__main__':
         if not previous_job:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
             print('Changing snapshot. Standby 90 sec.')
-            sleep(90)
+            sleep(180)
         elif previous_job and previous_job.get('version') != snapshot_id:
             change_snapshot(vmid=29, snapshot_id=snapshot_id)
             print('Changing snapshot. Standby 90 sec.')
-            sleep(90)
+            sleep(180)
         else:
             print('Same version detected. Not loading snapshot.')
 
