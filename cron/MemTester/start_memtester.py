@@ -80,7 +80,7 @@ def change_snapshot(vmid, snapshot_id):
     print("Restarting. Wait 60 sec...")
     power_on_vm(vmid)
     print('Done. Snapshot changed.')
-    sleep(180)
+    sleep(120)
 
 
 if __name__ == '__main__':
