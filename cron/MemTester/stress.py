@@ -33,30 +33,30 @@ def install_stress_ng(RHOST):
         (stdin, stdout, stderr) = ssh.exec_command(
             "yum install -y stress-ng")
         type(stdin)
-        print(stdout)
+        print(stdout.readlines())
     except:
-        print("The Error is ") + str(sys.exc_info()[0])
+        print("The Error is " + str(sys.exc_info()[0]))
         sys.exit(1)
 
 
 def set_memory(RHOST, MEMORY, DURATION):
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(RHOST, username='root',
-                   password='elvis')
-    transport = client.get_transport()
-    channel = transport.open_session()
+    try:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(RHOST, username='root', password='elvis')
 
-    print('Install stress-ng')
-    print('stress-ng install: OK')
-    print('Executing stress-ng memory test...')
-    print(f"""yum install stress-ng -y & stress-ng
-                --vm-bytes {MEMORY}G 
-                --vm-keep 
+        print(f"""stress-ng
+                --vm-bytes {MEMORY}G
+                --vm-keep
                 --vm 1
                 --timeout {DURATION}M
                 > /dev/null 2>1 &""")
-    print('Run channel 1 (yum)')
-    channel.exec_command(
-        f'stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
-    print('Exec ok')
+
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f'stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
+        type(stdin)
+        print(stdout.readlines())
+    except:
+        print('stress-ng error')
+        print(str(sys.exc_info()[0]))
+        sys.exit(1)
