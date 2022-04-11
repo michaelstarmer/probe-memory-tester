@@ -168,6 +168,7 @@ if __name__ == '__main__':
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
+        stress.install_stress_ng(RHOST=probe_ip)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)
         print('Memory set!')
