@@ -17,6 +17,7 @@ export default class JobsController {
         try {
             return response.json(jobs);
         } catch (error) {
+            console.error('get all jobs error!', error)
             return response.json({ error })
         }
     }
@@ -26,9 +27,12 @@ export default class JobsController {
             let runningJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
 
 
-            let waitingJob = await Job.query()
+            let waitingJob = await Job
+                .query()
                 .whereRaw(`start_at < '${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}'`)
-                .preload('xmlConfig').withScopes(scopes => scopes.onlyWaiting()).first()
+                .preload('xmlConfig')
+                .withScopes(scopes => scopes.onlyWaiting())
+                .first()
             if (!waitingJob) {
                 return response.json({ error: 'No jobs found.' })
             }
@@ -47,8 +51,6 @@ export default class JobsController {
             }
 
             await waitingJob?.merge({ status: 'running' }).save()
-
-
             return response.json(waitingJob)
 
         } catch (error) {
@@ -71,15 +73,13 @@ export default class JobsController {
             if (!snapshot) {
                 const snapshots = await Snapshot.all()
                 return response.json({ error: 'Version does not exist as snapshot.', snapshots })
-            } else {
-                console.log('found snapshot:', snapshot)
             }
 
+            // set default value
             if (!payload.cpu) {
                 payload.cpu = 8
             }
 
-            // const isConflictingWithJob = await 
 
             const newJob = new Job()
             newJob.merge({
@@ -104,7 +104,10 @@ export default class JobsController {
     }
 
     public async active_job({ response }) {
-        const job = await Job.query().withScopes(scopes => scopes.onlyRunning()).first();
+        const job = await Job
+            .query()
+            .withScopes(scopes => scopes.onlyRunning())
+            .first();
         await job?.load('xmlConfig')
 
         if (!job) {
@@ -130,9 +133,7 @@ export default class JobsController {
     public async get_all_xml({ response }) {
         const xmlFiles = await XmlFile.all();
         try {
-
             return response.json(xmlFiles)
-
         } catch (error) {
             return response.status(400).json({ error })
         }
