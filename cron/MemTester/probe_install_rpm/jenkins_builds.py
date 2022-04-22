@@ -1,0 +1,119 @@
+import json
+from textwrap import indent
+import requests
+import re
+from urllib.request import urlopen
+from tqdm import tqdm
+
+
+class JenkinsBuild:
+    def __init__(self, version, job):
+        self.buildUrl = f'http://build.dev.btech/view/v{version}/job/{job}/label=centos7,product=vprobe'
+        self.build = None
+        self.buildNumber = None
+        self.gitCommit = None
+
+    def fetch(self, url):
+        response = requests.get(
+            f'{self.buildUrl}/api/json?pretty=true')
+        if response.status_code != 200:
+            if response.status_code == 404:
+                print('Job not found!')
+                return None
+            print('HTTP code:', response.status_code)
+            return None
+        if not response.content:
+            print('No valid build response.')
+        return response.content
+
+    def parseBuild(self, build):
+        if not len(build):
+            print('No build data found.')
+            return None
+        self.build = build
+        self.buildNumber = build['number']
+        if len(build['changeSet']['items']):
+            commitId = build['changeSet']['items'][0]['commitId'][:8]
+            self.gitCommit = commitId[:8]
+
+    def loadLastStableBuild(self):
+        self.buildUrl = f"{self.buildUrl}/lastSuccessfulBuild"
+        build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
+        self.parseBuild(json.loads(build))
+        return self
+
+    def loadLastSuccessfulBuild(self):
+        self.buildUrl = f"{self.buildUrl}/lastSuccessfulBuild"
+        build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
+        self.parseBuild(json.loads(build))
+        return self
+
+    def loadLastCompletedBuild(self):
+        self.buildUrl = f"{self.buildUrl}/lastCompletedBuild"
+        build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
+        self.parseBuild(json.loads(build))
+        return self
+
+    def loadLastBuild(self):
+        self.buildUrl = f"{self.buildUrl}/lastBuild"
+        build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
+        self.parseBuild(json.loads(build))
+        return self
+
+    def loadByBuildId(self, buildId: int):
+        self.buildUrl = f"{self.buildUrl}/{str(buildId)}"
+        build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
+        self.parseBuild(json.loads(build))
+        return self
+
+    def print(self):
+        if not self.build:
+            print('No data found for build.')
+            exit(1)
+        print(json.dumps(self.build, indent=4))
+
+    def getBuildArtifacts(self):
+        if not self.build or len(self.build) < 1:
+            print('Build required to get artifacts')
+            return None
+        if not dict(self.build).get('artifacts'):
+            print('Artifacts not found in build object')
+            return None
+        return self.build['artifacts']
+
+    def searchArtifactExt(self, artifactList, extention):
+        for artifact in artifactList:
+            match = re.match(r'(.*\.' + extention + '$)',
+                             artifact['relativePath'])
+            if match:
+                return {'fileName': artifact['fileName'], 'relativePath': artifact['relativePath']}
+
+    def getVersion(self):
+        artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
+        return artifact['fileName']
+
+    def downloadRPMMinimal(self, location='./'):
+        artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
+        rpmUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
+        filePath = location + artifact['fileName']
+        with urlopen(rpmUrl) as file:
+            rpmFile = file.read()
+        with open(filePath, 'wb') as download:
+            download.write(rpmFile)
+        return filePath
+
+    def downloadRPM(self, location='./'):
+        artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
+        rpmUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
+        filePath = location + artifact['fileName']
+        # urlretrieve(rpmUrl, filePath, reporthook)
+        with requests.get(rpmUrl, stream=True) as r:
+            r.raise_for_status()
+            with open(filePath, 'wb') as f:
+                total = int(r.headers['content-length'])  # bytes -> kb
+                pbar = tqdm(total=total)
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+                        pbar.update(len(chunk))
+        return filePath
