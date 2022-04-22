@@ -52,6 +52,10 @@ class RemoteClient:
         exit_status = stdout.channel.recv_exit_status()
         if exit_status == 0:
             print('Removed existing probe-version.')
+            
+    def deleteExistingProbeSw(self):
+        self.removePackage('btech-probe')
+        self.exec(['rm -rf /opt/btech/probe'])
 
     def getVersion(self):
         (stdin, stdout, stderr) = self.connection.exec_command(
@@ -78,7 +82,9 @@ class RemoteClient:
             exit_status = stdout.channel.recv_exit_status()
             response = stdout.readlines()
             if exit_status != 0:
-                raise Exception('Command exec error!')
+                print(stdout.readlines())
+                print(stderr.readlines())
+                # raise Exception('Command exec error!')
             for line in response:
                 sys.stdout.write('\x1b[1;34m' + line + '\x1b[0m')
             print('')

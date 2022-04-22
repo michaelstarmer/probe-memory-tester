@@ -38,10 +38,11 @@ JENKINS
 """)
 
 print('Downloading RPM from Jenkins...')
-rpm = latestBuild.downloadRPM('./')
-print(f'\nUpload and install RPM to probe ({PROBE_IP})...')
-probe.upload(rpm, '~/')
-probe.removePackage('btech-probe')
+rpm = latestBuild.downloadBinary(extension='rpm', location='./')
+print(f'\nUpload and install rpm to probe ({PROBE_IP})...')
+probe.upload(rpm, '/root')
+probe.exec(['systemctl stop btech'])
+probe.deleteExistingProbeSw()
 upgradeSuccess = probe.exec([f'yum localinstall -y {rpm}'])
 if upgradeSuccess:
     Log.success('Probe software update complete.')

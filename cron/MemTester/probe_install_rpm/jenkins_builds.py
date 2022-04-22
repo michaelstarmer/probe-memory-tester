@@ -102,12 +102,12 @@ class JenkinsBuild:
             download.write(rpmFile)
         return filePath
 
-    def downloadRPM(self, location='./'):
-        artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
-        rpmUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
+    def downloadBinary(self, extension='', location='./'):
+        artifact = self.searchArtifactExt(self.getBuildArtifacts(), extension)
+        extensionUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
         filePath = location + artifact['fileName']
-        # urlretrieve(rpmUrl, filePath, reporthook)
-        with requests.get(rpmUrl, stream=True) as r:
+        # urlretrieve(extensionUrl, filePath, reporthook)
+        with requests.get(extensionUrl, stream=True) as r:
             r.raise_for_status()
             with open(filePath, 'wb') as f:
                 total = int(r.headers['content-length'])  # bytes -> kb

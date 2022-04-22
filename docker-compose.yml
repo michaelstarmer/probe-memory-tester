@@ -9,7 +9,7 @@ services:
       - ./cron/MemTester:/app/
     working_dir: /app
     environment:
-      API_HOST: 'http://localhost:333'
+      API_HOST: 'http://localhost:3333'
 
   web:
     build: ./web
