@@ -11,7 +11,7 @@ import logging
 from sys import stdin, stdout, stderr
 import paramiko
 import sys
-from probe_install_rpm.update_probe_sw import update_probe_sw
+from update_probe_sw import update_probe_sw
 
 API_HOST = 'http://localhost:3333'
 if os.environ.get('API_HOST'):
