@@ -1,0 +1,45 @@
+#!/bin/bash
+# Deduplicate files in a directory and its subdirectories, by
+# removing duplicate files with symbolic links
+
+function usage
+{
+	echo "Usge: $0 directory"
+	echo "Removes duplicate files in directory and its subdirectories"
+	exit 1
+}
+
+function dedup
+{
+	local -a FILES
+	local -A SUMS
+	local SUM
+
+	echo "Deduplicating $1"
+	FILES=($(find -P "$1" -maxdepth 1 -type f 2> /dev/null | sort))
+	if [ "${#FILES[@]}" -eq 0 ]; then
+	  return
+	fi
+	for file in "${FILES[@]}"; do
+		SUM=$(sha1sum "$file" 2> /dev/null|cut -f1 -d" ")
+		if [ "$SUM" = "" ]; then
+			echo "Unable to checksum $file, skipping"
+		elif [ "${SUMS[$SUM]}" = "" ]; then
+			SUMS[$SUM]="$file"
+		else
+			ln -sf "$(basename "${SUMS[$SUM]}")" "$file"
+		fi
+	done
+}
+
+if [ "$1" = "" ]; then
+	usage
+fi
+if ! test -d "$1"; then
+	echo "$1: Directory not found"
+fi
+IFS="
+"
+for directory in $(find -P "$1" -type d 2> /dev/null); do
+	dedup "$directory"
+done

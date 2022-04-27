@@ -1,8 +1,6 @@
 import json
-from textwrap import indent
 import requests
 import re
-from urllib.request import urlopen
 from tqdm import tqdm
 
 
@@ -26,7 +24,7 @@ class JenkinsBuild:
             print('No valid build response.')
         return response.content
 
-    def parseBuild(self, build):
+    def parseResponse(self, build):
         if not len(build):
             print('No build data found.')
             return None
@@ -39,31 +37,31 @@ class JenkinsBuild:
     def loadLastStableBuild(self):
         self.buildUrl = f"{self.buildUrl}/lastSuccessfulBuild"
         build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
-        self.parseBuild(json.loads(build))
+        self.parseResponse(json.loads(build))
         return self
 
     def loadLastSuccessfulBuild(self):
         self.buildUrl = f"{self.buildUrl}/lastSuccessfulBuild"
         build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
-        self.parseBuild(json.loads(build))
+        self.parseResponse(json.loads(build))
         return self
 
     def loadLastCompletedBuild(self):
         self.buildUrl = f"{self.buildUrl}/lastCompletedBuild"
         build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
-        self.parseBuild(json.loads(build))
+        self.parseResponse(json.loads(build))
         return self
 
     def loadLastBuild(self):
         self.buildUrl = f"{self.buildUrl}/lastBuild"
         build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
-        self.parseBuild(json.loads(build))
+        self.parseResponse(json.loads(build))
         return self
 
     def loadByBuildId(self, buildId: int):
         self.buildUrl = f"{self.buildUrl}/{str(buildId)}"
         build = self.fetch(f'{self.buildUrl}/api/json?pretty=true')
-        self.parseBuild(json.loads(build))
+        self.parseResponse(json.loads(build))
         return self
 
     def print(self):
@@ -92,21 +90,11 @@ class JenkinsBuild:
         artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
         return artifact['fileName']
 
-    def downloadRPMMinimal(self, location='./'):
-        artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
-        rpmUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
-        filePath = location + artifact['fileName']
-        with urlopen(rpmUrl) as file:
-            rpmFile = file.read()
-        with open(filePath, 'wb') as download:
-            download.write(rpmFile)
-        return filePath
-
     def downloadBinary(self, extension='', location='./'):
         artifact = self.searchArtifactExt(self.getBuildArtifacts(), extension)
         extensionUrl = f'{self.buildUrl}/artifact/{artifact["relativePath"]}'
         filePath = location + artifact['fileName']
-        # urlretrieve(extensionUrl, filePath, reporthook)
+        # dl with progressbar
         with requests.get(extensionUrl, stream=True) as r:
             r.raise_for_status()
             with open(filePath, 'wb') as f:

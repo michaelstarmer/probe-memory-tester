@@ -11,6 +11,7 @@ import logging
 from sys import stdin, stdout, stderr
 import paramiko
 import sys
+from probe_install_rpm.update_probe_sw import update_probe_sw
 
 API_HOST = 'http://localhost:3333'
 if os.environ.get('API_HOST'):
@@ -131,7 +132,8 @@ if __name__ == '__main__':
     duration = int(nextJob.get('duration'))
     duration_minutes = duration * 60
 
-    snapshot_id = nextJob.get('version')
+    # snapshot_id = nextJob.get('version')
+    snapshot_id = 2  # default to 6.0.0-2
     print(f'\nSnapshot ID: {snapshot_id}')
 
     print("Running memory test:")
@@ -153,18 +155,24 @@ if __name__ == '__main__':
         print('#######################################################')
         print(f'nextJob version: {snapshot_id}')
         print('previousJob:', previous_job)
-        if not previous_job:
-            change_snapshot(vmid=29, snapshot_id=snapshot_id)
-            print('Changing snapshot. Standby while probe is booting.')
-        elif previous_job and previous_job.get('version') != snapshot_id:
-            change_snapshot(vmid=29, snapshot_id=snapshot_id)
-            print('Changing snapshot. Standby while probe is booting.')
-        else:
-            print('Same version detected. Not loading snapshot.')
+
+        print('Setting default snapshot. Standby while probe is booting...')
+        change_snapshot(vmid=29, snapshot_id=snapshot_id)
+
+        # if not previous_job:
+        #     change_snapshot(vmid=29, snapshot_id=snapshot_id)
+        #     print('Changing snapshot. Standby while probe is booting.')
+        # elif previous_job and previous_job.get('version') != snapshot_id:
+        #     change_snapshot(vmid=29, snapshot_id=snapshot_id)
+        #     print('Changing snapshot. Standby while probe is booting.')
+        # else:
+        #     print('Same version detected. Not loading snapshot.')
 
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
+        update_probe_sw()
+        print('Updated probe sw.')
         stress.install_stress_ng(RHOST=probe_ip)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,
                           DURATION=duration)

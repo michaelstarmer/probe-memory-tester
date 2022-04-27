@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Read through the tzdb backward compatibility database and install links
+# for timezone names that are now defunct, to ease transition. Avoid some
+# clearly broken timezone names that were never considered.
+
+if [ "$1" == "" -o ! -f "$1" -o "$2" == "" -o ! -d "$2" ]; then
+  echo "Usage: $0 database directory"
+  echo "  database    Path to backward database file to link"
+  echo "  directory   Directory where zoneinfo is installed"
+fi
+if [ ! -d "$2/Africa" ]; then
+  echo "Error: zoneinfo does not seem to be installed in $2" >&2
+  exit 1
+fi
+
+DB="$1"
+TARGET="$2"
+
+# Read the database
+while IFS= read -r data; do
+  if [ -n "$data" -a "${data#\#}" = "$data" ]; then
+    # Split non-comment line at tab characters (there might be multiple tabs
+    # between fields)
+    IFS="	" set $data
+    if [ -n "$3" ]; then
+      # We only know about "Link"
+      if [ "$1" != "Link" ]; then
+        echo "Error: Unknown directive $1 in $DB" >&2
+        exit 1
+      fi
+      # Second column has the known zone, third column has the compatibility name
+      TZREAL="$2"
+      TZCOMPAT="$3"
+      # Ignore anything that links to Etc
+      if [[ "$TZREAL" == "Etc/"* ]]; then
+        # echo "Info: Ignoring $TZCOMPAT → $TZREAL"
+        continue
+      fi
+      # Ignore anything that only has one component
+      if [[ ! "$TZCOMPAT" == *"/"* ]]; then
+        # echo "Info: Ignoring $TZCOMPAT → $TZREAL"
+        continue
+      fi
+      # Ignore some links A/B/C to A/C
+      if [ "${TZREAL%%/*}/${TZREAL##*/}" = "$TZCOMPAT" ]; then
+        # echo "Info: Ignoring $TZCOMPAT → $TZREAL"
+        continue
+      fi
+      # Ignore several pre-1994 names
+      if [[ "$TZCOMPAT" == "US/"* || "$TZCOMPAT" == "Brazil/"* || \
+            "$TZCOMPAT" == "Canada/"* || "$TZCOMPAT" == "Chile/"* || \
+            "$TZCOMPAT" == "Mexico/"* ]]; then
+        # echo "Info: Ignoring $TZCOMPAT → $TZREAL"
+        continue
+      fi
+      # Ignore A/B where B is all uppercase (time zone abbreviation)
+      if [ $(tr a-z A-Z <<<"${TZCOMPAT##*/}") = "${TZCOMPAT##*/}" ]; then
+        # echo "Info: Ignoring $TZCOMPAT → $TZREAL"
+        continue
+      fi
+      # Looks fine, let's keep this, unless it is already there
+      if [ -e "$TARGET/$TZCOMPAT" ]; then
+        # echo "Info: $TZCOMPAT already exists, not linking to $TZREAL"
+        continue
+      fi
+      # Create compatibility directory if it doesn't already exist (Arctic)
+      TZCOMPATDIR=$(dirname "$TARGET/$TZCOMPAT")
+      if [ ! -d "$TZCOMPATDIR" ]; then
+        echo "Info: Creating directory $TZCOMPATDIR"
+        mkdir -p "$TZCOMPATDIR"
+      fi
+      # Create a relative symbolic link
+      TZREALRELATIVE=$(realpath --relative-to="$TARGET/${TZCOMPAT%/*}" "$TARGET/$TZREAL")
+      echo "Info: Creating $TZCOMPAT as a link to $TZREAL (as $TZREALRELATIVE)"
+      ln -s "$TZREALRELATIVE" "$TARGET/$TZCOMPAT" || exit 1
+    fi
+  fi
+done < "$DB"

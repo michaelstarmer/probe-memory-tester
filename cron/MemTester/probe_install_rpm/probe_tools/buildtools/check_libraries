@@ -1,0 +1,142 @@
+#!/bin/bash
+#
+# Check file system image rooted at $1 for missing and unused libraries
+
+if [ "$1" == "" -o ! -d "$1" ]; then
+  echo "Usage: $0 directory [additional ...]"
+  echo "  directory   Path to mounted/extracted root file system"
+  echo "  additional  Look for missing libraries in this directory as well"
+  exit 1
+fi
+
+# Remember the fsroot directory and shift so the command line buffer
+# only contains additional directories
+fsroot="$1"
+shift
+
+# Enumerate all .so files
+declare -A libnames
+declare -A liblinks
+for path in $(find "$fsroot" -type l -name "*.so*"); do
+  libname=$(basename "$path")
+  # Record the target of the link so we only count the actual library
+  liblinks[$libname]="$(basename $(readlink "$path"))"
+done
+for path in $(find "$fsroot" -type f -name "*.so*"); do
+  libname=$(basename "$path")
+  # Set up a counter for this library
+  libnames[$libname]=0
+done
+
+# Enumerate all executables
+notfound=0
+for exe in $(find "$fsroot" -type f -perm /0111); do
+  needed=""
+  if [[ "$exe" == *"ewe" ]]; then
+    # The ewe binary references a couple of PAM .so files in configuration
+    # files only; these live in /opt/btech/$PRODUCT/lib/security (SW) or
+    # /usr/lib/security (HW).
+    if configlibs=$(strings "$exe" | grep -o '/.*/lib/security/.*so' | sort -u); then
+      for lib in $configlibs; do
+        needed="$needed $(basename $lib)"
+      done
+    fi
+  fi
+  if [ "$(awk 'NR==1 && /python/ { print 1; exit } { exit }' "$exe")" = 1 ]; then
+    # We have some python scripts that load libraries through LoadLibrary()
+    if pythonlibs=$(sed -n 's/^.*LoadLibrary(.\(.*\).).*$/\1/p' "$exe"); then
+      for lib in $pythonlibs; do
+        needed="$needed $(basename $lib)"
+      done
+    fi
+  fi
+  # Find all libraries needed by this executable
+  if needed="$(readelf -d "$exe" 2> /dev/null | awk  '/NEEDED/ { split($NF, a, "[][]"); print a[2] }')$needed"; then
+    for lib in $needed; do
+      if [ ! -z "${liblinks[$lib]}" ]; then
+        # Follow the symbolic link to count the linked library
+        lib="${liblinks[$lib]}"
+      fi
+      if [ -z "${libnames[$lib]}" ]; then
+        thisnotfound=1
+        if [ ! -z "$1" ]; then
+          for additional in "$@"; do
+            if [ -e "$additional/$lib" ]; then
+              thisnotfound=0
+              break
+            fi
+          done
+        fi
+        if [ "$thisnotfound" = 1 ]; then
+          notfound=1
+          echo "ERROR: $lib missing for $exe"
+        fi
+      else
+        libnames[$lib]=$((libnames[$lib]+1))
+      fi
+    done
+  fi
+done
+
+# Load configuration files from /etc/pam.d to look for PAM modules
+if [ -d "$fsroot/etc/pam.d" ]; then
+  for pam in $(find "$fsroot/etc/pam.d" -type f); do
+    needed=""
+    if configlibs=$(grep -o '/.*/lib/security/.*so' "$pam" | sort -u); then
+      for lib in $configlibs; do
+        needed="$needed $(basename $lib)"
+      done
+    fi
+    if [ "$needed" != "" ]; then
+      for lib in $needed; do
+        if [ ! -z "${liblinks[$lib]}" ]; then
+          # Follow the symbolic link to count the linked library
+          lib="${liblinks[$lib]}"
+        fi
+        if [ -z "${libnames[$lib]}" ]; then
+          thisnotfound=1
+          if [ ! -z "$1" ]; then
+            for additional in "$@"; do
+              if [ -e "$additional/$lib" ]; then
+                thisnotfound=0
+                break
+              fi
+            done
+          fi
+          if [ "$thisnotfound" = 1 ]; then
+            notfound=1
+            echo "ERROR: $lib missing for $pam"
+          fi
+        else
+          libnames[$lib]=$((libnames[$lib]+1))
+        fi
+      done
+    fi
+  done
+fi
+
+# Load gconv-modules to check for modules used by iconv()
+for gconv in $(find "$fsroot" -name gconv-modules); do
+  for module in $(awk '/^module/ { if (!a[$4]) { a[$4]=1; print $4 }}' "$gconv"); do
+    lib=$module.so
+    if [ ! -z "${liblinks[$lib]}" ]; then
+      # Follow the symbolic link to count the linked library
+      lib="${liblinks[$lib]}"
+    fi
+    if [ -z "${libnames[$lib]}" ]; then
+      :
+      # echo "INFO: $lib missing for iconv()"
+    else
+      libnames[$lib]=$((libnames[$lib]+1))
+    fi
+  done
+done
+
+# Find all libraries not used by any executable
+for lib in "${!libnames[@]}"; do
+  if [ "${libnames[$lib]}" = 0 ]; then
+    echo "WARNING: $lib not referenced by any binary"
+  fi
+done
+
+exit $notfound

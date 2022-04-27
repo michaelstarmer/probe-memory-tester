@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "$0 <Probe IP> [tea file]"
+    exit 1
+fi
+
+TEA1=$2
+
+if [ -z "$2" ]; then
+    TEA1=`ls -Art x86_releases/*.tea | tail -n 1`
+
+    if [ -z "$TEA1" ]; then
+        echo "No releases found in x86_releases/"
+        echo
+        echo "Did you remember to run ./x86_build_release?"
+        exit 1
+    fi
+
+    echo "Latest release build is $TEA1"
+fi
+
+if [ ! -r "$TEA1" ]; then
+    echo "File '$TEA1' is not readable"
+    exit 1
+fi
+
+if [ ! -x probe_swupl_http ]; then
+	test -e buildtools/build/swupl_http || make -C buildtools swupl_http || exit 1
+	test -e probe_swupl_http || ln -s buildtools/build/swupl_http probe_swupl_http
+fi
+
+echo
+echo "Uploading $TEA1 to $1..."
+
+./probe_swupl_http "$1" "$TEA1" /dev/stdout

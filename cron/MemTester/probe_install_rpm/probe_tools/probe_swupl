@@ -1,0 +1,89 @@
+#!/usr/bin/expect -f
+
+# expect script for sw upload over ftp.
+# (C) 2006-2018 Bridgetech, written by NJZ
+# args: <ip-address of board> <software-file> <log-file>
+
+foreach {ipaddr uplfile opfile} $argv {}
+
+log_file $opfile
+send_log "<xmp>"
+
+# Standard telnet/ftp based upload procedure
+
+# CHECK THAT IT IS REALLY A PROBE OR EXTRACTOR
+# EXPECT gbprobe OR extractor PROMPT WHEN PERFORMING telnet LOGIN
+
+#if [fork]!=0 exit
+
+#disconnect
+
+set timeout 20
+spawn telnet $ipaddr
+expect {
+  eof {send_log "\nUpload failed: telnet failed\n"; exit 1}
+  timeout {send_log "\nUpload failed: No contact (telnet)\n"; exit 1}
+  "gbprobe login:" {}
+  "extractor login:" {}
+  "login:" {send_log "\nUpload failed: Not gigabit probe!\n"; exit 1}
+  "Connection refused" {send_log "\nUpload failed: Telnet not enabled, try HTTP instead\n"; exit 1}
+}
+send -- "admin\r"
+expect "Password:"
+send -- "elvis\r"
+expect {
+	"BRIDGETECH terminal management" {}
+	"Device terminal management" {}
+	"Device management" {}
+}
+send -- "9"
+expect eof
+send_log "Gigabit probe verified..."
+
+# NOW XFER THE SOFTWARE FILE
+
+spawn ftp $ipaddr
+expect {
+  timeout {send_log "\nUpload failed: No contact with $ipaddr\n"; exit 1}
+  "): "
+}
+
+set timeout 300
+
+send -- "admin\r"
+expect "Password:"
+send -- "elvis\r"
+expect "User logged in.\r"
+expect "ftp> "
+send "put \"$uplfile\" vbc-upl-sw.tea\r"
+expect {
+  timeout {send_log "\nUpload failed: start file not transmittet successfully\n"; exit 1}
+  "File transmission successful"
+}
+send "bye\r"
+expect eof
+
+# FINALLY SAVE FILE IN FLASH
+
+spawn telnet $ipaddr
+expect {
+  timeout {send_log "\nUpload failed: No contact with ipaddress\n"; exit 1}
+  "gbprobe login:" {}
+  "extractor login:" {}
+}
+send -- "save_flash\r"
+expect "Password:"
+send -- "save_flash\r"
+expect "This will save newest valid sw image in /root folder to flash"
+set timeout 2000
+expect {
+  timeout {send_log "\nUpload failed: Timeout while saving\n"; exit 1}
+  "Flash save successful" {send_log "\nUploaded software successfully saved in flash!!\n\n"}
+  "No software image found!" {send_log "\nUpload failed: Uploaded file not found to be a gigabit probe software!\n"}
+}
+expect {
+  "Connection closed by foreign host" {}
+  "Rebooting in " {sleep 4; send -- "\r";}
+}
+
+send_log "</xmp>"
