@@ -10,13 +10,16 @@ import os
 import time
 import paramiko
 
-HOST = '10.0.28.239'
+VM_HOST = '10.0.28.97'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
 API_HOST = 'http://localhost:3333'
+
 if os.environ.get('API_HOST'):
     API_HOST = os.environ['API_HOST']
+if os.environ.get('VM_HOST'):
+    VM_HOST = os.environ['VM_HOST']
 
 print('LOCAL TIME:', time.strftime('%c'))
 
@@ -24,7 +27,7 @@ print('LOCAL TIME:', time.strftime('%c'))
 def get_proc_mem():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('10.0.28.239', username='root', password='elvis')
+    ssh.connect(VM_HOST, username='root', password='elvis')
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +
@@ -41,7 +44,7 @@ def get_proc_mem():
 def get_proc_cpu():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('10.0.28.239', username='root', password='elvis')
+    ssh.connect(VM_HOST, username='root', password='elvis')
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f'ssh -o StrictHostKeyChecking=no' + 'cd; top -bn 1 | ' +

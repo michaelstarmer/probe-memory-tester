@@ -2,7 +2,7 @@
 from probe.probe_eii import Probe
 import argparse
 
-PROBE_IP = '10.0.28.239'
+PROBE_IP = '10.0.28.97'
 XML_FILE = './export-heavy-load.xml'
 
 
