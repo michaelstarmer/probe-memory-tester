@@ -53,7 +53,7 @@ def set_memory(RHOST, MEMORY, DURATION):
                 > /dev/null 2>1 &""")
 
         (stdin, stdout, stderr) = ssh.exec_command(
-            f'stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
+            f'killall stress-ng && stress-ng --vm-bytes {MEMORY}G --vm-keep --vm 1 --timeout {DURATION}M >/dev/null 2>&1 &')
         type(stdin)
         print(stdout.readlines())
     except:
