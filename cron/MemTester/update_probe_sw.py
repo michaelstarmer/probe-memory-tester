@@ -22,7 +22,7 @@ def purgeBinaries(dir):
 
 
 def update_probe_sw():
-    PROBE_IP = '10.0.28.239'
+    PROBE_IP = '10.0.28.97'
     PROBE_USER = 'root'
     PROBE_PASS = 'elvis'
     JENKINS_PROBE_VERSION = '6.1'
