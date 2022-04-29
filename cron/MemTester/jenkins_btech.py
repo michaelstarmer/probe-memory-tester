@@ -18,7 +18,6 @@ class JenkinsBuild:
             if response.status_code == 404:
                 print('Job not found!')
                 return None
-            print('HTTP code:', response.status_code)
             return None
         if not response.content:
             print('No valid build response.')

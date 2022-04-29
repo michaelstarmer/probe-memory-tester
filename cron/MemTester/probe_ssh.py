@@ -4,6 +4,7 @@ from scp import SCPClient, SCPException
 from paramiko.auth_handler import AuthenticationException
 from typing import List
 import sys
+from logger import Log
 
 
 class RemoteClient:
@@ -46,12 +47,21 @@ class RemoteClient:
         if self.scp:
             self.scp.close()
 
+    def installPackage(self, packageName: str):
+        (stdin, stdout, stderr) = self.connection.exec_command(
+            f'yum install -y {packageName}')
+        exit_status = stdout.channel.recv_exit_status()
+        if exit_status != 0:
+            Log.error(f'Failed to install package: {packageName}')
+            return False
+        return True
+
     def removePackage(self, packageName: str):
         (stdin, stdout, stderr) = self.connection.exec_command(
             f'yum remove -y $(yum list | grep {packageName})')
         exit_status = stdout.channel.recv_exit_status()
-        if exit_status == 0:
-            print('Removed existing probe-version.')
+        if exit_status != 0:
+            Log.error(f'Could not remove package: {packageName}')
 
     def deleteExistingProbeSw(self):
         self.removePackage('btech-probe')

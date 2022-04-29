@@ -2,6 +2,8 @@ from datetime import datetime
 import os
 import json
 from time import sleep
+
+from tqdm import tqdm
 from vm_edit_mem import ProbeVM
 import stress
 from probe.probe_eii import Probe
@@ -12,6 +14,7 @@ from sys import stdin, stdout, stderr
 import paramiko
 import sys
 from update_probe_sw import update_probe_sw
+from logger import Log
 
 API_HOST = 'http://localhost:3333'
 if os.environ.get('API_HOST'):
@@ -31,7 +34,6 @@ def set_snapshot(sid):
         (stdin, stdout, stderr) = ssh.exec_command(
             f'vim-cmd vmsvc/snapshot.revert {vmid} {sid} true || exit 1')
         type(stdin)
-        print('Snapshot updated.')
     except Exception as e:
         print('error!', e)
 
@@ -46,7 +48,6 @@ def power_on_vm(vmid):
         (stdin, stdout, stderr) = ssh.exec_command(
             f'vim-cmd vmsvc/power.on "{vmid}" || exit 1')
         type(stdin)
-        print('VM Powered On.')
     except Exception as e:
         print('error!', e)
 
@@ -75,33 +76,76 @@ def get_last_job():
 
 def change_snapshot(vmid, snapshot_id):
     set_snapshot(snapshot_id)
-    print('Set snapshot. Wait 10 sec...')
-    sleep(10)
-    print("Snapshot set.")
-    print("Restarting. Wait 60 sec...")
+    with tqdm(total=100) as pbar:
+        for i in range(10):
+            sleep(1)
+            pbar.update(10)
+    print(f'Restarting VM (vmid: {vmid}')
     power_on_vm(vmid)
-    print('Done. Snapshot changed.')
-    sleep(120)
+    with tqdm(total=100) as pbar:
+        for i in range(10):
+            sleep(3)
+            pbar.update(10)
+    Log.success('Done.')
 
 
-if __name__ == '__main__':
+def startTestRun(memory=0, duration=0):
     queue = Queue(host='10.0.28.187', database='memtest',
                   username='memtest', password='ldap2retro')
     probe_ip = queue.probeIp()
-    print(probe_ip)
+    print('probe ip:', probe_ip)
     if not probe_ip:
         print('Probe IP not set.')
         exit(1)
 
-    print(f"""\n
-    #######################
-    # ProbeVM: {probe_ip} #
-    #######################
-    """)
+    try:
+        print('')
+        Log.warn('### RUNNING DEVELOPMENT MODE ###')
+        print('')
+        Log.info('Changing snapshot...')
+        change_snapshot(vmid=29, snapshot_id=2)
+        Log.success('OK')
+        Log.info('Updating probe software...')
+        update_probe_sw()
+        Log.success('OK')
+        Log.info('Installing stress-ng')
+        stress.install_stress_ng(RHOST=probe_ip)
+        Log.success('OK')
+        if memory and duration:
+            Log.info('Setting probe memory...')
+            stress.set_memory(RHOST=probe_ip, MEMORY=memory,
+                              DURATION=duration)
+        else:
+            Log.warn('Memory/duration not specified. Skipping stress-ng startup.')
+        Log.success('\nVM configuration complete.')
+        # print("Importing xml config...")
+        # probe.import_config(xml)
+        # Log.success('OK')
+    except Exception as e:
+        print("memtester error!", e)
+        exit(1)
+
+
+if __name__ == '__main__':
+
+    isDev = False
+    if sys.argv[1] and sys.argv[1] == 'dev':
+        isDev = True
+
+    if isDev:
+        startTestRun()
+        exit()
+
+    queue = Queue(host='10.0.28.187', database='memtest',
+                  username='memtest', password='ldap2retro')
+    probe_ip = queue.probeIp()
+    print('probe ip:', probe_ip)
+    if not probe_ip:
+        print('Probe IP not set.')
+        exit(1)
 
     probe = Probe(probe_ip)
     nextJob = {}
-
     previous_job = get_last_job()
 
     try:
@@ -118,7 +162,7 @@ if __name__ == '__main__':
     except Exception as e:
         logging.error(e)
 
-    if not nextJob.get('id'):
+    if not nextJob.get('id') and not isDev:
         print('No new jobs in queue.')
         exit(0)
 
@@ -148,26 +192,13 @@ if __name__ == '__main__':
         exit(1)
 
     try:
-        print("\n#####################################################")
-        print("# Running memory test for the following configuration: ")
-        print(f'# Probe: {xml} streams')
-        print(f'# RAM  : {memory}GB')
-        print('#######################################################')
-        print(f'nextJob version: {snapshot_id}')
-        print('previousJob:', previous_job)
+        Log.info('\nStarting new probe test:')
+        print('xml    :', xml)
+        print('memory :', memory)
 
         print('Setting default snapshot. Standby while probe is booting...')
+
         change_snapshot(vmid=29, snapshot_id=snapshot_id)
-
-        # if not previous_job:
-        #     change_snapshot(vmid=29, snapshot_id=snapshot_id)
-        #     print('Changing snapshot. Standby while probe is booting.')
-        # elif previous_job and previous_job.get('version') != snapshot_id:
-        #     change_snapshot(vmid=29, snapshot_id=snapshot_id)
-        #     print('Changing snapshot. Standby while probe is booting.')
-        # else:
-        #     print('Same version detected. Not loading snapshot.')
-
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")

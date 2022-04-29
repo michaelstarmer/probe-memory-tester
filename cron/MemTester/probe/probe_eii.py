@@ -16,7 +16,6 @@ class ProbeRequest:
             response = requests.get(url)
             if response.status_code != 200:
                 print(f'Bad request - {response.status_code} ({url})')
-                print(response)
                 exit(1)
             content = json.dumps(xmltodict.parse(response.content), indent=2)
             if not pretty:
@@ -30,7 +29,6 @@ class ProbeRequest:
             response = requests.post(url, file)
             if response.status_code != 200:
                 print(f'Bad request - {response.status_code} ({url})')
-                print(response)
                 exit(1)
         except Exception as e:
             print(e)

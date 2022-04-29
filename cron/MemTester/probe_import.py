@@ -18,8 +18,6 @@ def main():
 
     try:
         xmlFile = XML_FILE
-        print(f'Upload config to probe: {probe.probe_ip}')
-        print(f'Config file: {FILENAME}')
         print(probe.import_config(FILENAME))
     except Exception as e:
         print(e)

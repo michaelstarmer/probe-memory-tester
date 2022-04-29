@@ -8,7 +8,7 @@
 #         - yum localinstall -y <rpmPath>
 # step 4: verify install OK
 
-from jenkins_builds import JenkinsBuild
+from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
 from logger import Log
 import os

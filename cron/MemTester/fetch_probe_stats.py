@@ -63,7 +63,6 @@ def get_mem_usage_percent():
     m_total = memory[0].replace(',', '')
     memory_used_pct = (float(m_used) + float(m_buff_cached)
                        ) / float(m_total) * 100
-    print('mem used %:', memory_used_pct)
     return int(memory_used_pct)
 
 

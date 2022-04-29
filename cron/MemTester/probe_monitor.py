@@ -11,5 +11,3 @@ print(json.dumps(status, indent=2))
 DebugData = probe.debug_data()
 for item in DebugData:
     print(item)
-
-print('Done')

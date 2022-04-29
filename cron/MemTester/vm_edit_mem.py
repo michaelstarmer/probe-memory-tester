@@ -26,6 +26,7 @@ volumePath = "/vmfs/volumes/61e6bf06-2507a90a-4787-3cecef8a206a"
 # if args.memory:
 #     MEM = args.memory
 
+
 class ProbeVM:
     def __init__(self, host, user, vm_name, password=None):
         self.HOST = host
@@ -42,25 +43,25 @@ class ProbeVM:
             print(e)
             exit(1)
 
-
     def powerOff(self):
         vmState = ""
-        (stdin, stdout, stderr) = self.ssh.exec_command(f"vim-cmd vmsvc/power.off {str(self.VMID)} ||echo")
+        (stdin, stdout, stderr) = self.ssh.exec_command(
+            f"vim-cmd vmsvc/power.off {str(self.VMID)} ||echo")
         type(stdin)
         while vmState != "off":
-            (stdin, stdout, stderr) = self.ssh.exec_command(f"vim-cmd vmsvc/power.getstate {self.VMID}")
+            (stdin, stdout, stderr) = self.ssh.exec_command(
+                f"vim-cmd vmsvc/power.getstate {self.VMID}")
             type(stdin)
             lines = str(stdout.readlines()) + str(stderr.readlines())
             if re.search("Powered off", lines):
                 vmState = "off"
 
-
     def powerOn(self):
         vmState = ""
-        (stdin, stdout, stderr) = self.ssh.exec_command(f"vim-cmd vmsvc/power.on {str(self.VMID)} ||echo")
+        (stdin, stdout, stderr) = self.ssh.exec_command(
+            f"vim-cmd vmsvc/power.on {str(self.VMID)} ||echo")
         type(stdin)
         print(f"Powered on: {self.NAME}")
-
 
     def changeMemSize(self, GB):
         newMemSize = str(GB*1024)
@@ -69,13 +70,13 @@ class ProbeVM:
         (stdin, stdout, stderr) = self.ssh.exec_command(cmd)
         type(stdin)
 
-
     def set_memory(self, MEM):
         if not self.NAME:
             print(f"Missing input value --name")
 
         try:
-            (stdin, stdout, stderr) = self.ssh.exec_command("vim-cmd vmsvc/getallvms")
+            (stdin, stdout, stderr) = self.ssh.exec_command(
+                "vim-cmd vmsvc/getallvms")
             type(stdin)
             for line in stdout.readlines():
                 splitLine = line.split()
@@ -107,6 +108,7 @@ class ProbeVM:
             print("\nDone!")
         except:
             print(f"Failed to power on {self.NAME}")
+
 
 if __name__ == '__main__':
     print("Main")

@@ -9,6 +9,9 @@ class Log:
     def info(msg: str):
         sys.stderr.write('\x1b[1;34m' + msg.strip() + '\x1b[0m' + '\n')
 
+    def warn(msg: str):
+        sys.stderr.write('\x1b[1;33m' + msg.strip() + '\x1b[0m' + '\n')
+
     def success(msg: str):
         sys.stderr.write('\x1b[1;32m' + msg.strip() + '\x1b[0m' + '\n')
 
