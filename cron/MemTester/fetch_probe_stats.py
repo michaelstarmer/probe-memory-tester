@@ -10,7 +10,7 @@ import os
 import time
 import paramiko
 
-VM_HOST = '10.0.28.97'
+VM_HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 

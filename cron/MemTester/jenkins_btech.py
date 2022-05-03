@@ -5,11 +5,13 @@ from tqdm import tqdm
 
 
 class JenkinsBuild:
-    def __init__(self, version, job):
+    def __init__(self, version, job=None):
         self.buildUrl = f'http://build.dev.btech/view/v{version}/job/{job}/label=centos7,product=vprobe'
         self.build = None
         self.buildNumber = None
         self.gitCommit = None
+        if not job:
+            f'http://build.dev.btech/view/v{version}/job/CentOS7-based_{version}/label=centos7,product=vprobe'
 
     def fetch(self, url):
         response = requests.get(

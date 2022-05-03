@@ -20,7 +20,6 @@ services:
   mariadb:
     image: mariadb
     container_name: mariadb
-    restart: unless-stopped
     ports:
       - 3306:3306
     volumes:

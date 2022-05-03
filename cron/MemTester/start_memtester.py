@@ -106,7 +106,7 @@ def startTestRun(memory=0, duration=0):
         change_snapshot(vmid=29, snapshot_id=2)
         Log.success('OK')
         Log.info('Updating probe software...')
-        update_probe_sw()
+        update_probe_sw('10.0.28.239', 'root', 'elvis', '6.1')
         Log.success('OK')
         Log.info('Installing stress-ng')
         stress.install_stress_ng(RHOST=probe_ip)
@@ -202,7 +202,7 @@ if __name__ == '__main__':
         queue.log(jobId, 'running')
         print(
             f"\nProbe updated. Setting new memory for duration: {duration} minutes.")
-        update_probe_sw()
+        update_probe_sw('10.0.28.239', 'root', 'elvis', '6.1')
         print('Updated probe sw.')
         stress.install_stress_ng(RHOST=probe_ip)
         stress.set_memory(RHOST=probe_ip, MEMORY=memory,

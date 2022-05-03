@@ -21,14 +21,11 @@ def purgeBinaries(dir):
             os.remove(os.path.join(dir, f))
 
 
-def update_probe_sw():
-    PROBE_IP = '10.0.28.97'
-    PROBE_USER = 'root'
-    PROBE_PASS = 'elvis'
-    JENKINS_PROBE_VERSION = '6.1'
-    JENKINS_PROBE_JOB = 'CentOS7-based_6.1'
+def update_probe_sw(probeIp, probeUser, probePass, swVersion):
+    JENKINS_PROBE_VERSION = swVersion
+    JENKINS_PROBE_JOB = f'CentOS7-based_{swVersion}'
 
-    probe = RemoteClient(PROBE_IP, PROBE_USER, PROBE_PASS)
+    probe = RemoteClient(probeIp, probeUser, probePass)
     jenkins = JenkinsBuild(JENKINS_PROBE_VERSION, JENKINS_PROBE_JOB)
 
     latestBuild = jenkins.loadLastSuccessfulBuild()
@@ -37,7 +34,7 @@ def update_probe_sw():
 
     print(f"""###### Probe upgrade ######
     PROBE
-    \tIP       : {PROBE_IP}
+    \tIP       : {probeIp}
     \tVersion  : {currentProbeVersion}
     TARGET
     \tJob      : {JENKINS_PROBE_VERSION} / {JENKINS_PROBE_JOB}
@@ -50,7 +47,7 @@ def update_probe_sw():
     print('Downloading binary from Jenkins...')
     binExt = 'tea'
     binary = latestBuild.downloadBinary(extension=binExt, location='./')
-    print(f'\nUpload and install .{binExt}-file to probe ({PROBE_IP})...')
+    print(f'\nUpload and install .{binExt}-file to probe ({probeIp})...')
     probe.upload(binary, '/var/opt/btech/probe/')
     purgeBinaries('./')
     # probe.removePackage('btech-probe')
