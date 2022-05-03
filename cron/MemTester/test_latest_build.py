@@ -8,7 +8,7 @@ import requests
 
 probeIp = '10.0.28.239'
 
-probe = RemoteClient('10.0.28.239', 'root', 'elvis')
+probe = RemoteClient(probeIp, 'root', 'elvis')
 build = JenkinsBuild('6.1')
 
 Log.info('Running test of latest Jenkins-build...')
