@@ -5,3 +5,4 @@ argparse
 paramiko
 mysql-connector-python
 tqdm
+scp
