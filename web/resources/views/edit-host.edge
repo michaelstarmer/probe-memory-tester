@@ -40,6 +40,19 @@
                             <input type="text" class="form-control" name="probeIp" value={{ probeIp || '' }} />
                         </div>
 
+                        <div class="form-group mt-3">
+                            <select class="form-select" name="jenkinsJob">
+                                @if(jenkinsJob)
+                                <option value="{{jenkinsJob}}" selected>{{jenkinsJob}}</option>
+                                @endif
+                                @if(jobs)
+                                @each(job in jobs)
+                                <option value="{{job}}">{{job}}</option>
+                                @endeach
+                                @endif
+                            </select>
+                        </div>
+
 
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block">Save</button>

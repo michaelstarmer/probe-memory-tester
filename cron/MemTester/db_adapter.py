@@ -18,7 +18,7 @@ class Queue:
     def probeIp(self):
         cursor = self.connection.cursor()
         try:
-            query = f"""SELECT value FROM probe_configs WHERE probe_configs.key LIKE 'probe_ip';"""
+            query = f"""SELECT value FROM settings WHERE settings.key LIKE 'probe_ip';"""
             cursor.execute(query)
             result = cursor.fetchone()
             print(cursor)
@@ -56,10 +56,48 @@ class Queue:
             print(f"update job error! {e}")
             return False
 
-    def createJob(self, memory, xml_config, duration):
+    def getLastJobBuildNumber(self):
         cursor = self.connection.cursor()
         try:
-            query = f"""INSERT INTO memtest.jobs (memory, xml_file_id, duration) VALUES (4, 2, 10)"""
+            query = """SELECT build_number FROM jobs WHERE is_manual = 0 ORDER BY id DESC LIMIT 1"""
+            cursor.execute(query)
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+        except db.Error as e:
+            print(f'db error: {e}')
+
+    def getSettings(self):
+        cursor = self.connection.cursor()
+        try:
+            query = """SELECT settings.key, settings.value FROM settings"""
+            cursor.execute(query)
+            result = cursor.fetchall()
+            settings = {}
+            if result:
+                for setting in result:
+                    settings[setting[0]] = setting[1]
+                return settings
+        except db.Error as e:
+            Log.error(f'db error: {e}')
+
+    def getSelectedJenkinsJob(self):
+        cursor = self.connection.cursor()
+        try:
+            query = """SELECT value FROM settings WHERE settings.key = 'jenkins_job'"""
+            cursor.execute(query)
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+        except db.Error as e:
+            Log.error(f'db error: {e}')
+
+    def createJob(self, memory, xml_config, duration, jenkins_job, build_number, status):
+        print(jenkins_job, build_number)
+
+        cursor = self.connection.cursor()
+        try:
+            query = f"""INSERT INTO memtest.jobs (memory, xml_file_id, duration, jenkins_job, build_number, status) VALUES ({memory}, {xml_config}, {duration}, '{jenkins_job}', {build_number}, '{status}')"""
             cursor.execute(query)
             self.connection.commit()
         except db.Error as e:

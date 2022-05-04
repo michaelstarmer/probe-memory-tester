@@ -1,6 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
-import ProbeConfig from 'App/Models/ProbeConfig'
+import Setting from 'App/Models/Setting'
 const xml2js = require('xml2js')
 const axios = require('axios');
 
@@ -16,8 +16,8 @@ export default class AppController {
                 statsQuery.groupLimit(10)
             })
 
-        const probeIp = await ProbeConfig.findByOrFail('key', 'probe_ip')
-        const vmName = await ProbeConfig.findByOrFail('key', 'vm_name');
+        const probeIp = await Setting.findByOrFail('key', 'probe_ip')
+        const vmName = await Setting.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
 
         const probeData = {
@@ -56,30 +56,45 @@ export default class AppController {
 
     async get_probe_config({ response }: HttpContextContract) {
         const payload = {}
-        const config = await ProbeConfig.all()
-        config.forEach(it => payload[it.key] = it.value)
+        const setting = await Setting.all()
+        setting.forEach(it => payload[it.key] = it.value)
         return response.json(payload)
     }
 
     async edit_host({ view, request }: HttpContextContract) {
-        const probeIp = await ProbeConfig.findBy('key', 'probe_ip')
+        const probeIp = await Setting.findBy('key', 'probe_ip')
+        const jenkinsJob = await Setting.findBy('key', 'jenkins_job')
         const { error } = request.all();
         console.log(error)
+
+        const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
+        const jobs: string[] = []
+
+        const { data } = await axios.get(jobsUrl);
+        data.jobs.map(it => {
+            if (it.name.search(/CentOS\d\-based/i) === 0) {
+                jobs.push(it.name);
+            }
+        })
+
         return view.render('edit-host', {
             probeIp: probeIp?.value,
+            jenkinsJob: jenkinsJob?.value,
+            jobs,
             error
         })
     }
 
     async update_host({ request, response }: HttpContextContract) {
-        const { probeIp } = request.only(['probeIp'])
+        const { probeIp, jenkinsJob } = request.only(['probeIp', 'jenkinsJob'])
 
         if (!probeIp || !probeIp.length) {
             return response.redirect().withQs({ error: 'Probe ip required' }).toRoute('edit.host')
         }
 
         try {
-            await ProbeConfig.query().where('key', 'probe_ip').update({ value: probeIp });
+            await Setting.query().where('key', 'probe_ip').update({ value: probeIp });
+            await Setting.query().where('key', 'jenkins_job').update({ value: jenkinsJob });
             return response.redirect().toRoute('home')
         } catch (error) {
             console.error(error)

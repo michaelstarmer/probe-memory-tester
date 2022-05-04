@@ -7,18 +7,31 @@ from db_adapter import Queue
 
 # 1. Upgrade probe-software to latest successful build
 
-probeIp = '10.0.28.239'
-
-probe = RemoteClient(probeIp, 'root', 'elvis')
-build = JenkinsBuild('6.1')
-
 queue = Queue(host='10.0.28.187', database='memtest',
               username='memtest', password='ldap2retro')
+appConfig = queue.getSettings()
+probeIp = appConfig['probe_ip']
+jenkinsJob = appConfig['jenkins_job']
 
-print('Creating job')
-queue.createJob(4, 2, 10)
-Log.info('Added job to DB')
+print('probe ip:    ', probeIp)
+print('jenkins job: ', jenkinsJob)
 
+probe = RemoteClient(probeIp, 'root', 'elvis')
+jenkins = JenkinsBuild(version=None, job=jenkinsJob)
+
+build = jenkins.loadLastCompletedBuild()
+
+print('Checking last job:')
+last_job_build_number = queue.getLastJobBuildNumber()
+if last_job_build_number:
+    if build.buildNumber <= last_job_build_number:
+        Log.warn(
+            f'Latest build in job {jenkinsJob} (build no. {last_job_build_number}) already tested.')
+        exit()
+
+Log.info(f'New build discovered (build no. {build.buildNumber})')
+queue.createJob(memory=4, xml_config=2, duration=10,
+                jenkins_job=build.job, build_number=build.buildNumber, status='running')
 
 Log.info('Starting automatic test of latest Jenkins-build...')
 update_probe_sw(probeIp, 'root', 'elvis', '6.1')

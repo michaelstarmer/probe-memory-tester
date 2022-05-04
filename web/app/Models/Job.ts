@@ -2,13 +2,9 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, HasOne, hasOne, scope, computed, afterFind } from '@ioc:Adonis/Lucid/Orm'
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
-import moment, { duration } from 'moment'
-import { format, subMinutes } from 'date-fns'
 import Snapshot from './Snapshot'
 
 export default class Job extends BaseModel {
-
-  // static get 
 
   @column({ isPrimary: true, serializeAs: null })
   public id: number
@@ -26,7 +22,10 @@ export default class Job extends BaseModel {
   public xmlConfig: BelongsTo<typeof XmlFile>
 
   @column()
-  public version: Number
+  public jenkinsJob: string
+
+  @column()
+  public buildNumber: Number
 
   @belongsTo(() => Snapshot)
   public snapshot: BelongsTo<typeof Snapshot>
@@ -39,25 +38,12 @@ export default class Job extends BaseModel {
 
   @computed()
   public get remaining() {
-    if (!this.startAt)
+    if (!this.createdAt)
       return
 
-    // const isExpired = this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes') <= 0;
-    // const isWaiting = this.startAt.diffNow().as('minutes') > 0;
-    // const minutesRemaining = this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes');
-
-    // if (!isExpired && !isWaiting) {
-    //   return
-    // }
-
-    // if (isWaiting) {
-    //   console.log('Job is waiting.')
-    //   return
-    // }
     if (this.status === "running") {
       return Math.ceil(this.createdAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
     }
-
   }
 
   @column.dateTime({ autoUpdate: false })
@@ -66,7 +52,6 @@ export default class Job extends BaseModel {
   @afterFind()
   public static async checkJobStatus(job: Job) {
     const isExpired = job.startAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
-
     if (isExpired) {
       job.status = "completed"
       await job.save()
@@ -85,7 +70,7 @@ export default class Job extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: false, serializeAs: null })
   public updatedAt: DateTime
-  /*  */
+
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
 

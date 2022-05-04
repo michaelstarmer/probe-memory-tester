@@ -2,18 +2,28 @@ import json
 import requests
 import re
 from tqdm import tqdm
+from logger import Log
 
 
 class JenkinsBuild:
-    def __init__(self, version, job=None):
+    def __init__(self, version=None, job=None):
+        if not version and not job:
+            Log.error('At least one argument required: version, job')
+            exit(1)
         self.buildUrl = f'http://build.dev.btech/view/v{version}/job/{job}/label=centos7,product=vprobe'
         self.build = None
         self.buildNumber = None
         self.gitCommit = None
+        self.version = version
         if not job:
-            f'http://build.dev.btech/view/v{version}/job/CentOS7-based_{version}/label=centos7,product=vprobe'
+            self.job = f'CentOS7-based_{version}'
+            self.buildUrl = f'http://build.dev.btech/view/v{version}/job/CentOS7-based_{version}/label=centos7,product=vprobe'
+        if not version:
+            self.job = job
+            self.buildUrl = f'http://build.dev.btech/job/{job}'
 
     def fetch(self, url):
+        print(f'{self.buildUrl}/api/json?pretty=true')
         response = requests.get(
             f'{self.buildUrl}/api/json?pretty=true')
         if response.status_code != 200:

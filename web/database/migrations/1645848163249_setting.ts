@@ -1,9 +1,9 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class ProbeConfig extends BaseSchema {
-  protected tableName = 'probe_configs'
+export default class Settings extends BaseSchema {
+  protected tableName = 'settings'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('key').notNullable()
@@ -16,7 +16,7 @@ export default class ProbeConfig extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

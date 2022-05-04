@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-export default class ProbeConfig extends BaseModel {
+export default class Settings extends BaseModel {
+  protected tableName = 'settings';
+
   @column({ isPrimary: true, serializeAs: null })
   public id: number
 
