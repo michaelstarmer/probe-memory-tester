@@ -32,7 +32,7 @@ Route.get('/api/jobs', 'ApiController.all_jobs')
 Route.post('/api/jobs/create', 'ApiController.create_job')
 Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
-Route.get('/api/queue/active', 'ApiController.next_job')
+Route.get('/api/queue/active', 'ApiController.running_job')
 Route.get('/api/jobs/last', 'ApiController.last_job')
 
 Route.post('/api/stats', 'SystemStatController.create')
