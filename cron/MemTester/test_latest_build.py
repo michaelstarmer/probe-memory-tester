@@ -1,11 +1,32 @@
+import json
 from update_probe_sw import update_probe_sw
 from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
 from logger import Log
 import requests
 from db_adapter import Queue
+import os
+
+API_HOST = 'http://localhost:3333'
+if os.environ.get('API_HOST'):
+    API_HOST = os.environ['API_HOST']
+
+
+def activeJobExists():
+    response = requests.get(f'{API_HOST}/api/queue/active')
+    if response.status_code != 200:
+        Log.error(f'Bad request ({response.status_code})!')
+        exit(1)
+    job = json.loads(response.content)
+    if job and job['id']:
+        return True
+    return False
 
 # 1. Upgrade probe-software to latest successful build
+
+
+if activeJobExists():
+    exit(0)
 
 queue = Queue(host='10.0.28.187', database='memtest',
               username='memtest', password='ldap2retro')
