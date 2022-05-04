@@ -76,7 +76,7 @@ export default class ApiController {
                 cpu: payload.cpu,
                 xmlFileId: payload.xmlFileId,
                 // version: 'CentOS7-based_6.1',
-                startAt: payload.startAt,
+                // startAt: payload.startAt,
             })
 
             if (payload.duration) {
