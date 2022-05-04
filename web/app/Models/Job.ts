@@ -10,7 +10,7 @@ export default class Job extends BaseModel {
 
   // static get 
 
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: null })
   public id: number
 
   @column()
@@ -55,7 +55,7 @@ export default class Job extends BaseModel {
     //   return
     // }
     if (this.status === "running") {
-      return Math.ceil(this.startAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
+      return Math.ceil(this.createdAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
     }
 
   }

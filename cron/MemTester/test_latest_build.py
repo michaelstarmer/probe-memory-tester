@@ -3,6 +3,7 @@ from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
 from logger import Log
 import requests
+from db_adapter import Queue
 
 # 1. Upgrade probe-software to latest successful build
 
@@ -11,7 +12,15 @@ probeIp = '10.0.28.239'
 probe = RemoteClient(probeIp, 'root', 'elvis')
 build = JenkinsBuild('6.1')
 
-Log.info('Running test of latest Jenkins-build...')
+queue = Queue(host='10.0.28.187', database='memtest',
+              username='memtest', password='ldap2retro')
+
+print('Creating job')
+queue.createJob(4, 2, 10)
+Log.info('Added job to DB')
+
+
+Log.info('Starting automatic test of latest Jenkins-build...')
 update_probe_sw(probeIp, 'root', 'elvis', '6.1')
 
 exit(0)

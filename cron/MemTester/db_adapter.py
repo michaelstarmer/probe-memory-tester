@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 import mysql.connector as db
-
+from logger import Log
 user = 'memtest'
 password = 'ldap2retro'
 
@@ -55,6 +55,16 @@ class Queue:
         except db.Error as e:
             print(f"update job error! {e}")
             return False
+
+    def createJob(self, memory, xml_config, duration):
+        cursor = self.connection.cursor()
+        try:
+            query = f"""INSERT INTO memtest.jobs (memory, xml_file_id, duration) VALUES (4, 2, 10)"""
+            cursor.execute(query)
+            self.connection.commit()
+        except db.Error as e:
+            Log.error('Error: insert job to db failed!')
+            print(e)
 
     def log(self, id, status):
         now = datetime.now()

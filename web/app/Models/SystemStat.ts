@@ -4,7 +4,7 @@ import Job from './Job'
 
 export default class SystemStat extends BaseModel {
 
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: null })
   public id: number
 
   @column({ columnName: 'job_id' })
@@ -19,13 +19,13 @@ export default class SystemStat extends BaseModel {
   @column()
   public mem: number
 
-  @column()
+  @column({ serializeAs: null })
   public alerts: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updatedAt: DateTime
 
   @computed()

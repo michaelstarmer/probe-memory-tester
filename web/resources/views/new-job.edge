@@ -34,7 +34,7 @@
                     <h1>Create new test</h1>
                     <p>Manually create a new test based on available jobs from Jenkins. The latest successful build will
                         be fetched automatically.</p>
-                    <form action="/host/edit" method="POST">
+                    <form action="/api/upload" method="POST">
 
                         <div class="dropdown">
                             <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
@@ -54,12 +54,10 @@
                                 Test duration
                             </button>
                             <ul class="dropdown-menu">
-
                                 <li><a class="dropdown-item" href="#">30 minutes</a></li>
                                 <li><a class="dropdown-item" href="#">1 hour</a></li>
                                 <li><a class="dropdown-item" href="#">4 hours</a></li>
                                 <li><a class="dropdown-item" href="#">6 hours</a></li>
-
                             </ul>
                         </div>
 
@@ -68,16 +66,11 @@
                                 XML configuration
                             </button>
                             <ul class="dropdown-menu">
-
                                 <li><a class="dropdown-item" href="#">Light load</a></li>
                                 <li><a class="dropdown-item" href="#">Medium load</a></li>
                                 <li><a class="dropdown-item" href="#">Heavy load</a></li>
-
                             </ul>
                         </div>
-
-
-                        <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
                     </form>
 
