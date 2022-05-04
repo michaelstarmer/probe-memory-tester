@@ -6,7 +6,7 @@ import Snapshot from './Snapshot'
 
 export default class Job extends BaseModel {
 
-  @column({ isPrimary: true, serializeAs: null })
+  @column({ isPrimary: true })
   public id: number
 
   @column()

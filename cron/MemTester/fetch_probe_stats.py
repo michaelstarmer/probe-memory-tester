@@ -160,7 +160,6 @@ mem_pct = get_mem_usage_percent()
 print('mem %:', mem_pct)
 
 c = get_proc_cpu()
-print(c)
 cpu_usr = c[0]
 cpu_sys = c[1]
 job_id = get_current_job_id()

@@ -4,7 +4,7 @@ import Job from './Job'
 
 export default class SystemStat extends BaseModel {
 
-  @column({ isPrimary: true, serializeAs: null })
+  @column({ isPrimary: true })
   public id: number
 
   @column({ columnName: 'job_id' })
