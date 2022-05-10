@@ -22,7 +22,12 @@ export default class ApiController {
 
     public async get_job_by_id({ response, params }: HttpContextContract) {
         const { id } = params;
-        const job = await Job.query().where('id', id).preload('systemStats').first();
+        const job = await Job
+            .query()
+            .where('id', id)
+            .preload('systemStats')
+            .preload('logs')
+            .first();
         try {
             return response.json(job);
         } catch (error) {

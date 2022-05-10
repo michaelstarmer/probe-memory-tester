@@ -106,49 +106,33 @@
               @endif
             </button>
           </h2>
-          <span><strong>Type:</strong>
-            @if(job.isManual)
-            MANUAL
-            @else
-            AUTOMATIC
-            @endif
+
           </span>
-          <div id="flush-{{job.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+          <div id="flush-{{job.id}}" class="accordion-collapse" aria-labelledby="flush-headingOne"
             data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-              <div class="text-center my-2">
-                <strong></strong>{{job.xmlConfig.description}}
-              </div>
-
               <div class="container">
+                <div class="row">
+                  <div class="col-md-12 col-lg-6">
+                    <span><strong>Type:</strong>
+                      @if(job.isManual)
+                      MANUAL
+                      @else
+                      AUTOMATIC
+                      @endif
+                  </div>
+                  <div class="col-md-12 col-lg-6 text-center">
+                    <a href="/jobs/{{job.id}}" class="">View test</a>
+                  </div>
+                </div>
+                <div class="row">
+                </div>
                 <div class="row row-cols-1 row-cols-lg-2">
 
                 </div>
               </div>
 
-              @if(job.systemStats && job.systemStats.length)
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th scope="col">Time</th>
-                    <th scope="col">CPU</th>
-                    <th scope="col">RAM</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @each(stat in job.systemStats)
-                  <tr>
-                    <th scope="row" data-toggle="tooltip" data-placement="top"
-                      title="{{stat.createdAt.setLocale('no').toFormat('DDD')}}">
-                      {{stat.createdAt.toFormat('HH:mm:ss')}}
-                    </th>
-                    <td>{{stat.cpu}}%</td>
-                    <td>{{stat.mem}}%</td>
-                  </tr>
-                  @endeach
-                </tbody>
-              </table>
-              @endif
+
               {{--  Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.  --}}
             </div>
           </div>
@@ -278,12 +262,12 @@
     //   .then(config => console.log(config))
 
     /* Initial setup */
-    fetchAndGenerateChart()
+    // fetchAndGenerateChart()
 
     /* Update every minute */
     setInterval(() => {
       console.log('[ INTERVAL ] Fetching jobs')
-      fetchAndGenerateChart()
+      // fetchAndGenerateChart()
     }, 1000*60)
 
     

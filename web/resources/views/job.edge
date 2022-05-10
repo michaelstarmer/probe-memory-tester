@@ -42,6 +42,13 @@
     <div class="container my-5">
         <div class="row">
             <div class="col-12">
+                <div id="log">
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 <a href="#" class="btn btn-success">Export data</a>
             </div>
         </div>
@@ -132,6 +139,26 @@
     }
 
     generateData()
+
+    setInterval(() => {
+        console.log('Checking for new log entries...')
+        var log = document.getElementById('log')
+        log.textContent = ""
+        fetch(`/api/jobs/${jobId}`)
+        .then(res => res.json())
+        .then(response => {
+            if (response.logs) {
+                console.log('found log entries')
+                var logEl = document.getElementById('log')
+                for (const l of response.logs)
+                {
+                    console.log('Log entry:', l)
+                    var log = logEl.appendChild(document.createElement('div'))
+                    log.textContent = l.message
+                }
+            }
+        })
+    }, 1000*10)
 </script>
 
 </html>
