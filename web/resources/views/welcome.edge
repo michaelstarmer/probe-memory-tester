@@ -106,6 +106,13 @@
               @endif
             </button>
           </h2>
+          <span><strong>Type:</strong>
+            @if(job.isManual)
+            MANUAL
+            @else
+            AUTOMATIC
+            @endif
+          </span>
           <div id="flush-{{job.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
             data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">

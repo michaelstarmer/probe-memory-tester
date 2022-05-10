@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
 import moment from 'moment'
 import XmlFile from 'App/Models/XmlFile'
+import JobLog from 'App/Models/JobLog'
 
 export default class ApiController {
     public async all_jobs({ response }: HttpContextContract) {
@@ -16,6 +17,17 @@ export default class ApiController {
         } catch (error) {
             console.error('error fetching jobs:', error)
             return response.json({ error })
+        }
+    }
+
+    public async get_job_by_id({ response, params }: HttpContextContract) {
+        const { id } = params;
+        const job = await Job.query().where('id', id).preload('systemStats').first();
+        try {
+            return response.json(job);
+        } catch (error) {
+            console.error('Error fetching job!', error);
+            return response.json({ error });
         }
     }
 
@@ -131,5 +143,21 @@ export default class ApiController {
         console.log('upload file...')
         const xmlFile = request.file('xmlFile')
         console.log(xmlFile)
+    }
+
+    public async create_job_log({ request, response, params }) {
+        const { id } = params;
+        const { type, message } = request.only(['type', 'message']);
+        const job = await Job.findBy('id', id);
+        if (!job) {
+            return response.json({ error: 'Job not found.' })
+        }
+        try {
+            await JobLog.create({ type, message });
+            return response.status(200);
+        } catch (error) {
+            console.error('error!', error)
+            return response.json({ error })
+        }
     }
 }

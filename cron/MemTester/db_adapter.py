@@ -27,15 +27,15 @@ class Queue:
         except db.Error as e:
             print(f'db error: {e}')
 
-    def getJob(self):
+    def getWaitingManualJob(self):
         cursor = self.connection.cursor()
         try:
-            query = "SELECT id, memory, xml_config FROM jobs WHERE completed_at IS NULL ORDER BY id ASC LIMIT 1"
+            query = """SELECT id, memory, jenkins_job, duration, xml_file_id FROM memtest.jobs WHERE is_manual = 1 AND status='waiting' ORDER BY id ASC LIMIT 1;"""
             cursor.execute(query)
             result = cursor.fetchone()
 
             if result:
-                return dict(id=result[0], memory=result[1], xml=result[2])
+                return dict(id=result[0], memory=result[1], jenkinsJob=result[2], duration=result[3], xml=result[4])
         except db.Error as e:
             print(f"db error: {e}")
 
@@ -46,6 +46,23 @@ class Queue:
         try:
             query = f"""UPDATE memtest.jobs
                     SET completed_at='{dt}', status='completed'
+                    WHERE id={id};"""
+            cursor.execute(query)
+            self.connection.commit()
+
+            print(f'Job {id} complete.')
+            return True
+        except db.Error as e:
+            print(f"update job error! {e}")
+            return False
+
+    def setJobRunning(self, id):
+        now = datetime.now()
+        dt = now.strftime('%Y-%m-%d %H:%M:%S')
+        cursor = self.connection.cursor()
+        try:
+            query = f"""UPDATE memtest.jobs
+                    SET status='running'
                     WHERE id={id};"""
             cursor.execute(query)
             self.connection.commit()

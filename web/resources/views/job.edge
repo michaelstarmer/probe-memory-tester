@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probe Memory Tester</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h6>STATUS</h6>
+                <div id="job-status">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <h3>Job data</h3>
+                <ul>
+                    <li>ID: {{ job.id }}</li>
+                    <li>Memory: {{ job.memory }}</li>
+                </ul>
+            </div>
+            <div id="chart" class="col-md-12 col-lg-6">
+
+            </div>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <a href="#" class="btn btn-success">Export data</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+<script>
+    var job = {{{JSON.stringify(job)}}}
+    var jobId = job.id;
+    var stats = job.systemStats;
+    console.log(job)
+    console.log(stats)
+
+    function createChart(stats)
+    {
+        const jobCtx = document.getElementById('chart');
+        let ctx = jobCtx.appendChild(document.createElement('canvas'));
+        let cpu = stats.map(it => it.cpu)
+        let mem = stats.map(it => it.mem)
+    
+        let jobChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: stats.map(it => it.timestamp),
+                datasets: [
+                    {
+                        label: 'CPU %',
+                        data: cpu,
+                        borderColor: 'rgba(0,0,0, 0.8)',
+                        fill: false,
+                        tension: .1
+                    },
+                    {
+                        label: 'MEM %',
+                        data: mem,
+                        borderColor: 'rgba(255, 10, 20, 0.8)',
+                        fill: false,
+                        tension: .1,
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxis: {
+                        beginAtZero: true,
+                    },
+                    xAxis: {
+                        display: true,
+                        type: 'time',
+                        time: {
+                            parser: 'MM/DD/YYYY HH:mm',
+                            tooltipFormat: 'll HH:mm',
+                            unit: 'minute',
+                            unitStepSize: 20,
+                            displayFormats: {
+                            'hour': 'HH:mm'
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    function refreshData(jobData)
+    {
+        console.log('Refresh data with payload:');
+        console.log(jobData)
+        var status = document.getElementById('job-status')
+        var el = status.appendChild(document.createElement('h1'))
+        el.textContent = jobData.status
+        el.classList.add(`color-${jobData.status}`)
+        el.classList.add('uppercase')
+    }
+
+    function generateData()
+    {
+        fetch(`/api/jobs/${jobId}`)
+        .then(res => res.json())
+        .then(response => {
+            refreshData(response)
+            createChart(response.systemStats)
+        })
+        .catch(e => console.error(e))
+    }
+
+    generateData()
+</script>
+
+</html>

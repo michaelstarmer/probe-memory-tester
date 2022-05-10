@@ -21,9 +21,15 @@ def purgeBinaries(dir):
             os.remove(os.path.join(dir, f))
 
 
-def update_probe_sw(probeIp, probeUser, probePass, swVersion):
-    JENKINS_PROBE_VERSION = swVersion
-    JENKINS_PROBE_JOB = f'CentOS7-based_{swVersion}'
+def update_probe_sw(probeIp, probeUser, probePass, swVersion=None, jobName=''):
+    if not swVersion and not jobName:
+        raise Exception('Missing parameter')
+    if swVersion:
+        JENKINS_PROBE_VERSION = swVersion
+        JENKINS_PROBE_JOB = f'CentOS7-based_{swVersion}'
+    if jobName:
+        JENKINS_PROBE_JOB = jobName
+        JENKINS_PROBE_VERSION = swVersion
 
     probe = RemoteClient(probeIp, probeUser, probePass)
     jenkins = JenkinsBuild(JENKINS_PROBE_VERSION, JENKINS_PROBE_JOB)
@@ -37,7 +43,7 @@ def update_probe_sw(probeIp, probeUser, probePass, swVersion):
     \tIP       : {probeIp}
     \tVersion  : {currentProbeVersion}
     TARGET
-    \tJob      : {JENKINS_PROBE_VERSION} / {JENKINS_PROBE_JOB}
+    \tJob      : {JENKINS_PROBE_JOB}
     \tVersion  : {upgradeVersion}
     \tBuild no.: {latestBuild.buildNumber}
     \tGitCommit: {latestBuild.gitCommit}
@@ -54,5 +60,7 @@ def update_probe_sw(probeIp, probeUser, probePass, swVersion):
     upgradeSuccess = probe.exec([f'/opt/btech/probe/bin/vprobe_upgrade'])
     if upgradeSuccess:
         Log.success('Probe software update complete.')
+        return True
     else:
         Log.error('Probe software update failed.')
+        return False

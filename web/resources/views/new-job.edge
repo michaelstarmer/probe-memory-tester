@@ -34,12 +34,12 @@
                     <h1>Create new test</h1>
                     <p>Manually create a new test based on available jobs from Jenkins. The latest successful build will
                         be fetched automatically.</p>
-                    <form action="/api/upload" method="POST">
+                    <form action="/jobs/createCustom" method="POST">
 
 
                         <div class="form-group mt-3">
-                            <select class="form-select">
-                                <option selected>{{jobs[-1]}}</option>
+                            <select name="jenkinsJob" class="form-select">
+                                <option disabled selected>Select Jenkins job</option>
                                 @if(jobs)
                                 @each(job in jobs)
                                 <option value="{{job}}">{{job}}</option>
@@ -51,7 +51,7 @@
 
                         <div class="form-group mt-3">
                             <label>Test duration</label>
-                            <select class="form-select">
+                            <select name="duration" class="form-select">
                                 <option value="30" selected>30 minutes</option>
                                 <option value="10">10 minutes</option>
                                 <option value="30">30 minutes</option>
@@ -64,7 +64,7 @@
 
                         <div class="form-group mt-3">
                             <label>XML configuration</label>
-                            <select class="form-select">
+                            <select name="xmlFileId" class="form-select">
                                 <option value="2" selected>Medium load</option>
                                 <option value="3">Light load</option>
                                 <option value="1">Heavy load</option>

@@ -29,7 +29,11 @@ Route.get('/', 'AppController.index').as('home')
 Route.get('/api/probe-config', 'AppController.get_probe_config')
 
 Route.get('/api/jobs', 'ApiController.all_jobs')
+Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
 Route.post('/api/jobs/create', 'ApiController.create_job')
+
+Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
+
 Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
 Route.get('/api/queue/active', 'ApiController.running_job')
@@ -50,3 +54,5 @@ Route.get('/host/edit', 'AppController.edit_host').as('edit.host')
 Route.post('/host/edit', 'AppController.update_host')
 
 Route.get('jobs/new', 'JobsController.new_job_view')
+Route.get('jobs/:id', 'JobsController.view_job')
+Route.post('/jobs/createCustom', 'JobsController.save_custom_job')

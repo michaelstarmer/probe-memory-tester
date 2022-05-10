@@ -36,6 +36,9 @@ export default class Job extends BaseModel {
   @column()
   public duration: number
 
+  @column()
+  public isManual: boolean
+
   @computed()
   public get remaining() {
     if (!this.createdAt)
@@ -74,16 +77,8 @@ export default class Job extends BaseModel {
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
 
-  public static ignoreCompleted = scope((query) => {
-    query.whereNot('status', 'completed')
-  })
-
-  public static onlyRunning = scope((query) => {
-    query.where('status', 'running')
-  })
-
-  public static onlyWaiting = scope((query) => {
-    query.where('status', 'waiting')
-  })
+  public static ignoreCompleted = scope(query => query.whereNot('status', 'completed'))
+  public static onlyRunning = scope(query => query.where('status', 'running'))
+  public static onlyWaiting = scope(query => query.where('status', 'waiting'))
 
 }

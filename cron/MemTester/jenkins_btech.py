@@ -20,7 +20,7 @@ class JenkinsBuild:
             self.buildUrl = f'http://10.0.31.142/view/v{version}/job/CentOS7-based_{version}/label=centos7,product=vprobe'
         if not version:
             self.job = job
-            self.buildUrl = f'http://10.0.31.142/job/{job}'
+            self.buildUrl = f'http://10.0.31.142/job/{job}/label=centos7,product=vprobe'
 
     def fetch(self, url):
         print(f'{self.buildUrl}/api/json?pretty=true')

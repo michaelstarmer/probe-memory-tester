@@ -170,21 +170,3 @@ print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
 exit(0)
-
-cpu = get_cpu_usage()
-mem = get_memory_usage()
-# mem_proc = get_processes_by_mem()
-
-job_id = get_current_job_id()
-btech_stats = get_amps()
-
-if job_id:
-    for proc in btech_stats.values():
-        print('add btech stats:', proc)
-        add_btech_stats(job_id, data=proc)
-
-data = {'cpu': cpu, 'mem': mem}
-add_job = add_job_stats(data)
-if add_job:
-    print('\nAdded stats to active job:')
-    print(data)

@@ -1,4 +1,6 @@
-const axios = require('axios')
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Job from 'App/Models/Job';
+import axios from 'axios';
 
 export default class JobsController {
 
@@ -17,9 +19,33 @@ export default class JobsController {
         return view.render('new-job', { jobs })
     }
 
-    // public async save_job({ request, response }) {
-    //     // Create a new job based on the form values.
-    // }
+    public async save_custom_job({ request, response }: HttpContextContract) {
+        const { jenkinsJob, duration, xmlFileId } = request.all();
+        console.log({ jenkinsJob, duration, xmlFileId })
 
+        try {
+            const job = await Job.create({
+                memory: 0,
+                jenkinsJob,
+                xmlFileId,
+                duration,
+                isManual: true,
+            })
+            console.log("Manual job created successfully:", job)
+            response.redirect().toRoute('home')
+        } catch (error) {
+            console.error('error creating manual job!', error);
+            return response.send(error)
+        }
+    }
+
+    public async view_job({ view, response, params }: HttpContextContract) {
+        const job = await Job.query().where('id', params.id).preload('systemStats').first()
+        if (!job) {
+            return response.send(`Job with ID ${params.id} not found.`);
+        }
+        console.log('Job found:', job)
+        return view.render('job', { job });
+    }
 
 }
