@@ -153,7 +153,11 @@ export default class ApiController {
             return response.json({ error: 'Job not found.' })
         }
         try {
-            await JobLog.create({ type, message });
+            const jobLog = new JobLog()
+            jobLog.type = type;
+            jobLog.message = message;
+
+            await job.related('logs').save(jobLog)
             return response.status(200);
         } catch (error) {
             console.error('error!', error)

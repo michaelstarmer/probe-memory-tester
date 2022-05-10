@@ -3,6 +3,7 @@ import { BaseModel, beforeSave, BelongsTo, belongsTo, column, HasMany, hasMany, 
 import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
 import Snapshot from './Snapshot'
+import JobLog from './JobLog'
 
 export default class Job extends BaseModel {
 
@@ -76,6 +77,9 @@ export default class Job extends BaseModel {
 
   @hasMany(() => SystemStat)
   public systemStats: HasMany<typeof SystemStat>
+
+  @hasMany(() => JobLog)
+  public logs: HasMany<typeof JobLog>
 
   public static ignoreCompleted = scope(query => query.whereNot('status', 'completed'))
   public static onlyRunning = scope(query => query.where('status', 'running'))
