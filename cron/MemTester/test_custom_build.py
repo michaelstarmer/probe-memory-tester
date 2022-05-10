@@ -26,11 +26,15 @@ probe_updated = update_probe_sw(probeIp=probeIp, probeUser='root',
 
 jobId = waitingManualJob['id']
 if not probe_updated:
-    requests.post(f'http://localhost:3333/api/jobs/{jobId}/log', {
-                  'type': 'warning', 'message': 'Error while updating probe.'})
+    response = requests.post(f'http://localhost:3333/api/jobs/{jobId}/log', {
+        'type': 'warning', 'message': 'Error while updating probe.'})
+    if response.status_code != 200:
+        Log.error(f'Bad request ({response.status_code})')
 else:
-    requests.post(f'http://localhost:3333/api/jobs/{jobId}/log', {
+    response = requests.post(f'http://localhost:3333/api/jobs/{jobId}/log', {
         'type': 'info', 'message': 'Probe updated successfully.'})
+    if response.status_code != 200:
+        Log.error(f'Bad request ({response.status_code})')
     queue.setJobRunning(jobId)
 print('Done.')
 # jenkins = JenkinsBuild(version=None, job=)

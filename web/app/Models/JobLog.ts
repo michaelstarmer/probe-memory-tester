@@ -6,6 +6,9 @@ export default class JobLog extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column({ columnName: 'job_id' })
+  public jobId: number
+
   @column()
   public type: string
 
