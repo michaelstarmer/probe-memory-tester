@@ -51,7 +51,7 @@ if last_job_build_number:
         exit()
 
 Log.info(f'New build discovered (build no. {build.buildNumber})')
-queue.createJob(memory=4, xml_config=2, duration=10,
+queue.createJob(memory=4, xml_config=2, duration=120,
                 jenkins_job=build.job, build_number=build.buildNumber, status='running')
 
 Log.info('Starting automatic test of latest Jenkins-build...')
