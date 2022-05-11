@@ -96,7 +96,7 @@
               <span>
                 {{ job.createdAt && job.createdAt.setLocale('no').toFormat('f')}} - &nbsp;
               </span>
-              <strong>{{ job.memory }}GB RAM</strong>
+              <strong>{{ job.jenkinsJob }}</strong>
               @if(job.status == 'completed')
               <span class="badge bg-success rounded-pill mx-3">Done</span>
               @elseif(job.status == 'running')
