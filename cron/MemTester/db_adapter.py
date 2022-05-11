@@ -1,6 +1,8 @@
 from datetime import datetime
+import json
 import os
 import mysql.connector as db
+import requests
 from logger import Log
 user = 'memtest'
 password = 'ldap2retro'
@@ -28,6 +30,11 @@ class Queue:
             print(f'db error: {e}')
 
     def getWaitingManualJob(self):
+        job = requests.get('http://localhost:3333/api/jobs/next')
+        if job:
+            return json.loads(job.content)
+        return None
+        exit()
         cursor = self.connection.cursor()
         try:
             query = """SELECT id, memory, jenkins_job, duration, xml_file_id FROM memtest.jobs WHERE is_manual = 1 AND status='waiting' ORDER BY id ASC LIMIT 1;"""
@@ -55,6 +62,21 @@ class Queue:
         except db.Error as e:
             print(f"update job error! {e}")
             return False
+
+    def startJob(self, id):
+        print('Queue starting job!')
+        try:
+            startedJob = requests.get(
+                f'http://localhost:3333/api/jobs/{id}/start')
+            if not startedJob.status_code == 200:
+                print('Error starting job')
+                return False
+            else:
+                print(json.loads(startedJob.content))
+                return json.loads(startedJob.content)
+        except requests.RequestException as e:
+            Log.error('request error')
+            print(e)
 
     def setJobRunning(self, id):
         now = datetime.now()

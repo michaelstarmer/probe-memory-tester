@@ -29,10 +29,12 @@ Route.get('/', 'AppController.index').as('home')
 Route.get('/api/probe-config', 'AppController.get_probe_config')
 
 Route.get('/api/jobs', 'ApiController.all_jobs')
-Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
+Route.get('/api/jobs/next', 'ApiController.get_next_job')
 Route.post('/api/jobs/create', 'ApiController.create_job')
-
+Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
+Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')
 Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
+
 
 Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')

@@ -3,6 +3,7 @@ import Job from 'App/Models/Job'
 import moment from 'moment'
 import XmlFile from 'App/Models/XmlFile'
 import JobLog from 'App/Models/JobLog'
+import { DateTime } from 'luxon'
 
 export default class ApiController {
     public async all_jobs({ response }: HttpContextContract) {
@@ -68,6 +69,54 @@ export default class ApiController {
         } catch (error) {
             console.error(error)
             return response.json({ success: false, error })
+        }
+    }
+
+    public async get_next_job({ response }: HttpContextContract) {
+        try {
+            const runningJob = await Job
+                .query()
+                .withScopes(scopes => scopes.onlyRunning())
+                .first()
+
+            if (runningJob) {
+                console.log('No waiting jobs')
+                return response.json({})
+            }
+
+            const nextJob = await Job
+                .query()
+                .withScopes(scopes => scopes.onlyWaiting())
+                .preload('xmlConfig')
+                .first()
+
+            return response.json(nextJob)
+        } catch (error) {
+            console.error('Error getting next job!', error)
+            return response.status(400).json({ error })
+        }
+    }
+
+    public async start_job_by_id({ params, response }: HttpContextContract) {
+        const runningJob = await Job.query().withScopes(scopes => scopes.onlyRunning()).first()
+        if (runningJob) {
+            return response.json({ error: "Cannot start job when another is still running." })
+        }
+
+        const job = await Job.findByOrFail('id', params.id);
+        console.log({ job })
+        try {
+            if (job) {
+                await job.merge({
+                    status: 'running',
+                    startedAt: DateTime.now()
+                }).save()
+            }
+            console.log('Starting job with ID:', job.id)
+            return response.status(200).json(job)
+        } catch (error) {
+            console.log('Error starting new job.')
+            return response.status(400).json({ error });
         }
     }
 

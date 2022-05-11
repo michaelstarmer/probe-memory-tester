@@ -51,7 +51,7 @@ export default class Job extends BaseModel {
   }
 
   @column.dateTime({ autoUpdate: false })
-  public startAt: DateTime
+  public startedAt: DateTime
 
   @afterFind()
   public static async checkJobStatus(job: Job) {
@@ -64,9 +64,9 @@ export default class Job extends BaseModel {
 
   @beforeSave()
   public static async checkStartTime(job: Job) {
-    if (!job.startAt && !job.$dirty.startAt) {
-      job.startAt = DateTime.now()
-    }
+    // if (!job.startedAt && !job.$dirty.startedAt) {
+    //   job.startedAt = DateTime.now()
+    // }
   }
 
   @column.dateTime({ autoCreate: true, autoUpdate: false, serializeAs: null })

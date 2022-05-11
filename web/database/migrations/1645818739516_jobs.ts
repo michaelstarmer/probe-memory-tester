@@ -14,7 +14,7 @@ export default class Jobs extends BaseSchema {
       table.boolean('is_manual').defaultTo(false)
       table.enum('status', ['waiting', 'running', 'completed', 'failed']).notNullable().defaultTo('waiting')
       table.integer('duration').comment('minutes')
-      table.timestamp('start_at').nullable()
+      table.timestamp('started_at').nullable()
       table.timestamps(true, true)
     })
   }
