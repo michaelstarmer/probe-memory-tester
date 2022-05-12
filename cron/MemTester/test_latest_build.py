@@ -2,6 +2,7 @@ import json
 from update_probe_sw import update_probe_sw
 from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
+from probe.probe_eii import Probe
 from logger import Log
 import requests
 from db_adapter import Queue
@@ -28,6 +29,7 @@ def activeJobExists():
 if activeJobExists():
     exit(0)
 
+
 queue = Queue(host='10.0.28.187', database='memtest',
               username='memtest', password='ldap2retro')
 appConfig = queue.getSettings()
@@ -38,9 +40,10 @@ print('probe ip:    ', probeIp)
 print('jenkins job: ', jenkinsJob)
 
 probe = RemoteClient(probeIp, 'root', 'elvis')
+eii = Probe(probe_ip=probeIp)
 jenkins = JenkinsBuild(version=None, job=jenkinsJob)
-
 build = jenkins.loadLastCompletedBuild()
+
 
 print('Checking last job:')
 last_job_build_number = queue.getLastJobBuildNumber()
