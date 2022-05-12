@@ -27,15 +27,30 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-12 col-lg-6">
-                <h3>Job data</h3>
-                <ul>
-                    <li>ID: {{ job.id }}</li>
-                    <li>Memory: {{ job.memory }}</li>
-                    <li>Build no: {{job.buildNumber}}</li>
-                </ul>
+            <div class="col-md-12 col-lg-5">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Job ID</th>
+                            <td>{{job.id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Jenkins job</th>
+                            <td>{{job.jenkinsJob}}</td>
+                        </tr>
+                        <tr>
+                            <th>Build no.</th>
+                            <td>{{job.buildNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td>{{job.duration}} mins.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
-            <div id="chart" class="col-md-12 col-lg-6">
+            <div id="chart" class="col-md-12 col-lg-6 offset-lg-1">
 
             </div>
         </div>

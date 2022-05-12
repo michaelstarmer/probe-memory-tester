@@ -20,7 +20,8 @@ class ESXiClient:
             (stdin, stdout, stderr) = ssh.exec_command(
                 f'vim-cmd vmsvc/snapshot.revert {vmid} {sid} true || exit 1')
             type(stdin)
-            sleep(10)
+            sleep(30)
+            return True
         except Exception as e:
             print('error!', e)
 
@@ -36,5 +37,6 @@ class ESXiClient:
                 f'vim-cmd vmsvc/power.on "{vmid}" || exit 1')
             type(stdin)
             sleep(10)
+            return True
         except Exception as e:
             print('error!', e)

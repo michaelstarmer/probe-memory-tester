@@ -28,8 +28,14 @@ Log.info('Job ready to start testing.')
 
 if (jobReadyToStart['is_manual']):
     print('Changing snapshot for manual test.')
-    esxi.set_snapshot(29, 2)
-    esxi.power_on_vm(29)
+    snapshotSet = esxi.set_snapshot(29, 2)
+    if not snapshotSet:
+        apiclient.logToJob(jobId, 'Error setting snapshot', 'error')
+        exit()
+    poweredOn = esxi.power_on_vm(29)
+    if not poweredOn:
+        apiclient.logToJob(jobId, 'Error restarting vm', 'error')
+        exit()
     apiclient.logToJob(jobId, message='Snapshot reverted to default.')
     Log.success('OK')
 
