@@ -64,6 +64,7 @@ export default class AppController {
     async edit_host({ view, request }: HttpContextContract) {
         const probeIp = await Setting.findBy('key', 'probe_ip')
         const jenkinsJob = await Setting.findBy('key', 'jenkins_job')
+        const duration = await Setting.findBy('key', 'duration')
         const { error } = request.all();
         console.log(error)
 
@@ -80,13 +81,14 @@ export default class AppController {
         return view.render('edit-host', {
             probeIp: probeIp?.value,
             jenkinsJob: jenkinsJob?.value,
+            duration: duration?.value,
             jobs,
             error
         })
     }
 
     async update_host({ request, response }: HttpContextContract) {
-        const { probeIp, jenkinsJob } = request.only(['probeIp', 'jenkinsJob'])
+        const { probeIp, jenkinsJob, duration } = request.only(['probeIp', 'jenkinsJob', 'duration'])
 
         if (!probeIp || !probeIp.length) {
             return response.redirect().withQs({ error: 'Probe ip required' }).toRoute('edit.host')
@@ -95,6 +97,8 @@ export default class AppController {
         try {
             await Setting.query().where('key', 'probe_ip').update({ value: probeIp });
             await Setting.query().where('key', 'jenkins_job').update({ value: jenkinsJob });
+            await Setting.query().where('key', 'duration').update({ value: duration });
+
             return response.redirect().toRoute('home')
         } catch (error) {
             console.error(error)

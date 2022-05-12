@@ -4,6 +4,7 @@ import moment from 'moment'
 import XmlFile from 'App/Models/XmlFile'
 import JobLog from 'App/Models/JobLog'
 import { DateTime } from 'luxon'
+import axios from 'axios'
 
 export default class ApiController {
     public async all_jobs({ response }: HttpContextContract) {
@@ -90,6 +91,9 @@ export default class ApiController {
                 .preload('xmlConfig')
                 .first()
 
+            if (!nextJob) {
+                return response.json({});
+            }
             return response.json(nextJob)
         } catch (error) {
             console.error('Error getting next job!', error)
@@ -104,13 +108,9 @@ export default class ApiController {
         }
 
         const job = await Job.findByOrFail('id', params.id);
-        console.log({ job })
         try {
             if (job) {
-                await job.merge({
-                    status: 'running',
-                    startedAt: DateTime.now()
-                }).save()
+                await job.merge({ status: 'running' }).save()
             }
             console.log('Starting job with ID:', job.id)
             return response.status(200).json(job)
@@ -121,11 +121,11 @@ export default class ApiController {
     }
 
     public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration', 'version', 'startAt', 'cpu']);
+        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'buildNumber', 'cpu']);
 
         try {
-            if (!payload.memory || !payload.xmlFileId || !payload.version)
-                return response.json({ error: 'Missing parameters. Required: memory, xmlFileId, duration, version, startAt' })
+            if (!payload.memory || !payload.xmlFileId || !payload.jenkinsJob)
+                return response.json({ error: 'Missing parameters. Required: memory, xmlFileId, duration, jenkinsJob' })
 
             if (!payload.duration)
                 return response.json({ error: 'Missing parameter: duration' })
@@ -135,12 +135,23 @@ export default class ApiController {
                 payload.cpu = 8
             }
 
+            if (!payload.buildNumber) {
+                const jenkinsJobUrl = `http://10.0.31.142/job/${payload.jenkinsJob}/api/json?pretty=true`
+                const { data } = await axios.get(jenkinsJobUrl);
+
+                if (data) {
+                    payload.buildNumber = data['builds'][0]['number']
+                }
+            }
+
 
             const newJob = new Job()
             newJob.merge({
                 memory: payload.memory,
                 cpu: payload.cpu,
                 xmlFileId: payload.xmlFileId,
+                jenkinsJob: payload.jenkinsJob,
+                buildNumber: payload.buildNumber,
                 // version: 'CentOS7-based_6.1',
                 // startAt: payload.startAt,
             })
@@ -212,10 +223,28 @@ export default class ApiController {
             jobLog.message = message;
 
             await job.related('logs').save(jobLog)
-            return response.status(200);
+            return response.status(200).json(jobLog);
         } catch (error) {
             console.error('error!', error)
             return response.json({ error })
         }
+    }
+
+    public async set_job_status({ request, response, params }: HttpContextContract) {
+        const { id, status } = params;
+        const job = await Job.findBy('id', id)
+
+        const validStatuses = ['waiting', 'completed', 'running', 'failed'];
+        if (!validStatuses.includes(status)) {
+            return response.status(400).json({ error: 'Status not valid', validStatuses })
+        }
+
+        if (!job) {
+            return response.status(400).json({ error: 'Job not found.' })
+        }
+
+        await job.merge({ status }).save()
+        return response.status(200).json({ success: true })
+
     }
 }

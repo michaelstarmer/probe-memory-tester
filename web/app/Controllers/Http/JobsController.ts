@@ -6,7 +6,7 @@ export default class JobsController {
 
     public async new_job_view({ view }) {
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
-        const jobs: string[] = []
+        const jobs: object[] = []
 
         const { data } = await axios.get(jobsUrl);
 
@@ -22,11 +22,18 @@ export default class JobsController {
     public async save_custom_job({ request, response }: HttpContextContract) {
         const { jenkinsJob, duration, xmlFileId } = request.all();
         console.log({ jenkinsJob, duration, xmlFileId })
+        let buildNumber = null;
+        const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
+        const { data } = await axios.get(jenkinsJobUrl);
 
+        if (data) {
+            buildNumber = data['builds'][0]['number']
+        }
         try {
             const job = await Job.create({
                 memory: 0,
                 jenkinsJob,
+                buildNumber,
                 xmlFileId,
                 duration,
                 isManual: true,

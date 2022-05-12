@@ -26,7 +26,7 @@ export default class Job extends BaseModel {
   public jenkinsJob: string
 
   @column()
-  public buildNumber: Number
+  public buildNumber: Number | null
 
   @belongsTo(() => Snapshot)
   public snapshot: BelongsTo<typeof Snapshot>
@@ -51,11 +51,11 @@ export default class Job extends BaseModel {
   }
 
   @column.dateTime({ autoUpdate: false })
-  public startedAt: DateTime
+  public startedAt: DateTime | null
 
   @afterFind()
   public static async checkJobStatus(job: Job) {
-    const isExpired = job.createdAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
+    const isExpired = job.startedAt && job.startedAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
     if (isExpired) {
       job.status = "completed"
       await job.save()
@@ -64,9 +64,15 @@ export default class Job extends BaseModel {
 
   @beforeSave()
   public static async checkStartTime(job: Job) {
-    // if (!job.startedAt && !job.$dirty.startedAt) {
-    //   job.startedAt = DateTime.now()
-    // }
+    // check for status change. if set to 'running', add timestamp to startedAt 
+    if (job.$dirty.status === 'running') {
+      job.startedAt = DateTime.now()
+    }
+
+    // if job status is pushed back, also remove started_at
+    if (job.$dirty.status === 'waiting') {
+      job.startedAt = null;
+    }
   }
 
   @column.dateTime({ autoCreate: true, autoUpdate: false, serializeAs: null })

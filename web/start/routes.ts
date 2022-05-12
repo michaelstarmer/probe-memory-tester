@@ -20,18 +20,15 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-// Route.get('/', async ({ view }) => {
-//   return view.render('welcome')
-// })
-
 Route.get('/', 'AppController.index').as('home')
-
 Route.get('/api/probe-config', 'AppController.get_probe_config')
-
 Route.get('/api/jobs', 'ApiController.all_jobs')
 Route.get('/api/jobs/next', 'ApiController.get_next_job')
+Route.get('/api/jobs/active', 'ApiController.get_running_job')
 Route.post('/api/jobs/create', 'ApiController.create_job')
+Route.get('/api/jobs/last', 'ApiController.last_job')
 Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
+Route.get('/api/jobs/:id/status/:status', 'ApiController.set_job_status')
 Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')
 Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
 
@@ -39,7 +36,6 @@ Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
 Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
 Route.get('/api/queue/active', 'ApiController.running_job')
-Route.get('/api/jobs/last', 'ApiController.last_job')
 
 Route.post('/api/stats', 'SystemStatController.create')
 Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')
