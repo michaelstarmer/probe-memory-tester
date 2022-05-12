@@ -152,8 +152,6 @@ export default class ApiController {
                 xmlFileId: payload.xmlFileId,
                 jenkinsJob: payload.jenkinsJob,
                 buildNumber: payload.buildNumber,
-                // version: 'CentOS7-based_6.1',
-                // startAt: payload.startAt,
             })
 
             if (payload.duration) {
