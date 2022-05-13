@@ -1,3 +1,5 @@
+from time import sleep
+import requests
 from logger import Log
 # from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
@@ -36,8 +38,21 @@ if (jobReadyToStart['is_manual']):
     if not poweredOn:
         apiclient.logToJob(jobId, 'Error restarting vm', 'error')
         exit()
-    apiclient.logToJob(jobId, message='Snapshot reverted to default.')
-    Log.success('OK')
+    probeIsOnline = False
+    for i in range(6):
+        sleep(10)
+        print('Pinging probe...')
+        probeRequest = requests.get(f'http://{probeIp}/probe/status')
+        if probeRequest.status_code == 200:
+            probeIsOnline = True
+            break
+    if probeIsOnline:  
+        Log.success('Probe is online!')
+        apiclient.logToJob(jobId, message='Snapshot reverted to default.')
+    else:
+        Log.error('Probe not responding. Update failed.')
+        apiclient.logToJob(jobId, message='Snapshot reverted to default.', logType='error')
+        
 
 print('\nImporting XML')
 # eii.import_config(jobReadyToStart['xmlConfig']['filename'])

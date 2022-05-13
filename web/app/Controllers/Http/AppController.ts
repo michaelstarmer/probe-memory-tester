@@ -6,32 +6,32 @@ const axios = require('axios');
 
 export default class AppController {
 
-    public async index({ view }: HttpContextContract) {
+    public async index({ view, response }: HttpContextContract) {
         const parser = new xml2js.Parser()
 
         // Fetch all jobs and limit each of them to display the 10 latest system stats (cpu/mem)
-        const jobs = await Job.query()
-            .preload('xmlConfig')
-            .preload('systemStats', statsQuery => {
-                statsQuery.groupLimit(10)
-            })
-
-        const probeIp = await Setting.findByOrFail('key', 'probe_ip')
-        const vmName = await Setting.findByOrFail('key', 'vm_name');
-        const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
-
-        const probeData = {
-            ip: probeIp.value,
-            vmName: vmName.value,
-            swVersion: null,
-            isAvailable: true,
-            isOffline: false,
-        }
-
-        /**
-         * perform a simple check to see if probe is online and reachable
-         */
         try {
+            
+            const jobs = await Job.query()
+                .preload('xmlConfig')
+                .preload('systemStats', statsQuery => {
+                    statsQuery.groupLimit(10)
+                })
+    
+            const probeIp = await Setting.findByOrFail('key', 'probe_ip')
+            const vmName = await Setting.findByOrFail('key', 'vm_name');
+            const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
+    
+            const probeData = {
+                ip: probeIp.value,
+                vmName: vmName.value,
+                swVersion: null,
+                isAvailable: true,
+                isOffline: false,
+            }
+            /**
+             * perform a simple check to see if probe is online and reachable
+             */
             const payload = await axios.get(`http://${probeIp.value}/probe/status`, { timeout: 3000 });
 
             if (activeJobsCount > 0) {
@@ -39,18 +39,36 @@ export default class AppController {
             }
             if (!payload) {
                 console.error('No response from probe.')
+                probeData.isOffline = true;
             }
             const json = await parser.parseStringPromise(payload.data);
             if (json && json.Status) {
                 probeData.swVersion = json.Status.System[0].software_version;
             }
+
+            return view.render('welcome', { jobs, probeData })
+        
         } catch (error) {
-            console.error('axios error!', error)
-            probeData.isOffline = true;
+            console.error('DB error!', error)
+            console.log(error.code)
+            console.log(error.errno)
+            if (error.code === "ER_NO_SUCH_TABLE")
+            {
+                return response.send("Database table error. Check migrations and DB seed. (" + error.code + ")")
+            }
+            if (error.code === "ECONNREFUSED")
+            {
+                return response.send("Could not connect to database @ " + error.address + ":" + error.port);
+            }
+            if (error.code === "ECONNABORTED")
+            {
+                return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
+            }
+
+            return response.send("Connection error: " + error.errcode)
+            
 
         }
-
-        return view.render('welcome', { jobs, probeData })
 
     }
 

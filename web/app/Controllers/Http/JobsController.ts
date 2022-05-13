@@ -4,19 +4,37 @@ import axios from 'axios';
 
 export default class JobsController {
 
-    public async new_job_view({ view }) {
+    public async new_job_view({ view, response }) {
+
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
         const jobs: object[] = []
 
-        const { data } = await axios.get(jobsUrl);
+        try {
+            
+            const { data } = await axios.get(jobsUrl);
+    
+            data.jobs.map(it => {
+                if (it.name.search(/CentOS\d\-based/i) === 0) {
+                    jobs.push(it.name)
+                }
+            })
+            console.log(jobs)
+            return view.render('new-job', { jobs })
+        } catch (error) {
+            console.error(error)
+            response.send(error)
+            if (error.code === 'ENOTFOUND')
+            {
+                console.error('Error connectiong to Jenkins.')
+                let message = 
+`Error while connecting to Jenkins @ ${jobsUrl}.
 
-        data.jobs.map(it => {
-            if (it.name.search(/CentOS\d\-based/i) === 0) {
-                jobs.push(it.name)
+Code: ${error.code}
+Message: ${error.message}
+`
+                response.send(message)
             }
-        })
-        console.log(jobs)
-        return view.render('new-job', { jobs })
+        }
     }
 
     public async save_custom_job({ request, response }: HttpContextContract) {

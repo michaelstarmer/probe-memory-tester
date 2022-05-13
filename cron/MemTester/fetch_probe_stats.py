@@ -9,12 +9,21 @@ import subprocess
 import os
 import time
 import paramiko
+from webapi import WebApi
+from logger import Log
 
 VM_HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
 API_HOST = 'http://localhost:3333'
+
+api = WebApi(API_HOST)
+settings = api.getSettings()
+
+if settings['probe_ip']:
+    Log.info('Probe IP detected in db settings. Using VM HOST: ' + settings['probe_ip'])
+    VM_HOST = settings['probe_ip']
 
 if os.environ.get('API_HOST'):
     API_HOST = os.environ['API_HOST']
