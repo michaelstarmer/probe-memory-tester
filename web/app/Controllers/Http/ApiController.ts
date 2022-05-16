@@ -253,7 +253,7 @@ export default class ApiController {
             return response.status(400).json({ error: 'Missing arguments: job/buildNumber' })
         }
 
-        const identicalJob = await Job.query().where('build_number', `${buildNumber}`).andWhere('jenkins_job', jenkinsJob).first()
+        const identicalJob = await Job.query().where('build_number', `${buildNumber}`).andWhere('jenkins_job', jenkinsJob).andWhereNot('is_manual', 1).first()
 
         if (identicalJob) {
             return response.json(identicalJob);
