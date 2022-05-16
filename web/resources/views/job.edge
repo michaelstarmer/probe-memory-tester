@@ -75,7 +75,11 @@
             <div class="col-12 col-lg-6 log-wrap p-1">
                 <h5>LOG</h5>
                 <div id="log">
-
+                    @if(job.logs)
+                    @each(log in job.logs)
+                    <div>{{log.message}}</div>
+                    @endeach
+                    @endif
                 </div>
             </div>
         </div>

@@ -10,9 +10,9 @@ export default class JobsController {
         const jobs: object[] = []
 
         try {
-            
+
             const { data } = await axios.get(jobsUrl);
-    
+
             data.jobs.map(it => {
                 if (it.name.search(/CentOS\d\-based/i) === 0) {
                     jobs.push(it.name)
@@ -23,11 +23,10 @@ export default class JobsController {
         } catch (error) {
             console.error(error)
             response.send(error)
-            if (error.code === 'ENOTFOUND')
-            {
+            if (error.code === 'ENOTFOUND') {
                 console.error('Error connectiong to Jenkins.')
-                let message = 
-`Error while connecting to Jenkins @ ${jobsUrl}.
+                let message =
+                    `Error while connecting to Jenkins @ ${jobsUrl}.
 
 Code: ${error.code}
 Message: ${error.message}
@@ -65,7 +64,7 @@ Message: ${error.message}
     }
 
     public async view_job({ view, response, params }: HttpContextContract) {
-        const job = await Job.query().where('id', params.id).preload('systemStats').first()
+        const job = await Job.query().where('id', params.id).preload('systemStats').preload('logs').first()
         if (!job) {
             return response.send(`Job with ID ${params.id} not found.`);
         }
