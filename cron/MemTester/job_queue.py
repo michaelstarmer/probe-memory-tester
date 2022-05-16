@@ -28,7 +28,7 @@ jobId = jobReadyToStart['id']
 print(jobReadyToStart)
 Log.info('Job ready to start testing.')
 
-if (jobReadyToStart['is_manual']):
+if (jobReadyToStart):
     print('Changing snapshot for manual test.')
     snapshotSet = esxi.set_snapshot(29, 2)
     if not snapshotSet:
@@ -46,13 +46,14 @@ if (jobReadyToStart['is_manual']):
         if probeRequest.status_code == 200:
             probeIsOnline = True
             break
-    if probeIsOnline:  
+    if probeIsOnline:
         Log.success('Probe is online!')
         apiclient.logToJob(jobId, message='Snapshot reverted to default.')
     else:
         Log.error('Probe not responding. Update failed.')
-        apiclient.logToJob(jobId, message='Snapshot reverted to default.', logType='error')
-        
+        apiclient.logToJob(
+            jobId, message='Snapshot reverted to default.', logType='error')
+
 
 print('\nImporting XML')
 # eii.import_config(jobReadyToStart['xmlConfig']['filename'])
