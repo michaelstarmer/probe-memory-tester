@@ -245,4 +245,20 @@ export default class ApiController {
         return response.status(200).json({ success: true })
 
     }
+
+    public async find_identical_jobs({ request, response, params }: HttpContextContract) {
+        const { jenkinsJob, buildNumber } = params;
+
+        if (!jenkinsJob || !buildNumber) {
+            return response.status(400).json({ error: 'Missing arguments: job/buildNumber' })
+        }
+
+        const identicalJob = await Job.query().where('build_number', `${buildNumber}`).andWhere('jenkins_job', jenkinsJob).first()
+
+        if (identicalJob) {
+            return response.json(identicalJob);
+        }
+
+        return response.json({});
+    }
 }

@@ -62,3 +62,8 @@ class WebApi:
             'message': message}
         response = self._post(f'api/jobs/{id}/log', payload)
         return response
+
+    def checkPreviousTestExists(self, jenkinsJob, buildNumber):
+        response = self._get(
+            f'api/search-job/{jenkinsJob}/buildNumber/{buildNumber}')
+        return response
