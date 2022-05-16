@@ -50,7 +50,7 @@ Route.post('/api/upload', 'ApiController.upload_file')
 Route.get('apidoc', async ({ view }) => view.render('api-doc'))
 
 Route.get('/host/edit', 'AppController.edit_host').as('edit.host')
-Route.get('/settings', 'Appcontroller.edit_host')
+Route.get('/settings', 'AppController.edit_host')
 Route.post('/host/edit', 'AppController.update_host')
 
 Route.get('jobs/new', 'JobsController.new_job_view')
