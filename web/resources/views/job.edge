@@ -46,21 +46,21 @@
                             <th>Duration</th>
                             <td>{{job.duration}} mins.</td>
                         </tr>
+                        <tr>
+                            <th>Memory stress</th>
+                            @if (job.memory)
+                            <td>{{job.memory}}GB</td>
+                            @else
+                            <td>Not applied</td>
+                            @endif
+                        </tr>
                     </tbody>
                 </table>
 
             </div>
+
             <div id="chart" class="col-md-12 col-lg-6 offset-lg-1">
 
-            </div>
-        </div>
-    </div>
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-12">
-                <div id="log">
-
-                </div>
             </div>
         </div>
         <div class="row">
@@ -68,6 +68,18 @@
                 <a href="#" class="btn btn-success">Export data</a>
             </div>
         </div>
+    </div>
+    <div class="container my-5">
+
+        <div class="row">
+            <div class="col-12 col-lg-6 log-wrap p-1">
+                <h5>LOG</h5>
+                <div id="log">
+                    fd
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 
