@@ -14,21 +14,6 @@ latestJenkinsBuild = jenkins.loadLastSuccessfulBuild()
 print(latestJenkinsBuild.job)
 print(latestJenkinsBuild.buildNumber)
 
-lastJob = api.getLastJob()
-nextJob = api.getNextJob()
-
-# if nextJob:
-#     if nextJob['build_number'] == latestJenkinsBuild.buildNumber and nextJob['jenkins_job'] == latestJenkinsBuild.job:
-#         Log.warn(
-#             f'Latest build from Jenkins has already been tested (#{latestJenkinsBuild.buildNumber})')
-#         exit()
-
-# if lastJob:
-#     if lastJob['build_number'] == latestJenkinsBuild.buildNumber and lastJob['jenkins_job'] == latestJenkinsBuild.job:
-#         Log.warn(
-#             f'Latest build from Jenkins has already been tested (#{latestJenkinsBuild.buildNumber})')
-#         exit()
-
 foundExistingJob = api.checkPreviousTestExists(
     latestJenkinsBuild.job, latestJenkinsBuild.buildNumber)
 

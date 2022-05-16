@@ -67,7 +67,14 @@ swUpdate = update_probe_sw(probeIp, 'root', 'elvis',
 if not swUpdate:
     apiclient.logToJob(
         jobId, 'Probe software upgrade failed. See logs.', 'error')
+    apiclient.setJobStatus(jobId, 'failed')
     exit()
+
+if jobReadyToStart['memory'] and jobReadyToStart['memory'] > 0:
+    install_stress_ng()
+    set_memory(probeIp, jobReadyToStart['memory'], jobReadyToStart['duration'])
+    apiclient.logToJob(
+        jobId, message=f'Memory stress set to {jobReadyToStart["memory"]}GB', logType='info')
 
 Log.success('OK')
 print('Setting job started')
