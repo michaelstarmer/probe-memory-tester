@@ -258,6 +258,12 @@
         }
     }
 
+    function logScrollToBottom()
+    {
+        var logDiv = document.getElementById('log')
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
     function generateData()
     {
         fetch(`/api/jobs/${jobId}`)
@@ -337,15 +343,17 @@
     generateData()
     generateChart()
     initializeLogs()
+    logScrollToBottom()
 
     setInterval(() => {
         console.log('Checking for new log entries...')
         fetchLogs()
         .then(logArray => {
             parseLogs(logArray)
+            logScrollToBottom()
         })
         generateData()
-    }, 1000*10)
+    }, 1000*5)
 
     setInterval(() => generateChart(), 1000*25)
 

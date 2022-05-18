@@ -41,7 +41,11 @@
                 N/A
                 @endif
               </h4>
-              <p style="font-size: 12px;">{{ probeData.swVersion }}</p>
+              <p style="font-size: 12px;">
+                @if(probeData.swVersion)
+                {{ probeData.swVersion }}
+                @endif
+              </p>
             </div>
             <div class="card-body mb-1 p-0 text-center">
 
@@ -61,7 +65,6 @@
               <a href="/settings" class="btn btn-warning btn-sm">Settings</a>
               <a href="/apidoc" class="btn btn-secondary btn-sm">API doc</a>
               @if(!probeData.isOffline)
-              <a href="http://{{probeData.ip}}" class="btn btn-secondary btn-sm">Probe UI</a>
               {{--  <a href="http://{{probeData.ip}}:8080/monitorix-cgi/monitorix.cgi?mode=localhost&graph=all&when=1day&color=black"
               target="_blank" class="btn btn-primary btn-sm">Monitor</a> --}}
               @endif
