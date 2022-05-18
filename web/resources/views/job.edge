@@ -23,8 +23,8 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h6>STATUS</h6>
-                <div id="job-status">
-                </div>
+                <h1 id="job-status">
+                </h1>
             </div>
         </div>
 
@@ -90,9 +90,7 @@
                 </div>
             </div>
 
-            <div id="chart" class="col-md-12 col-lg-6 my-lg-5  offset-lg-1">
-
-            </div>
+            <div id="chart" class="col-md-12 col-lg-6 my-lg-5 offset-lg-1"></div>
         </div>
 
 
@@ -181,7 +179,19 @@
     function createChart(stats)
     {
         const jobCtx = document.getElementById('chart');
-        let ctx = jobCtx.appendChild(document.createElement('canvas'));
+        let ctx;
+
+        if (!jobCtx.hasChildNodes())
+        {
+            // let errorDiv = jobCtx.appendChild(document.createElement('h3'))
+            // errorDiv.textContent = "Graph error. Check console."
+            // errorDiv.classList.add('text-center')
+            // console.error("Missing canvas child.")
+            ctx = jobCtx.appendChild(document.createElement('canvas'))
+        } else {
+            ctx = jobCtx.firstChild
+        }
+        // let ctx = jobCtx.appendChild(document.createElement('canvas'));
         let cpu = stats.map(it => it.cpu)
         let mem = stats.map(it => it.mem)
     
@@ -233,8 +243,7 @@
     {
         console.log('Refresh data with payload:');
         console.log(jobData)
-        var status = document.getElementById('job-status')
-        var el = status.appendChild(document.createElement('h1'))
+        var el = document.getElementById('job-status')
         el.textContent = jobData.status
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
@@ -317,6 +326,7 @@
         .then(logArray => {
             parseLogs(logArray)
         })
+        generateData()
         
     }, 1000*10)
 </script>

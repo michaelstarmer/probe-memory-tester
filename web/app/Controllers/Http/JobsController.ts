@@ -38,8 +38,8 @@ Message: ${error.message}
     }
 
     public async save_custom_job({ request, response }: HttpContextContract) {
-        const { jenkinsJob, duration, xmlFileId } = request.all();
-        console.log({ jenkinsJob, duration, xmlFileId })
+        const { jenkinsJob, duration, xmlFileId, memory } = request.all();
+
         let buildNumber = null;
         const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
         const { data } = await axios.get(jenkinsJobUrl);
@@ -49,7 +49,7 @@ Message: ${error.message}
         }
         try {
             const job = await Job.create({
-                memory: 0,
+                memory,
                 jenkinsJob,
                 buildNumber,
                 xmlFileId,
