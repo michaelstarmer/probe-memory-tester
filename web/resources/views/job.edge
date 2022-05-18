@@ -37,12 +37,10 @@
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <th>Job ID</th>
-                                    <td>{{job.id}}</td>
-                                </tr>
-                                <tr>
                                     <th>Jenkins job</th>
-                                    <td>{{job.jenkinsJob}}</td>
+                                    <td><a target="_blank"
+                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}/{{job.buildNumber}}">{{job.jenkinsJob}}</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Build no.</th>
@@ -81,10 +79,10 @@
                     </div>
                 </div>
 
-                <div class="row">
+
+                <div class="row my-3">
                     <div class="col-12">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
                             Quick commands
                         </button>
