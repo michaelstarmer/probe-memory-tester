@@ -32,6 +32,7 @@ Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
 Route.get('/api/jobs/:id/status/:status', 'ApiController.set_job_status')
 Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')
 Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
+Route.get('/api/jobs/:id/log', 'ApiController.get_job_log')
 
 
 Route.post('/api/queue', 'ApiController.create_job')

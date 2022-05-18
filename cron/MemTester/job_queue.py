@@ -30,7 +30,7 @@ Log.info('Job ready to start testing.')
 
 if (jobReadyToStart):
     print('Changing snapshot for manual test.')
-    snapshotSet = esxi.set_snapshot(29, 2)
+    snapshotSet = esxi.set_snapshot(29, 6)
     if not snapshotSet:
         apiclient.logToJob(jobId, 'Error setting snapshot', 'error')
         exit()

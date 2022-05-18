@@ -75,11 +75,7 @@
             <div class="col-12 col-lg-6 log-wrap p-1">
                 <h5>LOG</h5>
                 <div id="log">
-                    @if(job.logs)
-                    @each(log in job.logs)
-                    <div>{{log.message}}</div>
-                    @endeach
-                    @endif
+                    <div id="log-loading">Loading logs...</div>
                 </div>
             </div>
         </div>
@@ -94,6 +90,9 @@
     var job = {{{JSON.stringify(job)}}}
     var jobId = job.id;
     var stats = job.systemStats;
+    var jobLog = [];
+    var logDiv = document.getElementById('log')
+    var logLoadingState = document.getElementById('log-loading')
     console.log(job)
     console.log(stats)
 
@@ -170,26 +169,70 @@
         .catch(e => console.error(e))
     }
 
+    function addLogEntryDiv(log)
+    {
+        var logDiv = document.getElementById('log')
+        let logItemDiv = document.createElement('div')
+        logItemDiv.setAttribute('id', `logitem-${log.id}`)
+        logItemDiv.textContent = log.message;
+        logDiv.appendChild(logItemDiv)
+        jobLog.push(log)
+    }
+
+    function parseLogs(log)
+    {
+        if (log)
+        {
+            logLoadingState.remove()
+        }
+        for (let i = 0; i < log.length; i++)
+        {
+            if (log[i] && !jobLog[i])
+            {
+                console.log('Found new log:', log[i])
+                addLogEntryDiv(log[i])
+            }
+        }
+    }
+
+    
+
+    function fetchLogs()
+    {
+        return new Promise((resolve, reject) => {
+            fetch(`/api/jobs/${jobId}/log`)
+            .then(res => res.json())
+            .then(logArray => {
+                console.log(logArray)
+                resolve(logArray)
+            })
+            .catch(e => reject(e))
+        })
+    }
+
+    function initializeLogs()
+    {
+        fetchLogs()
+        .then(logArray => parseLogs(logArray))
+        .catch(e => console.error('parse log error!', e))
+    }
+
     generateData()
+    initializeLogs()
 
     setInterval(() => {
         console.log('Checking for new log entries...')
-        var log = document.getElementById('log')
-        log.textContent = ""
-        fetch(`/api/jobs/${jobId}`)
-        .then(res => res.json())
-        .then(response => {
-            if (response.logs) {
-                console.log('found log entries')
-                var logEl = document.getElementById('log')
-                for (const l of response.logs)
+        fetchLogs(logArray => {
+            for (const log of logArray)
+            {
+                let logItemDiv = document.getElementById(`logitem-${log.id}`)
+                if (!logItemDiv)
                 {
-                    console.log('Log entry:', l)
-                    var log = logEl.appendChild(document.createElement('div'))
-                    log.textContent = l.message
+                    addLogEntryDiv(log)
                 }
             }
         })
+        
     }, 1000*10)
 </script>
 

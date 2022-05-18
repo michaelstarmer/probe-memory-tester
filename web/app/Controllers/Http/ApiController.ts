@@ -228,6 +228,19 @@ export default class ApiController {
         }
     }
 
+    public async get_job_log({ params, response }: HttpContextContract) {
+        const { id } = params;
+        const job = await Job.find(id)
+        await job?.load('logs')
+
+        if (!job) {
+            return response.status(400).json({ error: `Job not found with ID: ${id}` });
+        }
+
+        console.log(`Logs saved to job: ${job.logs.length}`)
+        return response.json(job.logs)
+    }
+
     public async set_job_status({ request, response, params }: HttpContextContract) {
         const { id, status } = params;
         const job = await Job.findBy('id', id)
