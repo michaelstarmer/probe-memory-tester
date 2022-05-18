@@ -12,6 +12,9 @@
     <style>
 
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -21,7 +24,14 @@
                 <h6>STATUS</h6>
                 <div id="job-status">
                 </div>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Quick commands
+                </button>
             </div>
         </div>
     </div>
@@ -63,29 +73,71 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <a href="#" class="btn btn-success">Export data</a>
-            </div>
-        </div>
+
     </div>
     <div class="container my-5">
 
         <div class="row">
-            <div class="col-12 col-lg-6 log-wrap p-1">
-                <h5>LOG</h5>
+            <div class="col-12 col-lg-6 log-wrap">
+                <h4>LOG</h4>
                 <div id="log">
                     <div id="log-loading">Loading logs...</div>
                 </div>
             </div>
         </div>
+    </div>
 
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Manual commands</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This is a list of relevant bash commands for interacting with ESXi or the VM host itself.</p>
+                    <div class="mb-3">
+                        <h6>SSH connect:</h6>
+                        <div>
+                            <span>ssh@</span><span>{{probeIp.value}}</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <h6>ESXi revert to default snapshot:</h6>
+                        <div>
+                            <span>vim-cmd vmsvc/snapshot.revert 6 29</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <h6>ESXi reboot VM:</h6>
+                        <div>
+                            <span>vim-cmd vmsvc/power.reset 29</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <h6>ESXi get all snapshots for VM:</h6>
+                        <div>
+                            <span>vim-cmd vmsvc/snapshot.getall 29</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
 <script>
     var job = {{{JSON.stringify(job)}}}
     var jobId = job.id;
@@ -174,7 +226,11 @@
         var logDiv = document.getElementById('log')
         let logItemDiv = document.createElement('div')
         logItemDiv.setAttribute('id', `logitem-${log.id}`)
-        logItemDiv.textContent = log.message;
+        if (log.type === 'error')
+        {
+            logItemDiv.classList.add('log-error')
+        }
+        logItemDiv.textContent = `${log.created_at} - ${log.message}`;
         logDiv.appendChild(logItemDiv)
         jobLog.push(log)
     }
@@ -183,7 +239,12 @@
     {
         if (log)
         {
-            logLoadingState.remove()
+            if (log.length > 0)
+            {
+                logLoadingState.remove()
+            } else {
+                logLoadingState.textContent = 'No logs'
+            }
         }
         for (let i = 0; i < log.length; i++)
         {

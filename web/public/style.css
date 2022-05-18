@@ -140,3 +140,12 @@ main code {
 table.table tbody th {
   font-weight: 700;
 }
+
+#log {
+  font-family: 'Inconsolata', monospace;
+  text-shadow: 0 0 5px #C8C8C8;
+}
+
+.log-error {
+  color: red;
+}

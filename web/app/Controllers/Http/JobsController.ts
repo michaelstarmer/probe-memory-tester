@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job';
+import Settings from 'App/Models/Setting';
 import axios from 'axios';
 
 export default class JobsController {
@@ -65,11 +66,14 @@ Message: ${error.message}
 
     public async view_job({ view, response, params }: HttpContextContract) {
         const job = await Job.query().where('id', params.id).preload('systemStats').preload('logs').first()
+        const probeIp = await Settings.findBy('key', 'probe_ip')
+
         if (!job) {
             return response.send(`Job with ID ${params.id} not found.`);
         }
+
         console.log('Job found:', job)
-        return view.render('job', { job });
+        return view.render('job', { job, probeIp });
     }
 
 }

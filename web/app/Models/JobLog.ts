@@ -18,7 +18,12 @@ export default class JobLog extends BaseModel {
   @belongsTo(() => Job)
   public job: BelongsTo<typeof Job>
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({
+    autoCreate: true,
+    serialize: (value: DateTime | null) => {
+      return value ? value.setLocale('no').toFormat('f') : value
+    },
+  })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
