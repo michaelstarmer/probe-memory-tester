@@ -48,7 +48,9 @@
                                 </tr>
                                 <tr>
                                     <th>Duration</th>
-                                    <td>{{job.duration}} mins.</td>
+                                    <td>
+                                        <span id="minutes-remaining"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Memory stress</th>
@@ -69,7 +71,11 @@
                                 <tr>
                                     <th>Started at</th>
                                     @if (job.startedAt)
-                                    <td>{{job.startedAt.setLocale('no').toFormat('f')}}</td>
+                                    <td>
+                                        <span id="started-at">
+                                            {{job.startedAt.setLocale('no').toFormat('f')}}
+                                        </span>
+                                    </td>
                                     @else
                                     <td></td>
                                     @endif
@@ -179,18 +185,18 @@
     function createChart(stats)
     {
         const jobCtx = document.getElementById('chart');
-        let ctx;
-
-        if (!jobCtx.hasChildNodes())
+        let existingCanvas = jobCtx.firstElementChild;
+        if (existingCanvas)
         {
-            // let errorDiv = jobCtx.appendChild(document.createElement('h3'))
-            // errorDiv.textContent = "Graph error. Check console."
-            // errorDiv.classList.add('text-center')
-            // console.error("Missing canvas child.")
-            ctx = jobCtx.appendChild(document.createElement('canvas'))
-        } else {
-            ctx = jobCtx.firstChild
+            existingCanvas.remove()
         }
+
+        // let errorDiv = jobCtx.appendChild(document.createElement('h3'))
+        // errorDiv.textContent = "Graph error. Check console."
+        // errorDiv.classList.add('text-center')
+        // console.error("Missing canvas child.")
+        ctx = jobCtx.appendChild(document.createElement('canvas'))
+    
         // let ctx = jobCtx.appendChild(document.createElement('canvas'));
         let cpu = stats.map(it => it.cpu)
         let mem = stats.map(it => it.mem)
@@ -244,9 +250,14 @@
         console.log('Refresh data with payload:');
         console.log(jobData)
         var el = document.getElementById('job-status')
+        var minutesRemaining = document.getElementById('minutes-remaining')
+        var startedAt = document.getElementById('started-at')
+
         el.textContent = jobData.status
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
+        minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
+        
     }
 
     function generateData()
@@ -255,8 +266,17 @@
         .then(res => res.json())
         .then(response => {
             refreshData(response)
-            createChart(response.systemStats)
         })
+        .catch(e => console.error(e))
+    }
+
+    function generateChart()
+    {
+        fetch(`/api/jobs/${jobId}`)
+            .then(res => res.json())
+            .then(response => {
+                createChart(response.systemStats)
+            })
         .catch(e => console.error(e))
     }
 
@@ -318,6 +338,7 @@
     }
 
     generateData()
+    generateChart()
     initializeLogs()
 
     setInterval(() => {
@@ -327,8 +348,9 @@
             parseLogs(logArray)
         })
         generateData()
-        
     }, 1000*10)
+
+    setInterval(() => generateChart(), 1000*25)
 </script>
 
 </html>

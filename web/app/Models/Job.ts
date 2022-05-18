@@ -42,11 +42,11 @@ export default class Job extends BaseModel {
 
   @computed()
   public get remaining() {
-    if (!this.createdAt)
+    if (!this.startedAt)
       return
 
     if (this.status === "running") {
-      return Math.ceil(this.createdAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
+      return Math.ceil(this.startedAt.plus({ minutes: this.duration }).diffNow().as('minutes'))
     }
   }
 
