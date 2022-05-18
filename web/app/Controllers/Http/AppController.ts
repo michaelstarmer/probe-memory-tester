@@ -81,6 +81,8 @@ export default class AppController {
         const probeIp = await Setting.findBy('key', 'probe_ip')
         const jenkinsJob = await Setting.findBy('key', 'jenkins_job')
         const duration = await Setting.findBy('key', 'duration')
+        const esxi_vmid = await Setting.findBy('key', 'esxi_vmid')
+        const esxi_snapshot_id = await Setting.findBy('key', 'esxi_snapshot_id')
         const { error } = request.all();
         console.log(error)
 
@@ -98,13 +100,15 @@ export default class AppController {
             probeIp: probeIp?.value,
             jenkinsJob: jenkinsJob?.value,
             duration: duration?.value,
+            esxi_vmid: esxi_vmid?.value,
+            esxi_snapshot_id: esxi_snapshot_id?.value,
             jobs,
             error
         })
     }
 
     async update_host({ request, response }: HttpContextContract) {
-        const { probeIp, jenkinsJob, duration } = request.only(['probeIp', 'jenkinsJob', 'duration'])
+        const { probeIp, jenkinsJob, duration, esxi_vmid, esxi_snapshot_id } = request.only(['probeIp', 'jenkinsJob', 'duration', 'esxi_vmid', 'esxi_snapshot_id'])
 
         if (!probeIp || !probeIp.length) {
             return response.redirect().withQs({ error: 'Probe ip required' }).toRoute('edit.host')
@@ -114,6 +118,8 @@ export default class AppController {
             await Setting.query().where('key', 'probe_ip').update({ value: probeIp });
             await Setting.query().where('key', 'jenkins_job').update({ value: jenkinsJob });
             await Setting.query().where('key', 'duration').update({ value: duration });
+            await Setting.query().where('key', 'esxi_vmid').update({ value: esxi_vmid });
+            await Setting.query().where('key', 'esxi_snapshot_id').update({ value: esxi_snapshot_id });
 
             return response.redirect().toRoute('home')
         } catch (error) {
