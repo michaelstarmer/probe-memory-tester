@@ -254,9 +254,10 @@
         var startedAt = document.getElementById('started-at')
 
         el.textContent = jobData.status
+        el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
-        minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
+        minutesRemaining.textContent = `${jobData.remaining || 0} min. left (${jobData.duration} min.)`
         
     }
 
