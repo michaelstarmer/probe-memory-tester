@@ -57,10 +57,10 @@
             </div>
 
             <div class="card-body text-center">
-              <a href="/settings" class="btn btn-primary btn-sm">Settings</a>
+              <a href="/settings" class="btn btn-warning btn-sm">Settings</a>
               <a href="/apidoc" class="btn btn-primary btn-sm">API doc</a>
               @if(!probeData.isOffline)
-              <a href="http://{{probeData.ip}}" class="btn btn-warning btn-sm">Probe UI</a>
+              <a href="http://{{probeData.ip}}" class="btn btn-primary btn-sm">Probe UI</a>
               {{--  <a href="http://{{probeData.ip}}:8080/monitorix-cgi/monitorix.cgi?mode=localhost&graph=all&when=1day&color=black"
               target="_blank" class="btn btn-primary btn-sm">Monitor</a> --}}
               @endif
