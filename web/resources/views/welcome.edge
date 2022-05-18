@@ -94,64 +94,40 @@
     </div>
     <div class="container my-3">
 
-      <div class="accordion accordion-flush" id="accordionFlushExample">
-        @each(job in jobs)
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#flush-{{job.id}}" aria-expanded="false" aria-controls="flush-{{job.id}}">
-              <span>
-                {{ job.createdAt && job.createdAt.setLocale('no').toFormat('f')}} - &nbsp;
-              </span>
-              <strong>{{ job.jenkinsJob }}</strong>
-              @if(job.status == 'completed')
-              <span class="badge bg-success rounded-pill mx-3">Done</span>
-              @elseif(job.status == 'running')
-              <span class="badge bg-info rounded-pill mx-3">Running</span>
+      @each(job in jobs)
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{job.jenkinsJob}}
+          </h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Build #{{job.buildNumber}}
+            @if(job.status == 'completed')
+            <span class="badge bg-success rounded-pill mx-1">Done</span>
+            @elseif(job.status == 'running')
+            <span class="badge bg-info rounded-pill mx-1">Running</span>
+            @else
+            <span class="badge bg-secondary rounded-pill mx-1">Queued</span>
+            @endif
+          </h6>
+          <div class="my-3">
+            <div>
+              <strong>Type: </strong>
+              @if(job.isManual)
+              MANUAL
               @else
-              <span class="badge bg-secondary rounded-pill mx-3">Queued</span>
+              AUTOMATIC
               @endif
-            </button>
-          </h2>
-
-          </span>
-          <div id="flush-{{job.id}}" class="accordion-collapse" aria-labelledby="flush-headingOne"
-            data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-              <div class="container">
-                <div class="row">
-                  <div class="col-12">
-                    <strong>Build:</strong> {{job.buildNumber}}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 col-lg-6">
-                    <span><strong>Type:</strong>
-                      @if(job.isManual)
-                      MANUAL
-                      @else
-                      AUTOMATIC
-                      @endif
-                  </div>
-                  <div class="col-md-12 col-lg-6 text-center">
-                    <a href="/jobs/{{job.id}}" class="">View test</a>
-                  </div>
-                </div>
-                <div class="row">
-                </div>
-                <div class="row row-cols-1 row-cols-lg-2">
-
-                </div>
-              </div>
-
-
-              {{--  Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.  --}}
+            </div>
+            <div>
+              <strong>Created: </strong> {{ job.createdAt && job.createdAt.setLocale('no').toFormat('f')}}
             </div>
           </div>
+          <a href="/jobs/{{job.id}}" class="card-link">View test details</a>
         </div>
-        @endeach
-
       </div>
+      @endeach
+
     </div>
 
   </main>

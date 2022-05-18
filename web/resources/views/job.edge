@@ -59,6 +59,22 @@
                                     <td>Not applied</td>
                                     @endif
                                 </tr>
+                                <tr>
+                                    <th>Created at</th>
+                                    @if (job.createdAt)
+                                    <td>{{job.createdAt.setLocale('no').toFormat('f')}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Started at</th>
+                                    @if (job.startedAt)
+                                    <td>{{job.startedAt.setLocale('no').toFormat('f')}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
+                                </tr>
                             </tbody>
                         </table>
                     </div>
