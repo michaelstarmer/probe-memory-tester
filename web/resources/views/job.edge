@@ -26,53 +26,60 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 col-lg-4">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Quick commands
-                </button>
-            </div>
-        </div>
+
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-5">
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Job ID</th>
-                            <td>{{job.id}}</td>
-                        </tr>
-                        <tr>
-                            <th>Jenkins job</th>
-                            <td>{{job.jenkinsJob}}</td>
-                        </tr>
-                        <tr>
-                            <th>Build no.</th>
-                            <td>{{job.buildNumber}}</td>
-                        </tr>
-                        <tr>
-                            <th>Duration</th>
-                            <td>{{job.duration}} mins.</td>
-                        </tr>
-                        <tr>
-                            <th>Memory stress</th>
-                            @if (job.memory)
-                            <td>{{job.memory}}GB</td>
-                            @else
-                            <td>Not applied</td>
-                            @endif
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <td>{{job.id}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jenkins job</th>
+                                    <td>{{job.jenkinsJob}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Build no.</th>
+                                    <td>{{job.buildNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Duration</th>
+                                    <td>{{job.duration}} mins.</td>
+                                </tr>
+                                <tr>
+                                    <th>Memory stress</th>
+                                    @if (job.memory)
+                                    <td>{{job.memory}}GB</td>
+                                    @else
+                                    <td>Not applied</td>
+                                    @endif
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Quick commands
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div id="chart" class="col-md-12 col-lg-6 offset-lg-1">
 
             </div>
         </div>
+
 
     </div>
     <div class="container my-5">

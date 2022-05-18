@@ -11,7 +11,7 @@ export default class SettingsSeeder extends BaseSeeder {
         { key: 'vm_name', value: 'sw-probe-memtest' },
         { key: 'job_interval', value: '3000' },
         { key: 'jenkins_job', value: 'CentOS7-based_6.1' },
-        { key: 'duration', value: '60' },
+        { key: 'duration', value: '30' },
         { key: 'esxi_vmid', value: '29' },
         { key: 'esxi_snapshot_id', value: '6' },
       ])
