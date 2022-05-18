@@ -6,6 +6,7 @@ from probe_ssh import RemoteClient
 def install_stress_ng(RHOST):
     probe = RemoteClient(RHOST, 'root', 'elvis')
     probe.installPackage('stress-ng')
+    return True
 
 
 def set_memory(RHOST, MEMORY, DURATION):
