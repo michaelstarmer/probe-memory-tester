@@ -30,8 +30,14 @@
 
     </div>
     <div class="container">
+
         <div class="row">
-            <div class="col-md-12 col-lg-5 mb-5">
+            <div id="chart" class="col-12"></div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 col-lg-5 mb-3">
                 <div class="row">
                     <div class="col-12">
                         <table class="table">
@@ -97,7 +103,7 @@
             </div>
 
 
-            <div class="col-12 col-lg-6 offset-lg-1 log-wrap">
+            <div class="col-12 col-lg-6 offset-lg-1 mb-5 log-wrap">
                 <h4>LOG</h4>
                 <div id="log" class="snippet">
                     <div id="log-loading">Loading logs...</div>
@@ -107,12 +113,7 @@
 
 
     </div>
-    <div class="container">
 
-        <div class="row">
-            <div id="chart" class="col-12"></div>
-        </div>
-    </div>
 
 
 
@@ -192,13 +193,8 @@
             existingCanvas.remove()
         }
 
-        // let errorDiv = jobCtx.appendChild(document.createElement('h3'))
-        // errorDiv.textContent = "Graph error. Check console."
-        // errorDiv.classList.add('text-center')
-        // console.error("Missing canvas child.")
         ctx = jobCtx.appendChild(document.createElement('canvas'))
     
-        // let ctx = jobCtx.appendChild(document.createElement('canvas'));
         let cpu = stats.map(it => it.cpu)
         let mem = stats.map(it => it.mem)
     
@@ -248,8 +244,6 @@
 
     function refreshData(jobData)
     {
-        console.log('Refresh data with payload:');
-        console.log(jobData)
         var el = document.getElementById('job-status')
         var minutesRemaining = document.getElementById('minutes-remaining')
         var startedAt = document.getElementById('started-at')
@@ -259,26 +253,21 @@
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
         minutesRemaining.textContent = `${jobData.remaining || 0} min. left (${jobData.duration} min.)`
-        
     }
 
     function generateData()
     {
         fetch(`/api/jobs/${jobId}`)
         .then(res => res.json())
-        .then(response => {
-            refreshData(response)
-        })
+        .then(response => refreshData(response))
         .catch(e => console.error(e))
     }
 
     function generateChart()
     {
         fetch(`/api/jobs/${jobId}`)
-            .then(res => res.json())
-            .then(response => {
-                createChart(response.systemStats)
-            })
+        .then(res => res.json())
+        .then(response => createChart(response.systemStats))
         .catch(e => console.error(e))
     }
 
@@ -290,6 +279,10 @@
         if (log.type === 'error')
         {
             logItemDiv.classList.add('log-error')
+        }
+        else if (log.type === 'warn')
+        {
+            logItemDiv.classList.add('log-warn')
         }
         logItemDiv.textContent = `${log.created_at} - ${log.message}`;
         logDiv.appendChild(logItemDiv)
@@ -311,7 +304,6 @@
         {
             if (log[i] && !jobLog[i])
             {
-                console.log('Found new log:', log[i])
                 addLogEntryDiv(log[i])
             }
         }
@@ -353,6 +345,7 @@
     }, 1000*10)
 
     setInterval(() => generateChart(), 1000*25)
+
 </script>
 
 </html>

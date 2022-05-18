@@ -152,8 +152,14 @@ table.table tbody th {
 #log {
   font-family: 'Inconsolata', monospace;
   text-shadow: 0 0 5px #C8C8C8;
+  max-height: 200px;
+  overflow: scroll;
 }
 
 .log-error {
   color: red;
+}
+
+.log-warn {
+  color: #d48806;
 }
