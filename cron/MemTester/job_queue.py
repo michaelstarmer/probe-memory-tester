@@ -71,7 +71,11 @@ if not swUpdate:
     exit()
 
 if jobReadyToStart['memory'] and jobReadyToStart['memory'] > 0:
-    install_stress_ng()
+    if install_stress_ng(probeIp):
+        apiclient.logToJob(jobId, 'Installed stress-ng', logType='info')
+    else:
+        apiclient.logToJob(
+            jobId, 'Error installing stress-ng', logType='error')
     set_memory(probeIp, jobReadyToStart['memory'], jobReadyToStart['duration'])
     apiclient.logToJob(
         jobId, message=f'Memory stress set to {jobReadyToStart["memory"]}GB', logType='info')
