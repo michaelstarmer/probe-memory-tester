@@ -124,27 +124,30 @@
                 <div class="modal-body">
                     <p>This is a list of relevant bash commands for interacting with ESXi or the VM host itself.</p>
                     <div class="mb-3">
-                        <h6>SSH connect:</h6>
-                        <div>
+                        <h6>SSH probe:</h6>
+                        <div class="snippet">
                             <span>ssh@</span><span>{{probeIp.value}}</span>
                         </div>
                     </div>
                     <div class="mb-3">
                         <h6>ESXi revert to default snapshot:</h6>
-                        <div>
-                            <span>vim-cmd vmsvc/snapshot.revert 6 29</span>
+                        <div class="snippet">
+                            <span>
+                                sshpass -p elvis ssh 10.0.28.187 vim-cmd vmsvc/snapshot.revert 29 6 true || exit
+                                1
+                            </span>
                         </div>
                     </div>
                     <div class="mb-3">
                         <h6>ESXi reboot VM:</h6>
-                        <div>
-                            <span>vim-cmd vmsvc/power.reset 29</span>
+                        <div class="snippet">
+                            <span>sshpass -p elvis ssh 10.0.28.187 vim-cmd vmsvc/power.reset 29</span>
                         </div>
                     </div>
                     <div class="mb-3">
                         <h6>ESXi get all snapshots for VM:</h6>
-                        <div>
-                            <span>vim-cmd vmsvc/snapshot.getall 29</span>
+                        <div class="snippet">
+                            <span>sshpass -p elvis ssh 10.0.28.187 vim-cmd vmsvc/snapshot.getall 29</span>
                         </div>
                     </div>
                 </div>

@@ -44,6 +44,13 @@ main {
   color: #17161A;
 }
 
+.snippet {
+  font-family: 'Inconsolta', monospace;
+  font-size: 14px;
+  padding: 5px;
+  background-color: #ECF0F1;
+}
+
 .desktop-title {
   /* margin-top: 30px; */
   line-height: 0;
