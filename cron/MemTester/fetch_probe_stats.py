@@ -22,7 +22,8 @@ api = WebApi(API_HOST)
 settings = api.getSettings()
 
 if settings['probe_ip']:
-    Log.info('Probe IP detected in db settings. Using VM HOST: ' + settings['probe_ip'])
+    Log.info('Probe IP detected in db settings. Using VM HOST: ' +
+             settings['probe_ip'])
     VM_HOST = settings['probe_ip']
 
 if os.environ.get('API_HOST'):
@@ -178,4 +179,6 @@ data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
 print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
+else:
+    api.logToJob(job_id, 'Error while reading CPU/RAM from probe.', 'error')
 exit(0)
