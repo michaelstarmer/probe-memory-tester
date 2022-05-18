@@ -42,9 +42,11 @@ if (jobReadyToStart):
     for i in range(6):
         sleep(10)
         print('Pinging probe...')
+        apiclient.logToJob(jobId, message='Pinging probe...')
         probeRequest = requests.get(f'http://{probeIp}/probe/status')
         if probeRequest.status_code == 200:
             probeIsOnline = True
+            apiclient.logToJob(jobId, message='Probe is back online.')
             break
     if probeIsOnline:
         Log.success('Probe is online!')
@@ -62,6 +64,7 @@ apiclient.logToJob(
 Log.success('OK')
 
 print('\nUpdating probe sw.')
+apiclient.logToJob(jobId, message='Starting probe SW update.')
 swUpdate = update_probe_sw(probeIp, 'root', 'elvis',
                            swVersion=None, jobName=jobReadyToStart['jenkins_job'])
 if not swUpdate:
@@ -84,6 +87,7 @@ Log.success('OK')
 print('Setting job started')
 apiclient.startJob(jobReadyToStart['id'])
 apiclient.logToJob(jobId, 'Updated probe software', 'info')
+apiclient.logToJob(jobId, 'Setup completed.')
 
 Log.success('OK')
 
