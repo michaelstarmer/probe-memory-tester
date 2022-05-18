@@ -55,7 +55,7 @@
                                 <tr>
                                     <th>Duration</th>
                                     <td>
-                                        <span id="minutes-remaining"></span>
+                                        <span id="minutes-remaining">{{job.duration}} minutes</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -252,7 +252,10 @@
         el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
-        minutesRemaining.textContent = `${jobData.remaining || 0} min. left (${jobData.duration} min.)`
+        if (minutesRemaining && minutesRemaining > 0)
+        {
+            minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
+        }
     }
 
     function generateData()
