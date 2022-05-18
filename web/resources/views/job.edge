@@ -252,7 +252,7 @@
         el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
-        if (minutesRemaining && minutesRemaining > 0)
+        if (jobData.remaining && jobData.remaining > 0)
         {
             minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
         }
