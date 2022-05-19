@@ -34,9 +34,9 @@ if not jobReadyToStart or not jobReadyToStart['id']:
     exit(0)
 jobId = jobReadyToStart['id']
 
+apiclient.setJobStatus(jobId, 'initializing')
 print(jobReadyToStart)
 Log.info('Job ready to start testing.')
-apiclient.setJobStatus(jobId, 'initializing')
 
 if (jobReadyToStart):
     print('Changing snapshot for manual test.')
