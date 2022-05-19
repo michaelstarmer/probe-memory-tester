@@ -245,7 +245,7 @@ export default class ApiController {
         const { id, status } = params;
         const job = await Job.findBy('id', id)
 
-        const validStatuses = ['waiting', 'completed', 'running', 'failed'];
+        const validStatuses = ['waiting', 'initializing', 'completed', 'running', 'failed'];
         if (!validStatuses.includes(status)) {
             return response.status(400).json({ error: 'Status not valid', validStatuses })
         }
