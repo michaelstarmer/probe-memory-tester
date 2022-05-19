@@ -34,9 +34,8 @@ if not jobReadyToStart or not jobReadyToStart['id']:
     exit(0)
 jobId = jobReadyToStart['id']
 
-apiclient.setJobStatus(19, 'initializing')
 print(jobReadyToStart)
-exit()
+apiclient.setJobStatus(jobId, 'initializing')
 Log.info('Job ready to start testing.')
 
 if (jobReadyToStart):
