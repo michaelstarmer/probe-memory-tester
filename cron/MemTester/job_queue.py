@@ -12,6 +12,7 @@ from stress import install_stress_ng, set_memory
 apiclient = WebApi('http://localhost:3333')
 esxi = ESXiClient('10.0.28.202', 'root', 'ldap2retro!')
 
+settings = {}
 settings = apiclient.getSettings()
 probeIp = settings['probe_ip']
 autoTestJenkinsJob = settings['jenkins_job']
@@ -19,8 +20,10 @@ autoTestJenkinsJob = settings['jenkins_job']
 esxiVmId = 29
 esxiSnapshotId = 6
 
-if settings['esxi_snapshot_id']: esxiSnapshotId = settings['esxi_snapshot_id']
-if settings['esxi_vm_id']: esxiVmId = settings['esxi_vm_id']
+if settings.get('esxi_snapshot_id'):
+    esxiSnapshotId = settings['esxi_snapshot_id']
+if settings.get('esxi_vmid'):
+    esxiVmId = settings['esxi_vmid']
 
 probe = RemoteClient(probeIp, 'root', 'elvis')
 eii = Probe(probe_ip=probeIp)
