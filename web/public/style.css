@@ -4,6 +4,7 @@ body {
   font-family: 'Poppins', sans-serif;
   height: 100vh;
   color: #46444c;
+  font-size: 0.8rem;
 }
 
 /* 
@@ -73,6 +74,7 @@ p {
   border-radius: 50%;
   box-shadow: 2px 1px 6px #46444c;
   margin: 6px 10px;
+  font-size: 1rem;
 }
 
 .status-lamp--green {
@@ -132,6 +134,7 @@ main code {
   position: relative;
 }
 
+
 .desktop img {
   max-width: 60%;
 
@@ -142,7 +145,7 @@ main code {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  height: 250px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -169,3 +172,9 @@ table.table tbody th {
 }
 
 /* .text-muted {} */
+.card .status-text {
+  font-size: 1rem;
+}
+.card .card-body {
+  /* font-size: 14px; */
+}
