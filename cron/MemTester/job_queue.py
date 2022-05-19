@@ -16,6 +16,12 @@ settings = apiclient.getSettings()
 probeIp = settings['probe_ip']
 autoTestJenkinsJob = settings['jenkins_job']
 
+esxiVmId = 29
+esxiSnapshotId = 6
+
+if settings['esxi_snapshot_id']: esxiSnapshotId = settings['esxi_snapshot_id']
+if settings['esxi_vm_id']: esxiVmId = settings['esxi_vm_id']
+
 probe = RemoteClient(probeIp, 'root', 'elvis')
 eii = Probe(probe_ip=probeIp)
 
@@ -27,22 +33,25 @@ jobId = jobReadyToStart['id']
 
 print(jobReadyToStart)
 Log.info('Job ready to start testing.')
+apiclient.setJobStatus(jobId, 'initializing')
 
 if (jobReadyToStart):
     print('Changing snapshot for manual test.')
     snapshotSet = esxi.set_snapshot(29, 6)
     if not snapshotSet:
         apiclient.logToJob(jobId, 'Error setting snapshot', 'error')
+        apiclient.setJobStatus(jobId, 'failed')
         exit()
     poweredOn = esxi.power_on_vm(29)
     if not poweredOn:
         apiclient.logToJob(jobId, 'Error restarting vm', 'error')
+        apiclient.setJobStatus(jobId, 'failed')
         exit()
     probeIsOnline = False
     for i in range(6):
+        apiclient.logToJob(jobId, message='Pinging probe...')
         sleep(10)
         print('Pinging probe...')
-        apiclient.logToJob(jobId, message='Pinging probe...')
         probeRequest = requests.get(f'http://{probeIp}/probe/status')
         if probeRequest.status_code == 200:
             probeIsOnline = True
@@ -64,7 +73,7 @@ apiclient.logToJob(
 Log.success('OK')
 
 print('\nUpdating probe sw.')
-apiclient.logToJob(jobId, message='Starting probe SW update.')
+apiclient.logToJob(jobId, message='Updating probe SW.')
 swUpdate = update_probe_sw(probeIp, 'root', 'elvis',
                            swVersion=None, jobName=jobReadyToStart['jenkins_job'])
 if not swUpdate:
@@ -83,11 +92,9 @@ if jobReadyToStart['memory'] and jobReadyToStart['memory'] > 0:
     apiclient.logToJob(
         jobId, message=f'Memory stress set to {jobReadyToStart["memory"]}GB', logType='info')
 
-Log.success('OK')
-print('Setting job started')
 apiclient.startJob(jobReadyToStart['id'])
-apiclient.logToJob(jobId, 'Updated probe software', 'info')
-apiclient.logToJob(jobId, 'Setup completed.')
+apiclient.logToJob(jobId, 'Successfully updated probe SW', 'info')
+apiclient.logToJob(jobId, 'Initialization complete.')
 
 Log.success('OK')
 
