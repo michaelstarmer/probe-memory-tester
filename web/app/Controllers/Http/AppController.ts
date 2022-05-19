@@ -18,6 +18,7 @@ export default class AppController {
                     statsQuery.groupLimit(10)
                 })
                 .orderBy('created_at', 'desc')
+                .limit(5)
 
             const probeIp = await Setting.findByOrFail('key', 'probe_ip')
             const vmName = await Setting.findByOrFail('key', 'vm_name');

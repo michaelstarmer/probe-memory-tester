@@ -30,10 +30,10 @@ a {
 }
 
 main {
-  max-width: 778px;
+  max-width: 992px;
   margin: auto;
   min-height: 100vh;
-  padding: 30px 30px;
+  /* padding: 10px 10px; */
   /* display: flex;
     justify-content: center; */
 }
@@ -52,11 +52,6 @@ main {
   background-color: #ECF0F1;
 }
 
-.desktop-title {
-  /* margin-top: 30px; */
-  line-height: 0;
-  font-size: 30px;
-}
 
 .subtitle {
   font-size: 26px;
@@ -134,6 +129,12 @@ main code {
   position: relative;
 }
 
+.desktop-title {
+  /* margin-top: 30px; */
+  line-height: 0;
+  font-size: 24px;
+}
+
 
 .desktop img {
   max-width: 60%;
@@ -145,7 +146,7 @@ main code {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  height: 200px;
+  height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;

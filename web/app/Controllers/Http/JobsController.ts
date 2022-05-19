@@ -5,6 +5,24 @@ import axios from 'axios';
 
 export default class JobsController {
 
+    public async view_all_jobs({ view, response })
+    {
+        const jobs = await Job.query()
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => {
+                statsQuery.groupLimit(10)
+            })
+            .orderBy('created_at', 'desc')
+            .limit(5)
+
+        try {
+            return view.render('all-jobs', { jobs })
+        } catch (error) {
+            console.error(error)
+            return response.send(error)
+        }
+    }
+
     public async new_job_view({ view, response }) {
 
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
