@@ -45,12 +45,15 @@
                                 <tr>
                                     <th>Jenkins job</th>
                                     <td><a target="_blank"
-                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}/{{job.buildNumber}}">{{job.jenkinsJob}}</a>
+                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}">{{job.jenkinsJob}}</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Build no.</th>
-                                    <td>{{job.buildNumber}}</td>
+                                    <td>
+                                        <a target="_blank"
+                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}/{{job.buildNumber}}">{{job.buildNumber}}</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Duration</th>
@@ -252,9 +255,11 @@
         el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
-        if (jobData.remaining && jobData.remaining > 0)
+        if (jobData.remaining && jobData.remaining >= 1)
         {
             minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
+        } else {
+            minutesRemaining.textContent = `${jobData.duration} minutes`
         }
     }
 
