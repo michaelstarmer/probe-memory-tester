@@ -60,8 +60,9 @@ export default class AppController {
                 return response.send("Could not connect to database @ " + error.address + ":" + error.port);
             }
             if (error.code === "ECONNABORTED") {
-                // return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
                 console.error(error)
+                return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
+                
             }
 
             return response.send("Connection error: " + error.errcode)
