@@ -36,10 +36,12 @@ jobId = jobReadyToStart['id']
 
 print(jobReadyToStart)
 apiclient.setJobStatus(jobId, 'initializing')
+apiclient.logToJob(jobId, 'Preparing new test environment')
 Log.info('Job ready to start testing.')
 
 if (jobReadyToStart):
     print('Changing snapshot for manual test.')
+    apiclient.logToJob(jobId, 'Reverting to default snapshot')
     snapshotSet = esxi.set_snapshot(29, 6)
     if not snapshotSet:
         apiclient.logToJob(jobId, 'Error setting snapshot', 'error')
@@ -52,8 +54,8 @@ if (jobReadyToStart):
         exit()
     probeIsOnline = False
     for i in range(6):
-        apiclient.logToJob(jobId, message='Pinging probe...')
         sleep(10)
+        apiclient.logToJob(jobId, message='Pinging probe...')
         print('Pinging probe...')
         probeRequest = requests.get(f'http://{probeIp}/probe/status')
         if probeRequest.status_code == 200:
@@ -73,7 +75,6 @@ print('\nImporting XML')
 # eii.import_config(jobReadyToStart['xmlConfig']['filename'])
 apiclient.logToJob(
     jobId, message='Imported XML configuration.', logType='info')
-Log.success('OK')
 
 print('\nUpdating probe sw.')
 apiclient.logToJob(jobId, message='Updating probe SW.')

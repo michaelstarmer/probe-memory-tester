@@ -10,7 +10,7 @@ export default class AppController {
         const parser = new xml2js.Parser()
 
         // Fetch all jobs and limit each of them to display the 10 latest system stats (cpu/mem)
-        try {
+        
 
             const jobs = await Job.query()
                 .preload('xmlConfig')
@@ -33,6 +33,7 @@ export default class AppController {
             /**
              * perform a simple check to see if probe is online and reachable
              */
+        try {
             const payload = await axios.get(`http://${probeIp.value}/probe/status`, { timeout: 3000 });
 
             if (activeJobsCount > 0) {
@@ -61,6 +62,9 @@ export default class AppController {
             }
             if (error.code === "ECONNABORTED") {
                 console.error(error)
+                probeData.isOffline = true;
+                const e = "Probe connection timed out."
+                return view.render('welcome', { jobs, probeData, error: e })
                 return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
                 
             }

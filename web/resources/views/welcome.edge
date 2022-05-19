@@ -22,7 +22,9 @@
 
 
     <div class="container-fluid mb-5">
+
       <div class="row justify-content-md-center">
+        
       </div>
       <div class="row justify-content-md-center">
 
@@ -31,6 +33,11 @@
         <div class="col-12 col-lg-6 d-flex flex-column justify-content-between">
 
           <div class="card">
+            @if(error)
+            <div class="alert alert-warning" role="alert">
+              {{ error }}
+            </div>
+            @endif
             <div class="desktop vm-card">
 
               
