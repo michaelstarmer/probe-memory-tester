@@ -77,7 +77,7 @@ export default class ApiController {
         try {
             const runningJob = await Job
                 .query()
-                .withScopes(scopes => scopes.onlyRunning())
+                .whereIn('status', ['initializing', 'running'])
                 .first()
 
             if (runningJob) {
