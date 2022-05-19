@@ -110,6 +110,8 @@
             <span class="badge bg-success rounded-pill mx-1">Done</span>
             @elseif(job.status == 'running')
             <span class="badge bg-info rounded-pill mx-1">Running</span>
+            @elseif(job.status == 'initializing')
+            <span class="badge bg-warning rounded-pill mx-1">Initializing</span>
             @else
             <span class="badge bg-secondary rounded-pill mx-1">Queued</span>
             @endif
