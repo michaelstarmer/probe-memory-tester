@@ -13,7 +13,6 @@ export default class JobsController {
                 statsQuery.groupLimit(10)
             })
             .orderBy('created_at', 'desc')
-            .limit(5)
 
         try {
             return view.render('all-jobs', { jobs })
