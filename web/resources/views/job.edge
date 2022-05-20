@@ -87,8 +87,18 @@
                     <div class="col-12">
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
-                            Quick commands
+                            Commands
                         </button>
+                        @if(job.status == 'running')
+                        <form id="frm-stop-job" action="/jobs/{{ job.id }}/stop" method="get" style="display: inline;">
+                            <button
+                             type="submit"
+                             id="btn-stop-job"
+                             class="btn btn-danger">
+                             Stop test
+                            </button>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -166,8 +176,18 @@
     var jobLog = [];
     var logDiv = document.getElementById('log')
     var logLoadingState = document.getElementById('log-loading')
-    console.log(job)
-    console.log(stats)
+    
+    function stopJob(jobId)
+    {
+        console.log('stop job:', jobId)
+        fetch(`/api/jobs/${jobId}/stop`)
+        .then(response => {
+            console.log('response', response)
+        })
+        .catch(e => {
+            console.log('Error while stopping job:', e)
+        })
+    }
 
     function createChart(stats)
     {
@@ -233,6 +253,9 @@
         var minutesRemaining = document.getElementById('minutes-remaining')
         var startedAt = document.getElementById('started-at')
 
+        var frmStopJob = document.getElementById('frm-stop-job')
+        var btnStopJob = document.getElementById('btn-stop-job')
+        console.log('jobstatus:', job.status)
         el.textContent = jobData.status
         el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
@@ -243,6 +266,22 @@
         } else {
             minutesRemaining.textContent = `${jobData.duration} minutes`
         }
+
+        if (jobData.status !== 'running' && !frmStopJob.classList.contains('hidden'))
+        {
+            frmStopJob.classList.add('hidden')
+        }
+
+        // if (btnStopJob.classList.contains('hidden') && job.status === 'running')
+        // {
+        //     btnStopJob.classList.remove('hidden')
+        // }
+        
+        // if (job.status != 'running')
+        // {
+        //     console.log('job status not running')
+        //     btnStopJob.classList.add('hidden')
+        // }
     }
 
     function logScrollToBottom()

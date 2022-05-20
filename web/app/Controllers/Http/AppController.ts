@@ -49,7 +49,7 @@ export default class AppController {
                 probeData.swVersion = json.Status.System[0].software_version;
             }
 
-            return view.render('welcome', { jobs, probeData })
+            return view.render('landing', { jobs, probeData })
 
         } catch (error) {
             console.error('DB error!', error)
@@ -65,7 +65,7 @@ export default class AppController {
                 console.error(error)
                 probeData.isOffline = true;
                 const e = "Probe connection timed out."
-                return view.render('welcome', { jobs, probeData, error: e })
+                return view.render('landing', { jobs, probeData, error: e })
                 return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
                 
             }
@@ -103,7 +103,7 @@ export default class AppController {
             }
         })
 
-        return view.render('edit-host', {
+        return view.render('settings', {
             probeIp: probeIp?.value,
             jenkinsJob: jenkinsJob?.value,
             duration: duration?.value,

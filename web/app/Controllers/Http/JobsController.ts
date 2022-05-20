@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job';
+import JobLog from 'App/Models/JobLog';
 import Settings from 'App/Models/Setting';
 import axios from 'axios';
 
@@ -91,6 +92,30 @@ Message: ${error.message}
 
         console.log('Job found:', job)
         return view.render('job', { job, probeIp });
+    }
+
+    public async stop_job({ response, params }: HttpContextContract) {
+        const { id } = params;
+        const job = await Job.findBy('id', id)
+
+        const status = 'completed'
+
+        if (!job) {
+            return response.status(400).json({ error: 'Job not found.' })
+        }
+
+        const log = new JobLog()
+        log.type = 'warn'
+        log.message = 'Testing-job stopped manually'
+
+        try {
+            await job.merge({ status }).save()
+            await job.related('logs').save(log)
+            return response.redirect().back()
+        } catch (error) {
+            console.error(error)
+            return response.send(error)
+        }
     }
 
 }

@@ -179,3 +179,7 @@ table.table tbody th {
 .card .card-body {
   /* font-size: 14px; */
 }
+
+.hidden {
+  display: none;
+}

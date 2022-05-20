@@ -274,4 +274,28 @@ export default class ApiController {
 
         return response.json({});
     }
+
+    public async stop_job({ response, params }: HttpContextContract) {
+        const { id } = params;
+        const job = await Job.findBy('id', id)
+
+        const status = 'completed'
+
+        if (!job) {
+            return response.status(400).json({ error: 'Job not found.' })
+        }
+
+        const log = new JobLog()
+        log.type = 'warn'
+        log.message = 'Testing-job stopped manually'
+
+        try {
+            await job.merge({ status }).save()
+            await job.related('logs').save(log)
+            return response.status(200).json({ success: true })
+        } catch (error) {
+            console.error(error)
+            return response.status(400).json({ error });
+        }
+    }
 }
