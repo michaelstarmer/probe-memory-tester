@@ -59,8 +59,11 @@
                         <div class="row">
                             <div class="col-12 mt-3">
                                 <h5>XML configuration</h5>
+                                <p class="text-muted">
+                                    Custom config files can also be <a href="/uploads">uploaded here</a>.
+                                </p>
                             </div>
-                            <div class="col-12 col-lg-7">
+                            <div class="col-12 col-lg-7 mb-3">
                                 <div class="form-group">
                                     <label>Select a file</label>
                                     <select name="xmlFileId" id="xmlFileId" size="5" class="form-select" onchange="showXmlInfo()">
@@ -76,14 +79,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-5 form-group">
-                                <label for="">File metadata</label>
+                            <div id="metadata" class="col-12 col-lg-5 form-group hidden">
+                                <h5>About XML</h5>
+                                <div id="selectedXmlFileDescription"></div>
                                 <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
-                                <div id="selectedXmlFileDescription">
-                                </div>
-                                <div id="selectedXmlFileUploadedAt">
-
-                                </div>
+                                <div id="selectedXmlFileUploadedAt"></div>
                             </div>
                         </div>
                         
@@ -108,6 +108,7 @@
     var selectedXmlFileName = document.getElementById('selectedXmlFileName')
     var selectedXmlFileDescription = document.getElementById('selectedXmlFileDescription')
     var selectedXmlFileUploadedAt = document.getElementById('selectedXmlFileUploadedAt')
+    var metadataWrap = document.getElementById('metadata')
     function showXmlInfo()
     {
         var xmlSelector = document.getElementById('xmlFileId')
@@ -119,9 +120,11 @@
         let fullFilePath = `/uploads/xml/${selectedOption.dataset.filename}`
         let url = encodeURI(fullFilePath.trim())
 
-        selectedXmlFileName.innerHTML = `<a href="${url}">${host}${url}</a>`  ;
-        selectedXmlFileDescription.textContent = selectedOption.dataset.description;
-        selectedXmlFileUploadedAt.textContent = selectedOption.dataset.uploadedat;
+        metadataWrap.classList.contains('hidden') && metadataWrap.classList.remove('hidden')
+
+        selectedXmlFileName.innerHTML = `<a href="${url}">Link to file</a>`  ;
+        selectedXmlFileDescription.textContent = `${selectedOption.dataset.description}`;
+        selectedXmlFileUploadedAt.textContent = `Uploaded ${selectedOption.dataset.uploadedat}`;
     }
 
     showXmlInfo()
