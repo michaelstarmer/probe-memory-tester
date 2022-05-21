@@ -1,7 +1,8 @@
+from asyncio import subprocess
+from subprocess import CalledProcessError
 from time import sleep
 import requests
 from logger import Log
-# from jenkins_btech import JenkinsBuild
 from probe_ssh import RemoteClient
 from probe.probe_eii import Probe
 from esxi import ESXiClient
@@ -34,7 +35,6 @@ if not jobReadyToStart or not jobReadyToStart['id']:
     exit(0)
 jobId = jobReadyToStart['id']
 
-print(jobReadyToStart)
 apiclient.setJobStatus(jobId, 'initializing')
 apiclient.logToJob(jobId, 'Preparing new test environment')
 Log.info('Job ready to start testing.')
@@ -71,16 +71,25 @@ if (jobReadyToStart):
             jobId, message='Snapshot reverted to default.', logType='error')
 
 
-print('\nImporting XML')
 xmlConfig = jobReadyToStart['xmlConfig']
 xmlFile = f"{xmlConfig['filepath']}/{xmlConfig['filename']}"
 apiclient.logToJob(jobId, message=f'Attempting to upload xml from "{xmlFile}"')
-# public/uploads/xml/probe_xml/heavy-config.xml
-eii.import_config(xmlFile)
-apiclient.logToJob(
-    jobId, message='Imported XML configuration.', logType='info')
+try:
+    xmlImported = eii.import_config(xmlFile)
+    apiclient.logToJob(jobId, xmlImported.stdout.decode())
+    apiclient.logToJob(jobId, 'XML imported successfully')
+    Log.success('XML imported successfully')
 
-print('\nUpdating probe sw.')
+except CalledProcessError as e:
+    Log.warn('XML import failed!')
+    apiclient.logToJob(
+        jobId, f'XML import failed ({e.returncode})', logType='warn')
+    apiclient.logToJob(
+        jobId, e.output, logType='warn')
+    apiclient.setJobStatus(jobId, 'failed')
+    print(e)
+
+
 apiclient.logToJob(jobId, message='Updating probe SW.')
 swUpdate = update_probe_sw(probeIp, 'root', 'elvis',
                            swVersion=None, jobName=jobReadyToStart['jenkins_job'])

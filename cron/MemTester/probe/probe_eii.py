@@ -79,7 +79,11 @@ class Probe:
         print('Import config: export.xml exists?')
         print(os.path.exists('./export.xml'))
         if xmlFile:
-            result = subprocess.call([f'wget', f'--post-file={xmlFile}', '10.0.28.140/probe/core/importExport/data.xml'])
+            result = subprocess.run([
+                f'wget',
+                f'--post-file={xmlFile}',
+                '10.0.28.140/probe/core/importExport/data.xml'],
+                capture_output=True, check=True)
             print('result:', result)
         return result
         exit()
