@@ -11,11 +11,11 @@ export default class FilesController {
         const xmlFile = new XmlFile()
         xmlFile.originalFilename = file?.clientName;
         xmlFile.filename = `config-${moment().unix()}.xml`
-        xmlFile.filepath = '/uploads/xml'
+        xmlFile.filepath = 'public/uploads/xml'
         xmlFile.description = description
 
         try {
-            await file?.move(Application.publicPath(xmlFile.filepath), {
+            await file?.move(Application.publicPath('/uploads/xml'), {
                 name: xmlFile.filename
             })
 

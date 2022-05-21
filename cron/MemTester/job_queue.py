@@ -72,7 +72,11 @@ if (jobReadyToStart):
 
 
 print('\nImporting XML')
-# eii.import_config(jobReadyToStart['xmlConfig']['filename'])
+xmlConfig = jobReadyToStart['xmlConfig']
+xmlFile = f"{xmlConfig['filepath']}/{xmlConfig['filename']}"
+apiclient.logToJob(jobId, message=f'Attempting to upload xml from "{xmlFile}"')
+# public/uploads/xml/probe_xml/heavy-config.xml
+eii.import_config(xmlFile)
 apiclient.logToJob(
     jobId, message='Imported XML configuration.', logType='info')
 
