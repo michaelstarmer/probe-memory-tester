@@ -1,3 +1,4 @@
+import subprocess
 from concurrent.futures import process
 import readline
 from urllib import response
@@ -71,19 +72,26 @@ class Probe:
         xml = requests.get(
             f'{self.api_base}/?xml=1&exportMask=0x80000000&xmlFlags=0x10')
         with open(filename, 'wb') as file:
-            file.write(xml.content)
-        return filename
+            if file.write(xml.content):
+                return filename
 
     def import_config(self, xmlFile):
-        file = open(f'{xmlFile}', 'rb')
+        print('Import config: export.xml exists?')
+        print(os.path.exists('./export.xml'))
+        if xmlFile:
+            result = subprocess.call([f'wget', f'--post-file={xmlFile}', '10.0.28.140/probe/core/importExport/data.xml'])
+            print('result:', result)
+        return result
+        exit()
         try:
             result = ProbeRequest.post(
-                f'{self.api_base}/core/importExport/data.xml', open(xmlFile, 'rb'))
+                f'{self.api_base}/core/importExport/data.xml', file)
             print(result)
             return result
         except Exception as e:
             print('post error!')
             print(e)
+            return False
 
     def debug_data(self):
         FoundMemInfo = False
