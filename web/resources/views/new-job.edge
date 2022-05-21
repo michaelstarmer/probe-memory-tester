@@ -13,7 +13,7 @@
             </div>
             @endif
             <div class="row justify-content-md-center">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-lg-8">
                     <h1>Create new test</h1>
                     <p>Manually create a new test based on available jobs from Jenkins. The latest successful build will
                         be fetched automatically.</p>
@@ -56,22 +56,37 @@
     
                         </div>
 
+                        <div class="row">
+                            <div class="col-12 mt-3">
+                                <h5>XML configuration</h5>
+                            </div>
+                            <div class="col-12 col-lg-7">
+                                <div class="form-group">
+                                    <label>Select a file</label>
+                                    <select name="xmlFileId" id="xmlFileId" size="5" class="form-select" onchange="showXmlInfo()">
+                                        @each(file in xmlFiles)
+                                        <option
+                                        value="{{file.id}}"
+                                        data-filename="{{file.filename}}"
+                                        data-description="{{file.description}}"
+                                        data-uploadedat="{{file.uploadedAt}}">
+                                            {{file.filename}}
+                                        </option>
+                                        @endeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-5 form-group">
+                                <label for="">File metadata</label>
+                                <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
+                                <div id="selectedXmlFileDescription">
+                                </div>
+                                <div id="selectedXmlFileUploadedAt">
 
-                        <div class="form-group mt-3">
-                            <label>XML configuration</label>
-                            <select name="xmlFileId" id="xmlFileId" size="4" class="form-select" onchange="showXmlInfo()">
-                                @each(file in xmlFiles)
-                                <option
-                                 value="{{file.id}}"
-                                 data-filename="{{file.filename}}"
-                                 data-description="{{file.description}}"
-                                 data-uploadedat="{{file.uploadedAt}}"
-                                 selected>
-                                    {{file.filename}}
-                                </option>
-                                @endeach
-                            </select>
+                                </div>
+                            </div>
                         </div>
+                        
 
 
                         {{--  <div class="form-group mt-3">
@@ -88,23 +103,6 @@
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg-6 offset-lg-3">
-                    <h3>Selected config</h3>
-
-                    <strong>Filename</strong>
-                    <div id="selectedXmlFileName"></div>
-                    <strong>Description</strong>
-                    <div id="selectedXmlFileDescription">
-                    </div>
-                    <strong>Uploaded at</strong>
-                    <div id="selectedXmlFileUploadedAt">
-
-                    </div>
-                </div>
-            </div>
-        </div>
 
 <script>
     var selectedXmlFileName = document.getElementById('selectedXmlFileName')
@@ -125,5 +123,7 @@
         selectedXmlFileDescription.textContent = selectedOption.dataset.description;
         selectedXmlFileUploadedAt.textContent = selectedOption.dataset.uploadedat;
     }
+
+    showXmlInfo()
 </script>
 @end
