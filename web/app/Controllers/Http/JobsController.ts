@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job';
 import JobLog from 'App/Models/JobLog';
 import Settings from 'App/Models/Setting';
+import XmlFile from 'App/Models/XmlFile';
 import axios from 'axios';
 
 export default class JobsController {
@@ -27,6 +28,7 @@ export default class JobsController {
 
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
         const jobs: object[] = []
+        const xmlFiles = await XmlFile.query().orderBy('created_at', 'desc')
 
         try {
 
@@ -37,8 +39,11 @@ export default class JobsController {
                     jobs.push(it.name)
                 }
             })
-            console.log(jobs)
-            return view.render('new-job', { jobs })
+            // for (const f of xmlFiles)
+            // {
+            //     console.log('file:', f)
+            // }
+            return view.render('new-job', { jobs, xmlFiles })
         } catch (error) {
             console.error(error)
             response.send(error)

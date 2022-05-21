@@ -1,0 +1,982 @@
+<?xml version="1.0"?>
+<ewe mask="0x80000000" hw_type="86" br="BT" crc="4ba558a1" release="6.1.0-0-103-g164d9f2d57">
+  <probe>
+    <core>
+      <nitImport>
+        <importDvbT>false</importDvbT>
+        <importDvbT2>false</importDvbT2>
+        <importDvbC>false</importDvbC>
+        <NitId>0</NitId>
+        <nitNaming>Freq</nitNaming>
+        <rename>false</rename>
+      </nitImport>
+      <setup>
+        <globalalarms>
+          <data xmlChildren="list">
+            <field type="SYS" name="[Critical system errors]" enabled="true" severity="Fatal"></field>
+            <field type="SYS" name="[System errors]" enabled="true" severity="Major"></field>
+            <field type="SYS" name="[System info]" enabled="true" severity="Ok"></field>
+            <field type="FSM" name="Microbitrate bursting" enabled="true" severity="Warning"></field>
+            <field type="FSM" name="Microbitrate excessive ES bursting" enabled="true" severity="Error"></field>
+            <field type="ETH" name="No signal" enabled="true" severity="Major"></field>
+            <field type="ETH" name="FEC packet drop" enabled="true" severity="Error"></field>
+            <field type="ETH" name="RTP packet drop" enabled="true" severity="Error"></field>
+            <field type="ETH" name="RTP duplicates" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="RTP out of order" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="CC skips" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="IAT &gt;= err-thresh" enabled="false" severity="Error"></field>
+            <field type="ETH" name="IAT &gt;= warn-thresh" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="MLR &gt;= err-thresh" enabled="true" severity="Error"></field>
+            <field type="ETH" name="MLR &gt;= warn-thresh" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="TTL changed" enabled="true" severity="Error"></field>
+            <field type="ETH" name="TOS changed" enabled="true" severity="Error"></field>
+            <field type="ETH" name="Multiple mcast sources" enabled="true" severity="Error"></field>
+            <field type="ETH" name="Mcast source changed" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="Bitrate overflow" enabled="false" severity="Warning"></field>
+            <field type="ETH" name="Bitrate underflow" enabled="false" severity="Warning"></field>
+            <field type="CNT" name="Freeze-frame detected" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Color-freeze detected" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Audio silence detected" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Audio too loud detected" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Audio out of phase detected" enabled="true" severity="Major"></field>
+            <field type="CNT" name="EBP PTS gap" enabled="true" severity="Major"></field>
+            <field type="CNT" name="EBP group PTS skew" enabled="true" severity="Major"></field>
+            <field type="CNT" name="IDR PTS gap" enabled="true" severity="Major"></field>
+            <field type="CNT" name="IDR group PTS skew" enabled="true" severity="Major"></field>
+            <field type="CNT" name="EBP and IDR PTS unaligned" enabled="true" severity="Major"></field>
+            <field type="CNT" name="MOS below threshold" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Wrong DAR" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Wrong PAR" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Caption service missing" enabled="true" severity="Major"></field>
+            <field type="CNT" name="Bad caption quality" enabled="true" severity="Major"></field>
+            <field type="ETR" name="TS sync" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Sync byte" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PAT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Continuity" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PMT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Missing PID" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Transport" enabled="true" severity="Major"></field>
+            <field type="ETR" name="CRC" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PCR" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PCR accur." enabled="true" severity="Major"></field>
+            <field type="ETR" name="PTS" enabled="true" severity="Major"></field>
+            <field type="ETR" name="CAT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="NIT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="SI Rep Rate" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Unref PID" enabled="true" severity="Major"></field>
+            <field type="ETR" name="SDT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="EIT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="RST" enabled="true" severity="Major"></field>
+            <field type="ETR" name="TDT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="MGT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="VCT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PIM/PNM" enabled="true" severity="Major"></field>
+            <field type="ETR" name="RRT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="ATSC EIT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="STT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="ETT" enabled="true" severity="Major"></field>
+            <field type="ETR" name="CA system" enabled="true" severity="Major"></field>
+            <field type="ETR" name="PID min. bitr." enabled="true" severity="Major"></field>
+            <field type="ETR" name="PID max. bitr." enabled="true" severity="Major"></field>
+            <field type="ETR" name="PID checks" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Service min. bitr." enabled="true" severity="Major"></field>
+            <field type="ETR" name="Service max. bitr." enabled="true" severity="Major"></field>
+            <field type="ETR" name="Service checks" enabled="true" severity="Major"></field>
+            <field type="ETR" name="MIP" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Gold TS" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Time information" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Pre FEC BER" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Post FEC BER" enabled="true" severity="Major"></field>
+            <field type="ETR" name="MER" enabled="true" severity="Major"></field>
+            <field type="ETR" name="MER warning" enabled="true" severity="Warning"></field>
+            <field type="ETR" name="SNR" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Signal strength" enabled="true" severity="Major"></field>
+            <field type="ETR" name="SFN meas." enabled="true" severity="Major"></field>
+            <field type="ETR" name="Packet error count" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Center frequency" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Symbol rate" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Post BCH FER" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Eb/N0" enabled="true" severity="Major"></field>
+            <field type="ETR" name="T2MI" enabled="true" severity="Major"></field>
+            <field type="ETR" name="EVM" enabled="true" severity="Major"></field>
+            <field type="ETR" name="LDPC" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Interface overflow" enabled="true" severity="Major"></field>
+            <field type="ETR" name="Modulation" enabled="true" severity="Major"></field>
+            <field type="FSM" name="Full service monitoring [PING]" enabled="true" severity="Major"></field>
+            <field type="FSM" name="Full service monitoring [HTTP]" enabled="true" severity="Major"></field>
+            <field type="OTT" name="The number of profiles changed" enabled="true" severity="Warning"></field>
+            <field type="OTT" name="Profile stream type changed" enabled="true" severity="Warning"></field>
+            <field type="OTT" name="Minimum profiles" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Wrong profile type" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Download bitrate low" enabled="true" severity="Warning"></field>
+            <field type="OTT" name="Download bitrate too low" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Manifest size" enabled="true" severity="Warning"></field>
+            <field type="OTT" name="Actual bitrate" enabled="true" severity="Warning"></field>
+            <field type="OTT" name="Download timeout" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Address resolve error" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Connection failed" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Send error" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Receive error" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Empty reply" enabled="true" severity="Major"></field>
+            <field type="OTT" name="HTTP error " enabled="true" severity="Major"></field>
+            <field type="OTT" name="HTTP redirect error" enabled="true" severity="Major"></field>
+            <field type="OTT" name="HTTP client error" enabled="true" severity="Major"></field>
+            <field type="OTT" name="HTTP server error" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Static manifest" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Mis-alignment detected" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Manifest parse error" enabled="true" severity="Major"></field>
+            <field type="OTT" name="Segment error" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Time sync missing" enabled="true" severity="Error"></field>
+            <field type="OTT" name="Unknown manifest" enabled="true" severity="Fatal"></field>
+          </data>
+        </globalalarms>
+        <ott>
+          <presetList xmlChildren="list" GreatestUsedTuningId="1">
+            <ottChannel name="OTT 1" tuningId="1" address="http://10.110.0.5/6/0/hls/TV2/playlist.m3u8" id="0" engine="1" roundTime="15" threshold="Default" contentThresholds="Default" vbcThreshold="Default" enable="true" page="0" head="false" rtmp="false" rtmpLive="false" noMasterMonitor="false" thumb="true" thumbProfile="-1" player_url="" alignment="true" advanced_manifest="false" method="GET" content_type="" liveTargetChunk="1" drmSystem="0" drmHost="" drmUsername="" drmPassword="" drmAccountId="" drmContentId="" drmCryptoPeriod="1" measurementMode="0" fixedKey="" fixedIV="" latencyEngine="0"></ottChannel>
+          </presetList>
+        </ott>
+        <ottThresholdPresets>
+          <presetList xmlChildren="list" ThreshVer="Mar 18 13:11:52">
+            <preset name="Default">
+              <values profileType="0" bpsErr="100" bpsWarn="-1" actBpsMin="-1" actBpsMax="-1" seqAge="60" xmlSize="500000" minProfiles="0"></values>
+            </preset>
+          </presetList>
+        </ottThresholdPresets>
+        <mcastnames>
+          <mclist xmlChildren="list" GreatestUsedTuningId="1">
+            <mcastChannel name="Discovery Multicast" groups="" tuningId="1" addr="239.255.2.22" port="5500" sessionId="0" vlan_id="0" joinIfaceName="eth0" ssmAddr="0.0.0.0" ssmName="" ssmAddr2="0.0.0.0" ssmName2="" ssmAddr3="0.0.0.0" ssmName3="" ssmAddr4="0.0.0.0" ssmName4="" ssmAddr5="0.0.0.0" ssmName5="" join="true" tpreset="TV" vbcpreset="Default" etrThresholds="Default" pidThresholds="Default" serviceThresholds="Default" monitorEtr="false" referenceThresholds="[None]" etrEngine="1" extractThumbs="true" enableFec="false" page="1" dispPage="1" t2miStream="" t2miPid="0" t2miPlp="0" dash7Stream1="" dash7Stream2="" ebpGroupRef="false" contentThresholds="Default" contentServiceThresh="Default" schedule="Never" srtEnable="false" srtHost="" srtPort="1024" srtMode="Listener" srtPassphrase="" srtLatency="120"></mcastChannel>
+          </mclist>
+        </mcastnames>
+        <thresholdPresets>
+          <presetList xmlChildren="list" ThreshVer="Mar 18 13:11:52">
+            <preset name="Default">
+              <values mdiErr="50:8" mdiWarn="45:1" maxBitrErr="30" minBitrErr="0.1" nosigMs="1000" rtpLossLimit="1" ignoreCcPids=""></values>
+            </preset>
+            <preset name="TV">
+              <values mdiErr="50:8" mdiWarn="45:1" maxBitrErr="30" minBitrErr="0.1" nosigMs="1000" rtpLossLimit="1" ignoreCcPids=""></values>
+            </preset>
+            <preset name="Radio">
+              <values mdiErr="150:8" mdiWarn="130:1" maxBitrErr="1" minBitrErr="0.1" nosigMs="1000" rtpLossLimit="1" ignoreCcPids=""></values>
+            </preset>
+            <preset name="HDTV">
+              <values mdiErr="30:8" mdiWarn="20:1" maxBitrErr="50" minBitrErr="1" nosigMs="1000" rtpLossLimit="1" ignoreCcPids=""></values>
+            </preset>
+          </presetList>
+        </thresholdPresets>
+        <fsm>
+          <fsmlist xmlChildren="list">
+            <fsmService name="Service_1" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="0" enabled="false"></fsmService>
+            <fsmService name="Service_2" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="1" enabled="false"></fsmService>
+            <fsmService name="Service_3" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="2" enabled="false"></fsmService>
+            <fsmService name="Service_4" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="3" enabled="false"></fsmService>
+            <fsmService name="Service_5" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="4" enabled="false"></fsmService>
+            <fsmService name="Service_6" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="5" enabled="false"></fsmService>
+            <fsmService name="Service_7" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="6" enabled="false"></fsmService>
+            <fsmService name="Service_8" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="7" enabled="false"></fsmService>
+            <fsmService name="Service_9" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="8" enabled="false"></fsmService>
+            <fsmService name="Service_10" ipa="" port="80" protocol="" device="Default" comment="" send="" expect="" errRatio="5" errWindow="4" delay="60" cookies="false" index="9" enabled="false"></fsmService>
+          </fsmlist>
+        </fsm>
+        <contentThresholds>
+          <presetList xmlChildren="list" ThreshVer="May 20 17:45:42">
+            <preset name="Default">
+              <values ignorePids="" freezeSensitivity="Off" freezeConsecutiveFrames="3" freezeTimeout="10" colorFreezeSensitivity="Off" colorFreezeTimeout="10" alignment="Off" realtimeAudio="false" audioThreshold="0" audioTimeout="10" audioPeakThreshold="0" audioPeakTimeout="10" audioPhaseThreshold="-1" audioPhaseTimeout="10" expectedDar="" darTimeout="10" expectedPar="" parTimeout="10" ebpPtsMonitoring="false" ebpGapMax="2010" ebpGapMin="1990" ebpJitterMax="10" idrPtsMonitoring="false" idrGapMax="2010" idrGapMin="1990" idrJitterMax="10" ebpIdrAlignmentThreshold="100" qoeScore="false" vmafScoring="false" qoeAlarm="1" qoeWindow="1" captionsEnabled="false" minSCTE20="0" min608="0" min708="0" storeCaptions="false" scte35Enabled="false" scte35CmdGap="-1" scte35LogTimeDescriptor="true" storeThumbs="false" storeQoe="false" storeLoudness="false"></values>
+            </preset>
+          </presetList>
+        </contentThresholds>
+        <content>
+          <warnpercent>5</warnpercent>
+          <thumbIntervalSel>20000</thumbIntervalSel>
+          <thumbDuration>731</thumbDuration>
+          <thumbCritical>false</thumbCritical>
+          <captionDuration>731</captionDuration>
+          <captionCritical>true</captionCritical>
+          <qoeDuration>731</qoeDuration>
+          <qoeCritical>false</qoeCritical>
+          <loudnessDuration>731</loudnessDuration>
+          <loudnessCritical>false</loudnessCritical>
+        </content>
+        <params>
+          <enableThumbs>true</enableThumbs>
+          <ebuMode>true</ebuMode>
+          <language>en</language>
+          <dateformat>0</dateformat>
+          <freezeLog>false</freezeLog>
+          <eventsAsAlarms>false</eventsAsAlarms>
+          <sapEnable>true</sapEnable>
+          <igmpv3Enable>true</igmpv3Enable>
+          <joinSpacing>0</joinSpacing>
+          <tzTimeZone>UTC</tzTimeZone>
+          <snmpCommunityString>public</snmpCommunityString>
+          <snmpTrapDestination1>0.0.0.0</snmpTrapDestination1>
+          <snmpTrapDestination2>0.0.0.0</snmpTrapDestination2>
+          <snmpTrapDestination3>0.0.0.0</snmpTrapDestination3>
+          <trapYear>false</trapYear>
+        </params>
+        <pagenames>
+          <mclist xmlChildren="list">
+            <pgname page="1" name=""></pgname>
+            <pgname page="2" name=""></pgname>
+            <pgname page="3" name=""></pgname>
+            <pgname page="4" name=""></pgname>
+            <pgname page="5" name=""></pgname>
+            <pgname page="6" name=""></pgname>
+            <pgname page="7" name=""></pgname>
+            <pgname page="8" name=""></pgname>
+            <pgname page="9" name=""></pgname>
+            <pgname page="10" name=""></pgname>
+            <pgname page="11" name=""></pgname>
+            <pgname page="12" name=""></pgname>
+            <pgname page="13" name=""></pgname>
+            <pgname page="14" name=""></pgname>
+            <pgname page="15" name=""></pgname>
+            <pgname page="16" name=""></pgname>
+            <pgname page="17" name=""></pgname>
+            <pgname page="18" name=""></pgname>
+            <pgname page="19" name=""></pgname>
+            <pgname page="20" name=""></pgname>
+            <pgname page="21" name=""></pgname>
+            <pgname page="22" name=""></pgname>
+            <pgname page="23" name=""></pgname>
+            <pgname page="24" name=""></pgname>
+            <pgname page="25" name=""></pgname>
+            <pgname page="26" name=""></pgname>
+            <pgname page="27" name=""></pgname>
+            <pgname page="28" name=""></pgname>
+            <pgname page="29" name=""></pgname>
+            <pgname page="30" name=""></pgname>
+          </mclist>
+        </pagenames>
+        <colours>
+          <colourList xmlChildren="list" ColourVer="Mar 18 13:11:52">
+            <preset name="Green" desc="" value="00FF00"></preset>
+          </colourList>
+        </colours>
+        <etrSetup>
+          <CustomDescriptionParsing xmlChildren="dynList" ThreshVer="May 20 17:45:42">
+            <DescriptionParsing tag="129" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="131" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="134" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="135" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="151" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="161" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="162" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="163" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="173" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="196" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="201" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="206" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="215" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="231" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="233" value="Disabled"></DescriptionParsing>
+            <DescriptionParsing tag="239" value="Disabled"></DescriptionParsing>
+          </CustomDescriptionParsing>
+          <EnableUnauthorizedETRControl>false</EnableUnauthorizedETRControl>
+          <UnauthorizedETRControlDuration>10</UnauthorizedETRControlDuration>
+          <LimitAuthorizedETRControl>false</LimitAuthorizedETRControl>
+          <AuthorizedETRControlDuration>60</AuthorizedETRControlDuration>
+          <AsiRoundRobbinMode>false</AsiRoundRobbinMode>
+          <EtrDetailsServiceName>false</EtrDetailsServiceName>
+          <EtrEitTableIds>78</EtrEitTableIds>
+          <EtrHideInactiveInputs>false</EtrHideInactiveInputs>
+        </etrSetup>
+        <vbcThresholdPresets>
+          <presetList xmlChildren="list" ThreshVer="Mar 18 13:11:52">
+            <preset name="Default">
+              <mcast noSig="5" rtpDrop="5" mlrErr="20" dfErr="20" maxBitrErr="20" minBitrErr="20"></mcast>
+              <etr pri1="250" pri2="250" pri3="250" priOther="250" iface="250"></etr>
+              <ott transportErr="60" httpErr="60" xmlErr="60"></ott>
+              <qoe video="60" audio="60"></qoe>
+              <cap availc="60" qualc="60"></cap>
+            </preset>
+          </presetList>
+        </vbcThresholdPresets>
+        <scheduling>
+          <scheduleList xmlChildren="list" SchedulingVer="Mar 18 13:11:52">
+            <preset name="Never" allDays="" mon="" tue="" wed="" thu="" fri="" sat="" sun=""></preset>
+            <preset name="Always" allDays="0000-2400" mon="" tue="" wed="" thu="" fri="" sat="" sun=""></preset>
+          </scheduleList>
+        </scheduling>
+        <autoThresholds>
+          <etrMode>false</etrMode>
+          <etrStrict>0</etrStrict>
+          <pidMode>false</pidMode>
+          <pidType>1</pidType>
+          <pidCcMask>false</pidCcMask>
+          <pidMaskMiss>false</pidMaskMiss>
+          <pidMaskUnref>false</pidMaskUnref>
+          <pidSetScr>false</pidSetScr>
+          <pidMinMode>0</pidMinMode>
+          <pidMaxMode>0</pidMaxMode>
+          <servMode>false</servMode>
+          <servType>0</servType>
+          <servSetScr>false</servSetScr>
+          <sidNameCheck>false</sidNameCheck>
+          <presCheck>false</presCheck>
+          <newServAlarm>false</newServAlarm>
+          <servMinMode>0</servMinMode>
+          <servMaxMode>0</servMaxMode>
+          <cofdmRfMode>0</cofdmRfMode>
+          <cofdmRfStrict>0</cofdmRfStrict>
+          <preFecBer>5.0000 10-4</preFecBer>
+          <postFecBer>0.0000</postFecBer>
+          <cofdmMer>2</cofdmMer>
+          <cofdmSnr>2</cofdmSnr>
+          <cofdmLevel>2</cofdmLevel>
+          <qamRfMode>0</qamRfMode>
+          <qamRfStrict>0</qamRfStrict>
+          <qamPreFecBer>0.0000</qamPreFecBer>
+          <qamPostFecBer>0.0000</qamPostFecBer>
+          <qamMer>2</qamMer>
+          <qamSnr>2</qamSnr>
+          <qamLevel>2</qamLevel>
+          <qamFreqOffset>400</qamFreqOffset>
+          <qamSymbOffset>400</qamSymbOffset>
+          <satRfMode>0</satRfMode>
+          <satRfStrict>0</satRfStrict>
+          <preFecBer>5.0000 10-4</preFecBer>
+          <postFecBer>0.0000</postFecBer>
+          <satMer>2</satMer>
+          <satSnr>2</satSnr>
+          <satLevel>2</satLevel>
+        </autoThresholds>
+      </setup>
+      <ott>
+        <OttSettings>
+          <resetConnection>0</resetConnection>
+          <latencyEngines>0</latencyEngines>
+          <engines xmlChildren="list" map_data="eth0" map_data2="eth1" map_management="eth0">
+            <engine id="1" interface="default"></engine>
+            <engine id="2" interface="default"></engine>
+            <engine id="3" interface="default"></engine>
+            <engine id="4" interface="default"></engine>
+            <engine id="5" interface="default"></engine>
+            <engine id="6" interface="default"></engine>
+            <engine id="7" interface="default"></engine>
+            <engine id="8" interface="default"></engine>
+            <engine id="9" interface="default"></engine>
+            <engine id="10" interface="default"></engine>
+            <engine id="11" interface="default"></engine>
+            <engine id="12" interface="default"></engine>
+            <engine id="13" interface="default"></engine>
+            <engine id="14" interface="default"></engine>
+            <engine id="15" interface="default"></engine>
+            <engine id="16" interface="default"></engine>
+            <engine id="17" interface="default"></engine>
+            <engine id="18" interface="default"></engine>
+            <engine id="19" interface="default"></engine>
+            <engine id="20" interface="default"></engine>
+            <engine id="21" interface="default"></engine>
+            <engine id="22" interface="default"></engine>
+            <engine id="23" interface="default"></engine>
+            <engine id="24" interface="default"></engine>
+            <engine id="25" interface="default"></engine>
+            <engine id="26" interface="default"></engine>
+            <engine id="27" interface="default"></engine>
+            <engine id="28" interface="default"></engine>
+            <engine id="29" interface="default"></engine>
+            <engine id="30" interface="default"></engine>
+            <engine id="31" interface="default"></engine>
+            <engine id="32" interface="default"></engine>
+            <engine id="33" interface="default"></engine>
+            <engine id="34" interface="default"></engine>
+            <engine id="35" interface="default"></engine>
+            <engine id="36" interface="default"></engine>
+            <engine id="37" interface="default"></engine>
+            <engine id="38" interface="default"></engine>
+            <engine id="39" interface="default"></engine>
+            <engine id="40" interface="default"></engine>
+            <engine id="41" interface="default"></engine>
+            <engine id="42" interface="default"></engine>
+            <engine id="43" interface="default"></engine>
+            <engine id="44" interface="default"></engine>
+            <engine id="45" interface="default"></engine>
+            <engine id="46" interface="default"></engine>
+            <engine id="47" interface="default"></engine>
+            <engine id="48" interface="default"></engine>
+            <engine id="49" interface="default"></engine>
+            <engine id="50" interface="default"></engine>
+          </engines>
+          <pages xmlChildren="list">
+            <page id="0" name="Page 1"></page>
+            <page id="1" name="Page 2"></page>
+            <page id="2" name="Page 3"></page>
+            <page id="3" name="Page 4"></page>
+            <page id="4" name="Page 5"></page>
+            <page id="5" name="Page 6"></page>
+            <page id="6" name="Page 7"></page>
+            <page id="7" name="Page 8"></page>
+            <page id="8" name="Page 9"></page>
+            <page id="9" name="Page 10"></page>
+            <page id="10" name="Page 11"></page>
+            <page id="11" name="Page 12"></page>
+            <page id="12" name="Page 13"></page>
+            <page id="13" name="Page 14"></page>
+            <page id="14" name="Page 15"></page>
+            <page id="15" name="Page 16"></page>
+            <page id="16" name="Page 17"></page>
+            <page id="17" name="Page 18"></page>
+            <page id="18" name="Page 19"></page>
+            <page id="19" name="Page 20"></page>
+            <page id="20" name="Page 21"></page>
+            <page id="21" name="Page 22"></page>
+            <page id="22" name="Page 23"></page>
+            <page id="23" name="Page 24"></page>
+            <page id="24" name="Page 25"></page>
+            <page id="25" name="Page 26"></page>
+            <page id="26" name="Page 27"></page>
+            <page id="27" name="Page 28"></page>
+            <page id="28" name="Page 29"></page>
+            <page id="29" name="Page 30"></page>
+            <page id="30" name="Page 31"></page>
+            <page id="31" name="Page 32"></page>
+            <page id="32" name="Page 33"></page>
+            <page id="33" name="Page 34"></page>
+            <page id="34" name="Page 35"></page>
+            <page id="35" name="Page 36"></page>
+            <page id="36" name="Page 37"></page>
+            <page id="37" name="Page 38"></page>
+            <page id="38" name="Page 39"></page>
+            <page id="39" name="Page 40"></page>
+            <page id="40" name="Page 41"></page>
+            <page id="41" name="Page 42"></page>
+            <page id="42" name="Page 43"></page>
+            <page id="43" name="Page 44"></page>
+            <page id="44" name="Page 45"></page>
+            <page id="45" name="Page 46"></page>
+            <page id="46" name="Page 47"></page>
+            <page id="47" name="Page 48"></page>
+            <page id="48" name="Page 49"></page>
+            <page id="49" name="Page 50"></page>
+          </pages>
+        </OttSettings>
+      </ott>
+      <monitoring>
+        <detected>
+          <includeSSM>false</includeSSM>
+        </detected>
+        <serviceThresholds>
+          <serviceThresholdList xmlChildren="dynList" ThreshVer="May 20 17:45:42">
+            <ServiceThresholds name="Default" description="No special rules for any services."></ServiceThresholds>
+          </serviceThresholdList>
+        </serviceThresholds>
+      </monitoring>
+      <RdpTopDoc>
+        <rdpZupDoc1>
+          <destAddr>10.20.30.40</destAddr>
+          <destPort>1234</destPort>
+          <ttl>64</ttl>
+          <streamDuration>0</streamDuration>
+          <encapsulation>0</encapsulation>
+          <forwIface>eth0</forwIface>
+          <chIpa>0.0.0.0</chIpa>
+          <chPort>0</chPort>
+          <chSsm>0.0.0.0</chSsm>
+          <maxDuration>60</maxDuration>
+          <maxSize>1500</maxSize>
+          <protectSel>0</protectSel>
+          <trigger1Sel>0</trigger1Sel>
+          <trigger2Sel>0</trigger2Sel>
+          <trigger3Sel>0</trigger3Sel>
+          <interfaceSel>100</interfaceSel>
+          <forwChannel></forwChannel>
+          <serviceSel>0</serviceSel>
+          <rdpPids></rdpPids>
+          <modeSel>1</modeSel>
+          <enableRdp>false</enableRdp>
+        </rdpZupDoc1>
+        <rdpZupDoc2>
+          <destAddr>10.20.30.40</destAddr>
+          <destPort>1234</destPort>
+          <ttl>64</ttl>
+          <streamDuration>0</streamDuration>
+          <encapsulation>0</encapsulation>
+          <forwIface>eth0</forwIface>
+          <chIpa>0.0.0.0</chIpa>
+          <chPort>0</chPort>
+          <chSsm>0.0.0.0</chSsm>
+          <maxDuration>60</maxDuration>
+          <maxSize>1500</maxSize>
+          <protectSel>0</protectSel>
+          <trigger1Sel>0</trigger1Sel>
+          <trigger2Sel>0</trigger2Sel>
+          <trigger3Sel>0</trigger3Sel>
+          <interfaceSel>100</interfaceSel>
+          <forwChannel></forwChannel>
+          <serviceSel>0</serviceSel>
+          <rdpPids></rdpPids>
+          <modeSel>1</modeSel>
+          <enableRdp>false</enableRdp>
+        </rdpZupDoc2>
+      </RdpTopDoc>
+      <TrafficTopDoc>
+        <detected>
+          <includeSSM>false</includeSSM>
+        </detected>
+        <microbitrSetup>
+          <burstThresh>8000</burstThresh>
+          <esWindow>3600</esWindow>
+          <esLimit>10</esLimit>
+        </microbitrSetup>
+        <ScanTopDoc>
+          <mcscandoc>
+            <includeSSM>false</includeSSM>
+          </mcscandoc>
+          <mcscan>
+            <scanIpaFrom>239.255.0.1</scanIpaFrom>
+            <scanIpaTo>239.255.0.255</scanIpaTo>
+            <allPorts>true</allPorts>
+            <scanPortFrom>1024</scanPortFrom>
+            <scanPortTo>65535</scanPortTo>
+            <simultaneousJoins>1</simultaneousJoins>
+            <expectTrafficWithin>3</expectTrafficWithin>
+            <ifaceSelector>eth0</ifaceSelector>
+          </mcscan>
+        </ScanTopDoc>
+      </TrafficTopDoc>
+      <traffic>
+        <statfilters>
+          <setup>
+            <statfilterList xmlChildren="list" SettingsVer="Mar 18 13:11:52">
+              <filter enabled="false" name="Filter1" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter2" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter3" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter4" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter5" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter6" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter7" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter8" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter9" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+              <filter enabled="false" name="Filter10" trafficType="No filtering" rtpPresence="No filtering" vlanPresence="No filtering" vlanId="0" ipSrcPresence="No filtering" ipSrcAddr="0.0.0.0" ipSrcMask="0.0.0.0" ipDstPresence="No filtering" ipDstAddr="0.0.0.0" ipDstMask="0.0.0.0" udpSrcPresence="No filtering" udpSrcPort="0" udpDstPresence="No filtering" udpDstPort="0" udpPayload="No filtering" ifname=""></filter>
+            </statfilterList>
+          </setup>
+        </statfilters>
+      </traffic>
+      <EthernetDoc>
+        <pcapDoc>
+          <captureOnlyHeaders>false</captureOnlyHeaders>
+          <captureAllNonTcpUdp>false</captureAllNonTcpUdp>
+          <captureAllTcp>false</captureAllTcp>
+          <captureAllUdp>false</captureAllUdp>
+          <dst1>0.0.0.0</dst1>
+          <src1>0.0.0.0</src1>
+          <enableId1>false</enableId1>
+          <dst2>0.0.0.0</dst2>
+          <src2>0.0.0.0</src2>
+          <enableId2>false</enableId2>
+          <dst3>0.0.0.0</dst3>
+          <src3>0.0.0.0</src3>
+          <enableId3>false</enableId3>
+          <dst4>0.0.0.0</dst4>
+          <src4>0.0.0.0</src4>
+          <enableId4>false</enableId4>
+          <dst5>0.0.0.0</dst5>
+          <src5>0.0.0.0</src5>
+          <enableId5>false</enableId5>
+          <ifaceSelector></ifaceSelector>
+        </pcapDoc>
+      </EthernetDoc>
+      <analysing>
+        <etrThresholdPresets>
+          <etrThresholdList xmlChildren="list" ThreshVer="Mar 18 13:11:52">
+            <preset name="ETSI TR 101 290" description="Settings according to TR 101 290. Some advanced features are disabled" selectedStandard="DVB" tuningDuration="70" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="2" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="2" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="2" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="2" crcRedundancy="true"></crc>
+              <pcr pcrSev="2" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="2" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="2" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="2" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="2" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="2" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="2" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="2" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="2" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="2" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="2" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="2" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="2" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="2" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="2" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="2" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="2" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="2" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="3" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="2" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="2" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="2" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="2" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="2" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="2" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="2" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="2" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="2"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="2" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="2" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="2" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="2" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="2" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="2" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="2" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="2" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="2" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="ATSC Default" description="ATSC template based on TR 101 290. Some advanced features are disabled" selectedStandard="ATSC" tuningDuration="70" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="2" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="2" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="2" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="2" crcRedundancy="true"></crc>
+              <pcr pcrSev="2" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="2" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="2" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="2" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="2" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="2" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="2" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="2" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="2" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="2" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="2" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="2" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="2" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="2" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="2" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="2" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="2" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="2" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="3" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="2" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="2" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="2" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="2" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="2" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="2" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="2" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="2" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="2"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="2" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="2" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="2" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="2" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="2" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="2" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="2" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="2" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="2" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="Optimised" description="Optimised settings with additional checks enabled" selectedStandard="DVB" tuningDuration="70" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="2" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="2" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="2" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="2" crcRedundancy="true"></crc>
+              <pcr pcrSev="2" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="true"></pcr>
+              <pcrAccurancy pcrAccurancySev="2" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="2" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="2" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="2" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="2" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="2" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="2" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="2" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="2" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="2" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="2" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="2" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="2" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="2" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="2" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="2" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="2" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="2" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="2" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="2" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="2" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="2" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="2" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="2" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="2" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="2" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="2"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="2" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="2" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="2" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="2" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="2" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="2" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="2" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="2" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="2" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="IP-SPTS" description="Settings adapted to IP streaming of Single Program Transport Streams" selectedStandard="DVB" tuningDuration="20" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="2" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="2" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="2" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="2" crcRedundancy="true"></crc>
+              <pcr pcrSev="2" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="2" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="3" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="2" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="3" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="3" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="2" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="3" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="3" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="3" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="3" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="2" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="2" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="2" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="2" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="2" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="2" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="2" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="2" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="2" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="2" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="2" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="2" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="2" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="2" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="2" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="2" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="2"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="2" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="2" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="2" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="2" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="2" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="2" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="2" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="2" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="2" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="CMTS downlink" description="Used to verify CMTS downlink traffic" selectedStandard="DVB" tuningDuration="20" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="3" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="3" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="2" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="3" crcRedundancy="true"></crc>
+              <pcr pcrSev="3" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="3" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="3" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="3" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="3" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="3" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="3" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="3" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="3" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="3" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="3" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="3" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="3" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="3" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="3" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="3" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="3" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="3" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="3" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="3" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="3" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="3" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="3" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="3" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="3" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="2" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="2" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="2"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="2" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="2" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="2" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="2" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="2" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="2" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="2" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="2" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="2" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="Analog carrier" description="For monitoring analog frequencies" selectedStandard="DVB" tuningDuration="15" tuningNoSyncDuration="15" gap="25" timeout="10">
+              <tsSync tsSyncSev="3" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="3" syncByteRedundancy="true"></syncByte>
+              <pat patSev="3" patRedundancy="true" patRep="500" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="3" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="3" pmtRedundancy="true" pmtRep="500" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="3" pidRedundancy="true"></pid>
+              <transport transportSev="3" transportRedundancy="true"></transport>
+              <crc crcSev="3" crcRedundancy="true"></crc>
+              <pcr pcrSev="3" pcrRedundancy="true" pcrRep="100" pcrMinRep="0" pcrDiscont="100" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="3" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="500" pcrOjAccurancyThreshold="500" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="3" ptsRedundancy="true" ptsRep="700"></pts>
+              <cat catSev="3" catRedundancy="true" catRep="500"></cat>
+              <nit nitSev="3" nitRedundancy="true" nitRepAct="10000" nitRepOth="10000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="3" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="3" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="3" sdtRedundancy="true" sdtRepAct="2000" sdtRepOth="10000" sdtMinGap="25" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="3" eitRedundancy="true" eitRepAct="2000" eitRepOth="10000" eitMinGap="25" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="3" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="3" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="3" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="3" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="3" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="3" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="3" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="3" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="3" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="3" caEcmRep="500" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="3" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="3" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="3" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="3" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="3" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="3" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="3" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="3" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="3"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="3" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="3" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="2" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="3" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="3" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="3" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="3" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="3" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="3" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="3" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="3" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+            <preset name="Default" description="Default template used for new streams. Only important alarms are raised." selectedStandard="DVB" tuningDuration="70" tuningNoSyncDuration="15" gap="0" timeout="10">
+              <tsSync tsSyncSev="2" tsSyncRedundancy="true"></tsSync>
+              <syncByte syncByteSev="2" syncByteRedundancy="true"></syncByte>
+              <pat patSev="2" patRedundancy="true" patRep="1000" patMinServices="0" allowedTsIds=""></pat>
+              <continuity continuitySev="2" continuityRedundancy="true"></continuity>
+              <pmt pmtSev="2" pmtRedundancy="true" pmtRep="1000" pmtMinComponents="0" pmtRequireLangDesc="false"></pmt>
+              <pid pidSev="3" pidRedundancy="true"></pid>
+              <transport transportSev="2" transportRedundancy="true"></transport>
+              <crc crcSev="2" crcRedundancy="true"></crc>
+              <pcr pcrSev="3" pcrRedundancy="true" pcrRep="200" pcrMinRep="0" pcrDiscont="200" pcrPresence="false"></pcr>
+              <pcrAccurancy pcrAccurancySev="3" pcrAccurancyRedundancy="true" pcrAccurancyThreshold="1000" pcrOjAccurancyThreshold="1000" checkPcrAc="true" checkPcrOj="false"></pcrAccurancy>
+              <pts ptsSev="3" ptsRedundancy="true" ptsRep="1400"></pts>
+              <cat catSev="3" catRedundancy="true" catRep="1000"></cat>
+              <nit nitSev="3" nitRedundancy="true" nitRepAct="20000" nitRepOth="20000" nitMonitorOrigNwId="false" nitOrigNwId="0" nitMonitorNwId="false" nitNwId="0" nitMinNumTS="0" nitCableDescrSel="0" nitCableC2DescrSel="0" nitSatelliteDescrSel="0" nitSatelliteS2DescrSel="0" nitTerrestrialDescrSel="0" nitTerrestrialT2DescrSel="0" nitMatchRef="false"></nit>
+              <siRepRate siRepRateSev="3" siRepRateRedundancy="true"></siRepRate>
+              <buffer bufferSev="3"></buffer>
+              <unrefPid unrefPidSev="3" unrefPidRedundancy="true"></unrefPid>
+              <sdt sdtSev="3" sdtRedundancy="true" sdtRepAct="4000" sdtRepOth="20000" sdtMinGap="0" sdtMatchPat="false" sdtRequireDesc="false" sdtRequireBat="false"></sdt>
+              <eit eitSev="3" eitRedundancy="true" eitRepAct="4000" eitRepOth="20000" eitMinGap="0" eitReqTids="" eitReqPresEv="false" eitChPresEvTime="false" eitMaxPresEvTimeErr="90" eitReqNextEv="false" eitReqSchTime="0" eitMaxSchTimeErr="15" eitChOtherTs=""></eit>
+              <rst rstSev="3" rstRedundancy="true" rstRep="20000"></rst>
+              <tdt tdtSev="3" tdtRedundancy="true" tdtRep="30000" tdtRequireTot="false"></tdt>
+              <mgt mgtSev="3" mgtRedundancy="true" mgtRep="150"></mgt>
+              <vct vctSev="3" vctRedundancy="true" vctRep="400" vctCheckTvct="true" vctCheckCvct="true"></vct>
+              <pimPnm pimPnmSev="3" pimPnmRedundancy="true" pimRep="500" pnmRep="1000" pimCheck="true" pnmCheck="true"></pimPnm>
+              <rrt rrtSev="3" rrtRedundancy="true" rrtRep="30000"></rrt>
+              <aeit aeitSev="3" aeitRedundancy="true" aeitRep0="500" aeitRep1="5000" aeitRep4="30000"></aeit>
+              <ett ettSev="3" ettRedundancy="true" ettRep0="2000" ettRep1="5000" ettRep4="30000"></ett>
+              <stt sttSev="3" sttRedundancy="true" sttRep="1000"></stt>
+              <caSystem caSystemSev="3" caEcmRep="1000" caEcmPeriod="25000" caEmmMinimumBitrate="1000" caEmmAveragePeriod="10" caScramblingControlWordPeriod="25000" caSystemRedundancy="true" pidMinBitrateSev="2" pidMinBitrateRedundancy="true"></caSystem>
+              <pidMinBitrate></pidMinBitrate>
+              <pidMaxBitrate pidMaxBitrateSev="2" pidMaxBitrateRedundancy="true"></pidMaxBitrate>
+              <pidBitrate pidBitrateSev="2" pidBitrateRedundancy="true"></pidBitrate>
+              <serviceMinBitrate serviceMinBitrateSev="2" serviceMinBitrateRedundancy="true"></serviceMinBitrate>
+              <serviceMaxBitrate serviceMaxBitrateSev="2" serviceMaxBitrateRedundancy="true"></serviceMaxBitrate>
+              <serviceBitrate serviceBitrateSev="2" serviceVerifyServ="false" serviceBitrateRedundancy="true"></serviceBitrate>
+              <mip mipSev="3" mipRequirePresence="false" mipMaxTimingError="10" mipRedundancy="true"></mip>
+              <content contentSev="3" contentRedundancy="true"></content>
+              <goldenTs goldenTsSev="3" goldenTsRedundancy="true" performFullCheck="false" checkPat="true" checkPmt="true" checkCat="true" checkSdtA="true" checkSdtO="false" checkBat="false" checkNitA="false" checkNitO="false"></goldenTs>
+              <timeInfo timeInfoSev="3" timeInfoRedundancy="true" maxOffset="60" timeToWaitForPresence="40" checkTdt="false" checkTot="false" checkLtc="false"></timeInfo>
+              <t2miCheck t2miCheckSev="3" expectedPLPs="" expdT2Tstmp="3" leapSeconds="0" t2miCheckRedundancy="true" enableT2Mip="false"></t2miCheck>
+              <interfacePreFecBer interfacePreFecBerSev="3" interfacePreFecBerRedundancy="true"></interfacePreFecBer>
+              <interfacePostFecBer interfacePostFecBerSev="3" interfacePostFecBerRedundancy="true" interfaceModulationErrorRatioRedundancy="true"></interfacePostFecBer>
+              <interfaceModulationErrorRatio interfaceModulationErrorRatioSev="3"></interfaceModulationErrorRatio>
+              <interfaceSignalNoiseRatio interfaceSignalNoiseRatioSev="3" interfaceSignalNoiseRatioRedundancy="true"></interfaceSignalNoiseRatio>
+              <interfaceLdpc interfaceLdpcSev="3" interfaceLdpcRedundancy="true"></interfaceLdpc>
+              <interfaceSignalStrength interfaceSignalStrengthSev="3" interfaceSignalStrengthRedundancy="true"></interfaceSignalStrength>
+              <interfaceSfnDrift interfaceSfnDriftSev="3" monDrift="false" maxDrift="10" driftAdjust="0" interfaceSfnDriftRedundancy="true"></interfaceSfnDrift>
+              <centerFrequencyCheck centerFrequencyCheck="3" centerFrequencyCheckRedundancy="true"></centerFrequencyCheck>
+              <symbolRateCheck symbolRateCheck="3" symbolRateCheckRedundancy="true"></symbolRateCheck>
+              <pec pec="3" pecRedundancy="true"></pec>
+              <interfacePostBchFer interfacePostBchFerSev="3" interfacePostBchFerRedundancy="true"></interfacePostBchFer>
+              <interfaceEbNo interfaceEbNoSev="3" interfaceEbNoRedundancy="true"></interfaceEbNo>
+              <interfaceEvm interfaceEvmSev="3" interfaceEvmRedundancy="true"></interfaceEvm>
+              <interfaceOverflow interfaceOverflowSev="2" interfaceOverflowRedundancy="true"></interfaceOverflow>
+            </preset>
+          </etrThresholdList>
+        </etrThresholdPresets>
+        <pidThresholdPresets>
+          <pidThresholdList xmlChildren="dynList" ThreshVer="Mar 18 13:11:52">
+            <preset name="Default" description="No special rules for any PIDs."></preset>
+          </pidThresholdList>
+        </pidThresholdPresets>
+        <serviceThresholdPresets>
+          <serviceThresholdList xmlChildren="dynList" ThreshVer="Mar 18 13:11:52">
+            <preset name="Default" description="No special rules for any services."></preset>
+          </serviceThresholdList>
+        </serviceThresholdPresets>
+      </analysing>
+    </core>
+  </probe>
+</ewe>

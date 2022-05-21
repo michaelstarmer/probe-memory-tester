@@ -183,3 +183,23 @@ table.table tbody th {
 .hidden {
   display: none;
 }
+
+.opacity0 { opacity: 0; }
+
+/*
+ * Alert components
+*/
+.alert {
+  transition-duration: 2s;
+  transition-delay: 2s;
+  position: fixed;
+  top: 15px;
+  transform: translateX(-50%);
+  left: 50%;
+
+}
+@media screen and(min-width: 776px) {
+  .alert {
+    width: 100%;
+  }
+}

@@ -3,8 +3,8 @@ import Job from 'App/Models/Job'
 import moment from 'moment'
 import XmlFile from 'App/Models/XmlFile'
 import JobLog from 'App/Models/JobLog'
-import { DateTime } from 'luxon'
 import axios from 'axios'
+import Application from '@ioc:Adonis/Core/Application'
 
 export default class ApiController {
     public async all_jobs({ response }: HttpContextContract) {
@@ -202,10 +202,35 @@ export default class ApiController {
         }
     }
 
-    public async upload_file({ request }: HttpContextContract) {
-        console.log('upload file...')
-        const xmlFile = request.file('xmlFile')
-        console.log(xmlFile)
+    public async upload_file({ request, response }: HttpContextContract) {
+        const file = request.file('frmFile')
+        
+        const xmlFile = new XmlFile()
+        xmlFile.originalFilename = file?.fileName;
+        xmlFile.filename = `config-${moment().unix()}.xml`
+        xmlFile.filepath = Application.tmpPath('uploads')
+        xmlFile.description = 'Testtest'
+
+        try {
+            await file?.move(xmlFile.filepath, {
+                name: xmlFile.filename
+            })
+            
+
+            const savedFile = await xmlFile.save()
+            return response.json({
+                success: true,
+                file: savedFile
+            })
+        } catch (error) {
+            console.error(error)
+            return response.send(error)    
+        }
+    }
+
+    public async upload_view({ view })
+    {
+        return view.render('upload')
     }
 
     public async create_job_log({ request, response, params }) {

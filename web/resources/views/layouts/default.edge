@@ -18,6 +18,9 @@
 
 <body>
     <main>
+        @if(flashMessages.has('success'))
+          @!component('components/alert-success', { message: flashMessages.get('success') })
+        @endif
         @!section('body')
     </main>
 
@@ -29,7 +32,21 @@
     </div>  --}}
     </footer>
 
-
+    <script>
+      function alertsFadeOut(alertDivs)
+      {
+        for (const alertDiv of alertDivs)
+        {
+          console.log('Alertdiv:', alertDiv)
+          alertDiv.classList.add('opacity0')
+        }
+      }
+      var alertElements = document.getElementsByClassName('alert');
+      if (alertElements && alertElements.length > 0)
+      {
+        alertsFadeOut(alertElements)
+      }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>

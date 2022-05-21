@@ -31,40 +31,53 @@
                             </select>
                         </div>
 
-
-
-
-                        <div class="form-group mt-3">
-                            <label>Test duration</label>
-                            <select name="duration" class="form-select">
-                                <option value="30" selected>30 minutes</option>
-                                <option value="10">10 minutes</option>
-                                <option value="30">30 minutes</option>
-                                <option value="60">1 hour</option>
-                                <option value="120">2 hours</option>
-                                <option value="460">6 hours</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group mt-3">
+                                    <label for="">Increase RAM usage(GB)</label>
+                                    {{--  <input type="range" class="form-range" min="0" max="12" name="memory" data="0">  --}}
+                                    <input type="number" class="form-control" name="memory" value="0">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group mt-3">
+                                    <label>Test duration</label>
+                                    <select name="duration" class="form-select">
+                                        <option value="30" selected>30 minutes</option>
+                                        <option value="10">10 minutes</option>
+                                        <option value="30">30 minutes</option>
+                                        <option value="60">1 hour</option>
+                                        <option value="120">2 hours</option>
+                                        <option value="460">6 hours</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+    
                         </div>
 
 
                         <div class="form-group mt-3">
                             <label>XML configuration</label>
-                            <select name="xmlFileId" class="form-select">
-                                <option value="2" selected>Medium load</option>
-                                <option value="3">Light load</option>
-                                <option value="1">Heavy load</option>
+                            <select name="xmlFileId" id="xmlFileId" size="4" class="form-select" onchange="showXmlInfo()">
+                                @each(file in xmlFiles)
+                                <option
+                                 value="{{file.id}}"
+                                 data-filename="{{file.filename}}"
+                                 data-description="{{file.description}}"
+                                 data-uploadedat="{{file.uploadedAt}}"
+                                 selected>
+                                    {{file.filename}}
+                                </option>
+                                @endeach
                             </select>
                         </div>
 
-                        <div class="form-group mt-3">
-                            <label for="">Apply memory stress (GB)</label>
-                            <input type="number" class="form-control" name="memory" value="0">
-                        </div>
 
-                        <div class="form-group mt-3">
+                        {{--  <div class="form-group mt-3">
                             <label for="">Build number (default = latest)</label>
                             <input type="text" class="form-control" disabled>
-                        </div>
+                        </div>  --}}
 
                         <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
                     </form>
@@ -75,4 +88,42 @@
             </div>
         </div>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 offset-lg-3">
+                    <h3>Selected config</h3>
+
+                    <strong>Filename</strong>
+                    <div id="selectedXmlFileName"></div>
+                    <strong>Description</strong>
+                    <div id="selectedXmlFileDescription">
+                    </div>
+                    <strong>Uploaded at</strong>
+                    <div id="selectedXmlFileUploadedAt">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script>
+    var selectedXmlFileName = document.getElementById('selectedXmlFileName')
+    var selectedXmlFileDescription = document.getElementById('selectedXmlFileDescription')
+    var selectedXmlFileUploadedAt = document.getElementById('selectedXmlFileUploadedAt')
+    function showXmlInfo()
+    {
+        var xmlSelector = document.getElementById('xmlFileId')
+        var selectedOption = xmlSelector.options[xmlSelector.selectedIndex];
+        console.log('Show XML info for:')
+        console.log(selectedOption.dataset)
+        let host = window.location.hostname
+        host = `${window.location.protocol}//${host}`
+        let fullFilePath = `/uploads/xml/${selectedOption.dataset.filename}`
+        let url = encodeURI(fullFilePath.trim())
+
+        selectedXmlFileName.innerHTML = `<a href="${url}">${host}${url}</a>`  ;
+        selectedXmlFileDescription.textContent = selectedOption.dataset.description;
+        selectedXmlFileUploadedAt.textContent = selectedOption.dataset.uploadedat;
+    }
+</script>
 @end

@@ -28,7 +28,9 @@ Route.post('/api/stats/job/:jobId', 'SystemStatController.create_by_job')
 Route.post('/api/stats/btech/:jobId', 'BtechProcController.create')
 
 Route.get('/api/xml', 'JobsController.get_all_xml')
-Route.post('/api/upload', 'ApiController.upload_file')
+Route.get('/uploads', 'FilesController.upload_view')
+Route.post('/upload', 'FilesController.upload_file')
+Route.get('/sessionflash', 'FilesController.session_flash')
 
 Route.get('apidoc', async ({ view }) => view.render('api-doc'))
 

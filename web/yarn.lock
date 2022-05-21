@@ -253,13 +253,13 @@
     rev-hash "^3.0.0"
     source-map-support "^0.5.21"
 
-"@adonisjs/session@^6.1.0":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@adonisjs/session/-/session-6.1.2.tgz#60396c08fbe02de3acd8ab84d2e573c147b68653"
-  integrity sha512-xXmn93b32XruL/zJ+h9Dea/RGneMhenp369PA55VV9Fnxjxf3ElmqMnZYoJ5HYCxbey0NnNODZ9co74+PCVbtw==
+"@adonisjs/session@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@adonisjs/session/-/session-6.4.0.tgz#464201a02df6a5d05c3ff423565ab0e7914c355d"
+  integrity sha512-9yHS60lFpNBUX5/yB+0j+bXQDWqbaYJ1JelLCYtaKRa7B0NewvmPAmsNpHH8SrXE3XGaRyKOxrUGRcmSGg5mRA==
   dependencies:
-    "@poppinss/utils" "^3.2.0"
-    fs-extra "^10.0.0"
+    "@poppinss/utils" "^4.0.4"
+    fs-extra "^10.1.0"
 
 "@adonisjs/shield@^7.0.0":
   version "7.0.7"
@@ -448,6 +448,13 @@
     color-support "^1.1.3"
     kleur "^4.1.4"
 
+"@poppinss/file-generator@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@poppinss/file-generator/-/file-generator-1.0.2.tgz#fff0ed241bc2cd5420c91003d59b404c8bd8bc74"
+  integrity sha512-rRob//4jLbUVbDSsNRihloKGgpyVsWdFQWUmONxX/gyv4koT1OlVoc3ccWgk7Y/sEa2cFxj3zrFs+wdT09iXWw==
+  dependencies:
+    bytes "^3.1.2"
+
 "@poppinss/hooks@^3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@poppinss/hooks/-/hooks-3.0.5.tgz#ae491fc11500bc9cb7e24f6b637704e7d9868505"
@@ -527,6 +534,29 @@
   resolved "https://registry.yarnpkg.com/@poppinss/utils/-/utils-4.0.2.tgz#61f1ce0b4a5335f9111562fd7e94f29a80d3f9ea"
   integrity sha512-+X/8xTyLuwN0KVC+/L5ky7e5/4QwFPjspyOEye2iAQ21E7xkbCAT3f23S6VTKgyksy/zMm8hWBDtwdb35zmhVA==
   dependencies:
+    "@types/bytes" "^3.1.1"
+    "@types/he" "^1.1.2"
+    bytes "^3.1.2"
+    change-case "^4.1.2"
+    cuid "^2.1.8"
+    flattie "^1.1.0"
+    fs-readdir-recursive "^1.1.0"
+    he "^1.2.0"
+    kind-of "^6.0.3"
+    lodash "^4.17.21"
+    ms "^2.1.3"
+    pluralize "^8.0.0"
+    require-all "^3.0.0"
+    resolve-from "^5.0.0"
+    slugify "^1.6.5"
+    truncatise "0.0.8"
+
+"@poppinss/utils@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@poppinss/utils/-/utils-4.0.4.tgz#43353c9cd784e95a66ecd9bc67764fad837dfdcf"
+  integrity sha512-6LS3mofSVB9IQZqofA4rX6KVVcCpdwUQuNe4efHqOTzgD/Q5HTVvDP0vKg1m994QlzJs4aLW1JwXVcNCThEh4g==
+  dependencies:
+    "@poppinss/file-generator" "^1.0.2"
     "@types/bytes" "^3.1.1"
     "@types/he" "^1.1.2"
     bytes "^3.1.2"
@@ -1918,6 +1948,15 @@ fs-extra@^10.0.0, fs-extra@^10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.0.1.tgz#27de43b4320e833f6867cc044bfce29fdf0ef3b8"
   integrity sha512-NbdoVMZso2Lsrn/QwLXOy6rm0ufY2zEOKCDzJR/0kBsb0E6qed0P3iYK+Ath3BfvXEeu4JhEtXLgILx5psUfag==
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
+fs-extra@^10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
+  integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
