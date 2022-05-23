@@ -75,7 +75,7 @@ if (jobReadyToStart):
 xmlConfig = jobReadyToStart['xmlConfig']
 cwd = os.getcwd()
 xmlFile = f"{cwd}/{xmlConfig['filepath']}/{xmlConfig['filename']}"
-apiclient.logToJob(jobId, message=f'Attempting to upload xml from "{xmlFile}"')
+apiclient.logToJob(jobId, message=f'Attempting to upload xml: {xmlFile}')
 try:
     xmlImported = eii.import_config(xmlFile)
     apiclient.logToJob(jobId, xmlImported.stdout.decode())
