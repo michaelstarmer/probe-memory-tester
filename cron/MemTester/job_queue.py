@@ -85,7 +85,7 @@ except CalledProcessError as e:
     apiclient.logToJob(
         jobId, f'XML import failed ({e.returncode})', logType='warn')
     apiclient.logToJob(
-        jobId, e.output, logType='warn')
+        jobId, e.stderr, logType='warn')
     apiclient.setJobStatus(jobId, 'failed')
     print(e)
 
