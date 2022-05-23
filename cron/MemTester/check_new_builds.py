@@ -27,7 +27,7 @@ jobCreated = api.createJob({
     'memory': 4,
     'build_number': latestJenkinsBuild.buildNumber,
     'duration': settings['duration'],
-    'xmlFileId': 2,
+    'xmlFileId': 5,
 })
 print(jobCreated)
 Log.success('New job created!')
