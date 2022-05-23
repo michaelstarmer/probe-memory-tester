@@ -9,6 +9,7 @@ from esxi import ESXiClient
 from update_probe_sw import update_probe_sw
 from webapi import WebApi
 from stress import install_stress_ng, set_memory
+import os
 
 apiclient = WebApi('http://localhost:3333')
 esxi = ESXiClient('10.0.28.202', 'root', 'ldap2retro!')
@@ -72,7 +73,8 @@ if (jobReadyToStart):
 
 
 xmlConfig = jobReadyToStart['xmlConfig']
-xmlFile = f"{xmlConfig['filepath']}/{xmlConfig['filename']}"
+cwd = os.getcwd()
+xmlFile = f"{cwd}/{xmlConfig['filepath']}/{xmlConfig['filename']}"
 apiclient.logToJob(jobId, message=f'Attempting to upload xml from "{xmlFile}"')
 try:
     xmlImported = eii.import_config(xmlFile)
