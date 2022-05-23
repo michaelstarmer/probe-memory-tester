@@ -88,6 +88,7 @@ except CalledProcessError as e:
         jobId, e.stderr, logType='warn')
     apiclient.setJobStatus(jobId, 'failed')
     print(e)
+    exit(0)
 
 
 apiclient.logToJob(jobId, message='Updating probe SW.')

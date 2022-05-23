@@ -7,8 +7,7 @@ import axios from 'axios';
 
 export default class JobsController {
 
-    public async view_all_jobs({ view, response })
-    {
+    public async view_all_jobs({ view, response }) {
         const jobs = await Job.query()
             .preload('xmlConfig')
             .preload('systemStats', statsQuery => {
@@ -80,7 +79,7 @@ Message: ${error.message}
                 isManual: true,
             })
             console.log("Manual job created successfully:", job)
-            response.redirect().toRoute('home')
+            response.redirect().toRoute('view_job', { id: job.id })
         } catch (error) {
             console.error('error creating manual job!', error);
             return response.send(error)
