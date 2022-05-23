@@ -17,9 +17,12 @@ export default class XmlFile extends BaseModel {
   @column()
   public description: string
 
+  @column()
+  public isArchived: boolean
+
+
   @computed()
-  public get uploadedAt()
-  {
+  public get uploadedAt() {
     return this.createdAt.setLocale('no').toFormat('f')
   }
 

@@ -1,107 +1,107 @@
 @layout('layouts/default')
 @section('body')
 
-        <div class="container my-5">
-            @if(error)
-            <div class="row justify-content-md-center">
-                <div class="col-12 col-md-6">
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
-
-                </div>
+<div class="container my-5">
+    @if(error)
+    <div class="row justify-content-md-center">
+        <div class="col-12 col-md-6">
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
             </div>
-            @endif
-            <div class="row justify-content-md-center">
-                <div class="col-12 col-lg-8">
-                    <h1>Create new test</h1>
-                    <p>Manually create a new test based on available jobs from Jenkins. The latest successful build will
-                        be fetched automatically.</p>
-                    <form action="/jobs/createCustom" method="POST">
+
+        </div>
+    </div>
+    @endif
+    <div class="row justify-content-md-center">
+        <div class="col-12 col-lg-8">
+            <h1>Create new test</h1>
+            <p>Manually create a new test based on available jobs from Jenkins. The latest successful build will
+                be fetched automatically.</p>
+            <form action="/jobs/createCustom" method="POST">
 
 
+                <div class="form-group mt-3">
+                    <select name="jenkinsJob" class="form-select">
+                        <option disabled selected>Select Jenkins job</option>
+                        @if(jobs)
+                        @each(job in jobs)
+                        <option value="{{job}}">{{job}}</option>
+                        @endeach
+                        @endif
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-6">
                         <div class="form-group mt-3">
-                            <select name="jenkinsJob" class="form-select">
-                                <option disabled selected>Select Jenkins job</option>
-                                @if(jobs)
-                                @each(job in jobs)
-                                <option value="{{job}}">{{job}}</option>
-                                @endeach
-                                @endif
+                            <label for="">Increase RAM usage(GB)</label>
+                            {{--  <input type="range" class="form-range" min="0" max="12" name="memory" data="0">  --}}
+                            <input type="number" class="form-control" name="memory" value="0">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-group mt-3">
+                            <label>Test duration</label>
+                            <select name="duration" class="form-select">
+                                <option value="30" selected>30 minutes</option>
+                                <option value="10">10 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="120">2 hours</option>
+                                <option value="460">6 hours</option>
                             </select>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group mt-3">
-                                    <label for="">Increase RAM usage(GB)</label>
-                                    {{--  <input type="range" class="form-range" min="0" max="12" name="memory" data="0">  --}}
-                                    <input type="number" class="form-control" name="memory" value="0">
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                                <div class="form-group mt-3">
-                                    <label>Test duration</label>
-                                    <select name="duration" class="form-select">
-                                        <option value="30" selected>30 minutes</option>
-                                        <option value="10">10 minutes</option>
-                                        <option value="30">30 minutes</option>
-                                        <option value="60">1 hour</option>
-                                        <option value="120">2 hours</option>
-                                        <option value="460">6 hours</option>
-                                    </select>
-                                </div>
-                            </div>
-    
-    
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <h5>XML configuration</h5>
+                        <p class="text-muted">
+                            Custom config files can also be <a href="/uploads">uploaded here</a>.
+                        </p>
+                    </div>
+                    <div class="col-12 col-lg-7 mb-3">
+                        <div class="form-group">
+                            <label>Select a file</label>
+                            <select name="xmlFileId" id="xmlFileId" size="5" class="form-select"
+                                onchange="showXmlInfo()">
+                                @each(file in xmlFiles)
+                                @if (!file.isArchived)
+                                <option value="{{file.id}}" data-filename="{{file.filename}}"
+                                    data-description="{{file.description}}" data-uploadedat="{{file.uploadedAt}}">
+                                    {{file.filename}}
+                                </option>
+                                @endif
+                                @endeach
+                            </select>
                         </div>
-
-                        <div class="row">
-                            <div class="col-12 mt-3">
-                                <h5>XML configuration</h5>
-                                <p class="text-muted">
-                                    Custom config files can also be <a href="/uploads">uploaded here</a>.
-                                </p>
-                            </div>
-                            <div class="col-12 col-lg-7 mb-3">
-                                <div class="form-group">
-                                    <label>Select a file</label>
-                                    <select name="xmlFileId" id="xmlFileId" size="5" class="form-select" onchange="showXmlInfo()">
-                                        @each(file in xmlFiles)
-                                        <option
-                                        value="{{file.id}}"
-                                        data-filename="{{file.filename}}"
-                                        data-description="{{file.description}}"
-                                        data-uploadedat="{{file.uploadedAt}}">
-                                            {{file.filename}}
-                                        </option>
-                                        @endeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="metadata" class="col-12 col-lg-5 form-group hidden">
-                                <h5>About XML</h5>
-                                <div id="selectedXmlFileDescription"></div>
-                                <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
-                                <div id="selectedXmlFileUploadedAt"></div>
-                            </div>
-                        </div>
-                        
+                    </div>
+                    <div id="metadata" class="col-12 col-lg-5 form-group hidden">
+                        <h5>About XML</h5>
+                        <div id="selectedXmlFileDescription"></div>
+                        <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
+                        <div id="selectedXmlFileUploadedAt"></div>
+                    </div>
+                </div>
 
 
-                        {{--  <div class="form-group mt-3">
+
+                {{--  <div class="form-group mt-3">
                             <label for="">Build number (default = latest)</label>
                             <input type="text" class="form-control" disabled>
                         </div>  --}}
 
-                        <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
-                    </form>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
+            </form>
 
-                </div>
-
-
-            </div>
         </div>
+
+
+    </div>
+</div>
 
 
 <script>
