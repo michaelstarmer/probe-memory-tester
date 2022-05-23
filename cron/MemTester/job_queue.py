@@ -78,7 +78,7 @@ xmlFile = f"/app/{xmlConfig['filepath']}/{xmlConfig['filename']}"
 apiclient.logToJob(jobId, message=f'Attempting to upload xml: {xmlFile}')
 try:
     xmlImported = eii.import_config(xmlFile)
-    apiclient.logToJob(jobId, xmlImported.stdout.decode())
+    # apiclient.logToJob(jobId, xmlImported.stdout.decode())
     apiclient.logToJob(jobId, 'XML imported successfully')
     Log.success('XML imported successfully')
 

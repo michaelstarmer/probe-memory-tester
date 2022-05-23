@@ -204,7 +204,7 @@ export default class ApiController {
 
     public async upload_file({ request, response }: HttpContextContract) {
         const file = request.file('frmFile')
-        
+
         const xmlFile = new XmlFile()
         xmlFile.originalFilename = file?.fileName;
         xmlFile.filename = `config-${moment().unix()}.xml`
@@ -215,7 +215,7 @@ export default class ApiController {
             await file?.move(xmlFile.filepath, {
                 name: xmlFile.filename
             })
-            
+
 
             const savedFile = await xmlFile.save()
             return response.json({
@@ -224,12 +224,11 @@ export default class ApiController {
             })
         } catch (error) {
             console.error(error)
-            return response.send(error)    
+            return response.send(error)
         }
     }
 
-    public async upload_view({ view })
-    {
+    public async upload_view({ view }) {
         return view.render('upload')
     }
 
@@ -291,7 +290,12 @@ export default class ApiController {
             return response.status(400).json({ error: 'Missing arguments: job/buildNumber' })
         }
 
-        const identicalJob = await Job.query().where('build_number', `${buildNumber}`).andWhere('jenkins_job', jenkinsJob).andWhereNot('is_manual', 1).first()
+        const identicalJob = await Job
+            .query()
+            .where('build_number', `${buildNumber}`)
+            .andWhere('jenkins_job', jenkinsJob)
+            .andWhereNot('is_manual', 1)
+            .first()
 
         if (identicalJob) {
             return response.json(identicalJob);
