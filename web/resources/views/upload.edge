@@ -11,12 +11,13 @@
                     <label class="form-label">Select a file to upload</label>
                     <input type="file" class="form-control" name="frmFile">
                 </div>
-        
+
                 <div class="form-group mt-3">
                     <label class="form-label">Description</label>
-                    <textarea name="frmDescription" class="form-control" placeholder="A brief description about the config..." cols="30" rows="3"></textarea>
-                </div>        
-        
+                    <textarea name="frmDescription" class="form-control"
+                        placeholder="A brief description about the config..." cols="30" rows="3"></textarea>
+                </div>
+
                 <!-- Submit button -->
                 <div class=" form-group mt-3">
                     <button type="submit" class="btn btn-secondary btn-block">Upload</button>
@@ -31,6 +32,7 @@
         <div class="col-12">
             @if(files)
             @each(file in files)
+            @if(!file.isArchived)
             <div class="my-3">
                 <div>
                     <a href="{{ xmlUploadPath }}/{{ file.filename }}">
@@ -50,6 +52,7 @@
                     {{ file.createdAt.setLocale('no').toFormat('f') }}
                 </div>
             </div>
+            @endif
             @endeach
             @endif
         </div>
