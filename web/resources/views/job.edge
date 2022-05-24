@@ -99,7 +99,8 @@
                         Commands
                     </button>
                     @if(job.status == 'running')
-                    <form id="frm-stop-job" action="/jobs/{{ job.id }}/stop" method="get" style="display: inline;">
+                    <form id="frm-stop-job" action="/jobs/{{ job.id }}/stop" method="get" style="display: inline;"
+                        class="">
                         <button type="submit" id="btn-stop-job" class="btn btn-danger">
                             Stop test
                         </button>
@@ -228,6 +229,7 @@
         if (jobData.status !== 'running' && !frmStopJob.classList.contains('hidden'))
         {
             frmStopJob.classList.add('hidden')
+            btnStopJob.classList.add('hidden')
         }
 
         // if (btnStopJob.classList.contains('hidden') && job.status === 'running')
