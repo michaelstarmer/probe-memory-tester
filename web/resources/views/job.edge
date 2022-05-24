@@ -211,14 +211,14 @@
         var el = document.getElementById('job-status')
         var minutesRemaining = document.getElementById('minutes-remaining')
         var startedAt = document.getElementById('started-at')
-
         var frmStopJob = document.getElementById('frm-stop-job')
         var btnStopJob = document.getElementById('btn-stop-job')
-        console.log('jobstatus:', job.status)
+        
         el.textContent = jobData.status
         el.className = '' // remove classes
         el.classList.add(`color-${jobData.status}`)
         el.classList.add('uppercase')
+
         if (jobData.remaining && jobData.remaining >= 1)
         {
             minutesRemaining.textContent = `${jobData.remaining} min. left (${jobData.duration} min.)`
@@ -232,16 +232,6 @@
             btnStopJob.classList.add('hidden')
         }
 
-        // if (btnStopJob.classList.contains('hidden') && job.status === 'running')
-        // {
-        //     btnStopJob.classList.remove('hidden')
-        // }
-        
-        // if (job.status != 'running')
-        // {
-        //     console.log('job status not running')
-        //     btnStopJob.classList.add('hidden')
-        // }
     }
 
     function logScrollToBottom()
@@ -303,8 +293,6 @@
             }
         }
     }
-
-    
 
     function fetchLogs()
     {
