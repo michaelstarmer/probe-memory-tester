@@ -87,7 +87,13 @@ Message: ${error.message}
     }
 
     public async view_job({ view, response, params }: HttpContextContract) {
-        const job = await Job.query().where('id', params.id).preload('systemStats').preload('logs').first()
+        const job = await Job
+            .query()
+            .where('id', params.id)
+            .preload('systemStats')
+            .preload('logs')
+            .preload('xmlConfig')
+            .first()
         const probeIp = await Settings.findBy('key', 'probe_ip')
 
         if (!job) {

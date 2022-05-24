@@ -58,6 +58,15 @@
                                 @endif
                             </tr>
                             <tr>
+                                <th>Config</th>
+                                @if (job.xmlConfig)
+                                <td>
+                                    <a target="_blank"
+                                        href="/uploads/xml/{{job.xmlConfig.filename}}">{{job.xmlConfig.filename}}</a>
+                                </td>
+                                @endif
+                            </tr>
+                            <tr>
                                 <th>Created at</th>
                                 @if (job.createdAt)
                                 <td>{{job.createdAt.setLocale('no').toFormat('f')}}</td>
