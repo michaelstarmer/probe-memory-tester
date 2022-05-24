@@ -10,30 +10,30 @@ export default class AppController {
         const parser = new xml2js.Parser()
 
         // Fetch all jobs and limit each of them to display the 10 latest system stats (cpu/mem)
-        
 
-            const jobs = await Job.query()
-                .preload('xmlConfig')
-                .preload('systemStats', statsQuery => {
-                    statsQuery.groupLimit(10)
-                })
-                .orderBy('created_at', 'desc')
-                .limit(5)
 
-            const probeIp = await Setting.findByOrFail('key', 'probe_ip')
-            const vmName = await Setting.findByOrFail('key', 'vm_name');
-            const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
+        const jobs = await Job.query()
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => {
+                statsQuery.groupLimit(10)
+            })
+            .orderBy('created_at', 'desc')
+            .limit(5)
 
-            const probeData = {
-                ip: probeIp.value,
-                vmName: vmName.value,
-                swVersion: null,
-                isAvailable: true,
-                isOffline: false,
-            }
-            /**
-             * perform a simple check to see if probe is online and reachable
-             */
+        const probeIp = await Setting.findByOrFail('key', 'probe_ip')
+        const vmName = await Setting.findByOrFail('key', 'vm_name');
+        const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
+
+        const probeData = {
+            ip: probeIp.value,
+            vmName: vmName.value,
+            swVersion: null,
+            isAvailable: true,
+            isOffline: false,
+        }
+        /**
+         * perform a simple check to see if probe is online and reachable
+         */
         try {
             const payload = await axios.get(`http://${probeIp.value}/probe/status`, { timeout: 3000 });
 
@@ -67,7 +67,7 @@ export default class AppController {
                 const e = "Probe connection timed out."
                 return view.render('landing', { jobs, probeData, error: e })
                 return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
-                
+
             }
 
             return response.send("Connection error: " + error.errcode)
@@ -114,8 +114,14 @@ export default class AppController {
         })
     }
 
-    async update_host({ request, response }: HttpContextContract) {
-        const { probeIp, jenkinsJob, duration, esxi_vmid, esxi_snapshot_id } = request.only(['probeIp', 'jenkinsJob', 'duration', 'esxi_vmid', 'esxi_snapshot_id'])
+    async update_host({ request, response, session }: HttpContextContract) {
+        const { probeIp, jenkinsJob, duration, esxi_vmid, esxi_snapshot_id } = request.only([
+            'probeIp',
+            'jenkinsJob',
+            'duration',
+            'esxi_vmid',
+            'esxi_snapshot_id'
+        ])
 
         if (!probeIp || !probeIp.length) {
             return response.redirect().withQs({ error: 'Probe ip required' }).toRoute('edit.host')
@@ -127,8 +133,8 @@ export default class AppController {
             await Setting.query().where('key', 'duration').update({ value: duration });
             await Setting.query().where('key', 'esxi_vmid').update({ value: esxi_vmid });
             await Setting.query().where('key', 'esxi_snapshot_id').update({ value: esxi_snapshot_id });
-
-            return response.redirect().toRoute('home')
+            session.flash('success', 'Settings updated!')
+            return response.redirect('/')
         } catch (error) {
             console.error(error)
             return response.send(error)
