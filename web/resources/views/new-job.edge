@@ -72,7 +72,7 @@
                                 @if (!file.isArchived)
                                 <option value="{{file.id}}" data-filename="{{file.filename}}"
                                     data-description="{{file.description}}" data-uploadedat="{{file.uploadedAt}}">
-                                    {{file.filename}}
+                                    {{file.originalFilename}}
                                 </option>
                                 @endif
                                 @endeach
