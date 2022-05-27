@@ -19,7 +19,6 @@
                 be fetched automatically.</p>
             <form action="/jobs/createCustom" method="POST">
 
-
                 <div class="form-group mt-3">
                     <select name="jenkinsJob" class="form-select">
                         <option disabled selected>Select Jenkins job</option>
@@ -87,12 +86,24 @@
                     </div>
                 </div>
 
+                
+
 
 
                 {{--  <div class="form-group mt-3">
                             <label for="">Build number (default = latest)</label>
                             <input type="text" class="form-control" disabled>
                         </div>  --}}
+
+                        <p class="text-muted">Not yet implemented</p>
+                <div class="form-group my-3">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" disabled>
+                            Perform vulnerability scan with report
+                        </label>
+                    </div>
+                </div>
 
                 <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
             </form>
