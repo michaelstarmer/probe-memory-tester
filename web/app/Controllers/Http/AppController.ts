@@ -23,6 +23,7 @@ export default class AppController {
         const probeIp = await Setting.findByOrFail('key', 'probe_ip')
         const vmName = await Setting.findByOrFail('key', 'vm_name');
         const activeJobsCount = (await Job.query().whereNot("status", "completed")).length
+        const jenkinsJob = await Setting.findByOrFail('key', 'jenkins_job');
 
         const probeData = {
             ip: probeIp.value,
@@ -49,7 +50,7 @@ export default class AppController {
                 probeData.swVersion = json.Status.System[0].software_version;
             }
 
-            return view.render('landing', { jobs, probeData })
+            return view.render('landing', { jobs, probeData, jenkinsJob })
 
         } catch (error) {
             console.error('DB error!', error)

@@ -1,7 +1,7 @@
 @layout('layouts/default')
 @section('body')
 
-    <div class="container-fluid mb-5">
+    <div class="container-fluid mb-3">
 
       <div class="row justify-content-md-center">
         
@@ -18,6 +18,9 @@
               {{ error }}
             </div>
             @endif
+
+           
+
             <div class="desktop vm-card">
 
               
@@ -34,6 +37,7 @@
                 @endif
               </p>
             </div>
+            
             <div class="card-body mb-1 p-0 text-center">
 
               @if(probeData.isOffline)
@@ -45,6 +49,7 @@
               @endif
 
             </div>
+            
 
             <div class="card-body text-center">
               <a href="/settings" class="btn btn-warning btn-sm">Settings</a>
@@ -61,18 +66,21 @@
               @endif
               {{--  <a href="#" class="card-link">Another link</a>  --}}
             </div>
-            <div class="text-center mb-1">
-
-              <a href="http://trac.dev.btech/trac/wiki/minnetester">View in Trac</a>
+            @if(jenkinsJob)
+            <div class="text-center mb-2">
+              Tracking: <a target="_blank"
+                                        href="http://build.dev.btech/job/{{jenkinsJob.value}}">{{jenkinsJob.value}}</a>
+            {{--  <a href="http://trac.dev.btech/trac/wiki/minnetester">View in Trac</a>  --}}
             </div>
+            @endif
+            
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid mb-5">
-
-
+    <div class="container-fluid mb-1">
+      
     </div>
     <div id="graphs">
 
