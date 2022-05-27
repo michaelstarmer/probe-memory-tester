@@ -122,7 +122,7 @@
 
         metadataWrap.classList.contains('hidden') && metadataWrap.classList.remove('hidden')
 
-        selectedXmlFileName.innerHTML = `<a href="${url}">Link to file</a>`  ;
+        selectedXmlFileName.innerHTML = `<a target="popup" onclick="window.open('${url}', 'popup', 'width=600,height=600')" href="${url}">Link to file</a>`  ;
         selectedXmlFileDescription.textContent = `${selectedOption.dataset.description}`;
         selectedXmlFileUploadedAt.textContent = `Uploaded ${selectedOption.dataset.uploadedat}`;
     }
