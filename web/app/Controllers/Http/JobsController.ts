@@ -92,6 +92,7 @@ Message: ${error.message}
             .where('id', params.id)
             .preload('systemStats')
             .preload('logs')
+            .preload('securityAudits')
             .preload('xmlConfig')
             .first()
         const probeIp = await Settings.findBy('key', 'probe_ip')
@@ -100,7 +101,11 @@ Message: ${error.message}
             return response.send(`Job with ID ${params.id} not found.`);
         }
 
-        console.log('Job found:', job)
+        console.log('This job contains:')
+        console.log(`\t- ${job.systemStats.length} systemStats`)
+        console.log(`\t- ${job.logs.length} logs`)
+        console.log(`\t- ${job.securityAudits.length} securityAudits`)
+
         return view.render('job', { job, probeIp });
     }
 

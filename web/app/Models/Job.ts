@@ -4,6 +4,7 @@ import XmlFile from './XmlFile'
 import SystemStat from './SystemStat'
 import Snapshot from './Snapshot'
 import JobLog from './JobLog'
+import JobSecurityAudit from './JobSecurityAudit'
 
 export default class Job extends BaseModel {
 
@@ -86,6 +87,9 @@ export default class Job extends BaseModel {
 
   @hasMany(() => JobLog)
   public logs: HasMany<typeof JobLog>
+
+  @hasMany(() => JobSecurityAudit)
+  public securityAudits: HasMany<typeof JobSecurityAudit>
 
   public static ignoreCompleted = scope(query => query.whereNot('status', 'completed'))
   public static onlyRunning = scope(query => query.where('status', 'running'))
