@@ -28,12 +28,9 @@ if securityAudit['status'] == 'waiting':
         status = gvm.taskStatus(task_id)
         updateAudit = api.updateSecurityAudit(currentJob['id'], {
             'gvmReportId': report_id,
-            'progress': 20,
+            'progress': 0,
             'inUse': 1,
             'status': 'running',
-            'cveLow': 54,
-            'cveMedium': 12,
-            'cveHigh': 2
         })
         if updateAudit:
             Log.success('Audit updated!')
@@ -52,7 +49,7 @@ if securityAudit['status'] == 'running':
         report_id = securityAudit['gvm_report_id']
         report = gvm.taskReport(report_id)
         # print(json.dumps(report, indent=2))
-        print(report['report'])
+        print(json.dumps(status, indent=2))
         
         
         payload = {
@@ -75,3 +72,20 @@ if securityAudit['status'] == 'running':
         Log.error('Status error!')
         print(e)
 
+if securityAudit['status'] == 'completed':
+    if not securityAudit['pdf']:
+        
+        try:
+
+            status = gvm.taskStatus(task_id)
+            report_id = securityAudit['gvm_report_id']
+            dl = gvm.downloadReportPDF(report_id, f'public/report-{report_id}.pdf')
+        
+            if dl:
+                Log.success('Report downloaded updated!')
+            else:
+                Log.error('Report failed to download!')
+
+        except Exception as e:
+            Log.error('Status error!')
+            print(e)
