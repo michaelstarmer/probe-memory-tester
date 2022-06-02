@@ -7,11 +7,12 @@ export default class JobSecurityAudits extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('job_id').unsigned().references('id').inTable('jobs')
+      table.string('gvm_report_id', 50).nullable()
       table.integer('progress', 3).defaultTo(0)
-      table.boolean('in_use').defaultTo(true)
-      table.integer('cve_low_severity').defaultTo(0)
-      table.integer('cve_medium_severity').defaultTo(0)
-      table.integer('cve_heigh_severity').defaultTo(0)
+      table.boolean('in_use').defaultTo(false)
+      table.enum('status', [ 'waiting', 'running', 'completed', 'failed' ]).notNullable().defaultTo('waiting')
+      table.integer('vulns').defaultTo(0)
+      
       table.string('pdf')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

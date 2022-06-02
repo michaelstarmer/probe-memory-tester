@@ -9,6 +9,9 @@ export default class JobSecurityAudit extends BaseModel {
   @column({ columnName: 'job_id' })
   public jobId: Number
 
+  @column({ columnName: 'gvm_report_id' })
+  public gvmReportId: string
+
   @belongsTo(() => Job)
   public job: BelongsTo<typeof Job>
 
@@ -19,16 +22,13 @@ export default class JobSecurityAudit extends BaseModel {
   public inUse: boolean
 
   @column()
+  public status: string
+
+  @column()
   public pdf: string
 
-  @column({ columnName: 'cve_low_severity' })
-  public cveLow: number
-
-  @column({ columnName: 'cve_medium_severity' })
-  public cveMedium: number
-
-  @column({ columnName: 'cve_heigh_severity' })
-  public cveHigh: number
+  @column()
+  public vulns: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -126,8 +126,7 @@
     <div class="row">
         <div class="col-12 col-lg-12">
             <h3>Reports</h3>
-            @if(job.securityAudits)
-            @each(securityAudit in job.securityAudits)
+            @if(job.securityAudit)
             <div class="card text-center mb-5">
                 <div class="card-header">
                     <h5 class="card-title">Security Audit</h5>
@@ -174,7 +173,6 @@
                     </div>
                 </div>
             </div>
-            @endeach
             @endif
         </div>
     </div>

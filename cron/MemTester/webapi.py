@@ -35,9 +35,21 @@ class WebApi:
     def setJobStatus(self, id, status):
         response = self._get(f'api/jobs/{id}/status/{status}')
         return response
+    
+    def setSecurityAuditStatus(self, id, status):
+        response = self._get(f'api/jobs/{id}/security-audit/status/{status}')
+        return response
+    
+    def updateSecurityAudit(self, jobId, payload):
+        response = self._post(f'api/jobs/{jobId}/security-audit', payload)
+        return response
 
     def getWaitingJob(self):
         response = self._get(f'api/jobs/next')
+        return response
+    
+    def getCurrentJob(self):
+        response = self._get(f'api/jobs/active')
         return response
 
     def startJob(self, id):

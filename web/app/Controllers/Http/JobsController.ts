@@ -92,7 +92,7 @@ Message: ${error.message}
             .where('id', params.id)
             .preload('systemStats')
             .preload('logs')
-            .preload('securityAudits')
+            .preload('securityAudit')
             .preload('xmlConfig')
             .first()
         const probeIp = await Settings.findBy('key', 'probe_ip')
@@ -104,7 +104,8 @@ Message: ${error.message}
         console.log('This job contains:')
         console.log(`\t- ${job.systemStats.length} systemStats`)
         console.log(`\t- ${job.logs.length} logs`)
-        console.log(`\t- ${job.securityAudits.length} securityAudits`)
+        job.securityAudit &&
+        console.log(`\t- 1 securityAudit`)
 
         return view.render('job', { job, probeIp });
     }

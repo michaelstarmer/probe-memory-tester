@@ -88,8 +88,8 @@ export default class Job extends BaseModel {
   @hasMany(() => JobLog)
   public logs: HasMany<typeof JobLog>
 
-  @hasMany(() => JobSecurityAudit)
-  public securityAudits: HasMany<typeof JobSecurityAudit>
+  @hasOne(() => JobSecurityAudit)
+  public securityAudit: HasOne<typeof JobSecurityAudit>
 
   public static ignoreCompleted = scope(query => query.whereNot('status', 'completed'))
   public static onlyRunning = scope(query => query.where('status', 'running'))

@@ -17,6 +17,8 @@ Route.get('/api/jobs/:id/status/:status', 'ApiController.set_job_status')
 Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')
 Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
 Route.get('/api/jobs/:id/log', 'ApiController.get_job_log')
+Route.get('/api/jobs/:jobId/security-audit/status/:status', 'ApiController.set_security_audit_status')
+Route.post('/api/jobs/:jobId/security-audit', 'ApiController.update_security_audit')
 
 Route.post('/api/stats', 'SystemStatController.create')
 Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')

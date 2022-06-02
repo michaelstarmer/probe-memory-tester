@@ -5,6 +5,7 @@ import XmlFile from 'App/Models/XmlFile'
 import JobLog from 'App/Models/JobLog'
 import axios from 'axios'
 import Application from '@ioc:Adonis/Core/Application'
+import JobSecurityAudit from 'App/Models/JobSecurityAudit'
 
 export default class ApiController {
     public async all_jobs({ response }: HttpContextContract) {
@@ -167,12 +168,13 @@ export default class ApiController {
         }
     }
 
-    public async running_job({ response }) {
+    public async get_running_job({ response }) {
         const job = await Job
             .query()
             .withScopes(scopes => scopes.onlyRunning())
             .first();
         await job?.load('xmlConfig')
+        await job?.load('securityAudit')
 
         if (!job) {
             return response.json({})
@@ -326,5 +328,32 @@ export default class ApiController {
             console.error(error)
             return response.status(400).json({ error });
         }
+    }
+
+    public async update_security_audit({ params, request, response }: HttpContextContract)
+    {
+        const { jobId } = params;
+        const payload = request.only([ 'gvmReportId', 'progress', 'inUse', 'status', 'pdf', 'vulns' ])
+        const audit = await JobSecurityAudit.findBy('job_id', jobId)
+        await audit?.merge(payload).save()
+        console.log(audit)
+        return response.json(audit)
+    }
+
+    public async set_security_audit_status({ params, request, response }: HttpContextContract) {
+        const { jobId, status } = params;
+        const audit = await JobSecurityAudit.findBy('job_id', jobId)
+
+        const validStatuses = [ 'waiting', 'initializing', 'completed', 'running', 'failed' ];
+        if (!validStatuses.includes(status)) {
+            return response.status(400).json({ error: 'Status not valid', validStatuses })
+        }
+
+        if (!audit) {
+            return response.status(400).json({ error: 'Security audit not found.' })
+        }
+
+        await audit.merge({ status }).save()
+        return response.status(200).json({ success: true })
     }
 }
