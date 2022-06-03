@@ -1,3 +1,8 @@
-<div class="alert alert-success" role="alert">
-{{ message }}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    @if(success.title)
+    <strong>{{success.title}}</strong>
+    @endif
+    @if(success.description)
+    {{ success.description }}
+    @endif
 </div>

@@ -60,14 +60,31 @@ Message: ${error.message}
         }
     }
 
-    public async save_custom_job({ request, response }: HttpContextContract) {
-        const { jenkinsJob, duration, xmlFileId, memory, securityAudit } = request.all();
+    public async save_custom_job({ request, response, session }: HttpContextContract) {
+        let { jenkinsJob, duration, xmlFileId, memory, securityAudit, buildNumber } = request.all();
 
-        let buildNumber = null;
         const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
         const { data } = await axios.get(jenkinsJobUrl);
 
-        if (data) {
+        if (buildNumber)
+        {
+            const buildUrl = `http://10.0.31.142/job/${jenkinsJob}/${buildNumber}/api/json?pretty=true`
+            console.log(`Verifying that build number ${buildNumber} exists @ ${buildUrl}`)
+            try {
+                const buildNumberResponse = await axios.get(buildUrl);
+                console.log(buildNumberResponse.data)
+                
+            } catch (error) {
+                console.error('Invalid build number!');
+                session.flash('errors', { 
+                    title: 'Invalid build number!',
+                    description: `See which build number exists for <a href="http://10.0.31.142/job/${jenkinsJob}/">${jenkinsJob}</a>`
+                })
+                return response.redirect('/jobs/new')
+            }
+        }
+        // if no build number specified, default to latest build
+        if (data && !buildNumber) {
             buildNumber = data['builds'][0]['number']
         }
         try {

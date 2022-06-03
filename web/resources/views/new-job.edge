@@ -19,15 +19,26 @@
                 be fetched automatically.</p>
             <form action="/jobs/createCustom" method="POST">
 
-                <div class="form-group mt-3">
-                    <select name="jenkinsJob" class="form-select">
-                        <option disabled selected>Select Jenkins job</option>
-                        @if(jobs)
-                        @each(job in jobs)
-                        <option value="{{job}}">{{job}}</option>
-                        @endeach
-                        @endif
-                    </select>
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="form-group mt-3">
+                            <label for="">Jenkins job</label>
+                            <select name="jenkinsJob" class="form-select">
+                                <option disabled selected>Select</option>
+                                @if(jobs)
+                                @each(job in jobs)
+                                <option value="{{job}}">{{job}}</option>
+                                @endeach
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="form-group mt-3">
+                            <label for="">Build no. (optional)</label>
+                            <input type="number" name="buildNumber" class="form-control" placeholder="Latest build">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">

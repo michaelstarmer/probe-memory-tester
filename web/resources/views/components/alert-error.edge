@@ -1,3 +1,8 @@
-<div class="alert alert-error" role="alert">
-{{ message }}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    @if(error.title)
+    <strong>{{error.title}}</strong>
+    @endif
+    @if(error.description)
+    {{{ error.description }}}
+    @endif
 </div>

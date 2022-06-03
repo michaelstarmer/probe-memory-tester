@@ -134,7 +134,7 @@ export default class AppController {
             await Setting.query().where('key', 'duration').update({ value: duration });
             await Setting.query().where('key', 'esxi_vmid').update({ value: esxi_vmid });
             await Setting.query().where('key', 'esxi_snapshot_id').update({ value: esxi_snapshot_id });
-            session.flash('success', 'Settings updated!')
+            session.flash('success', { description: 'Settings updated!'})
             return response.redirect('/')
         } catch (error) {
             console.error(error)

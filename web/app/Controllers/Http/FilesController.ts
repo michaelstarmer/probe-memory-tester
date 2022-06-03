@@ -22,10 +22,10 @@ export default class FilesController {
 
 
             await xmlFile.save()
-            session.flash('success', 'XML file uploaded')
+            session.flash('success', { description: 'XML file uploaded'})
         } catch (error) {
             console.error(error)
-            session.flash('error', 'Upload failed: ' + error.code)
+            session.flash('error', {description: 'Upload failed: ' + error.code})
         }
         return response.redirect('/uploads')
     }
@@ -33,7 +33,7 @@ export default class FilesController {
     public async session_flash({ response, session }) {
         try {
 
-            session.flash('success', 'Success message')
+            session.flash('success', {description: 'Success message'})
             return response.redirect('/uploads')
         } catch (error) {
             return response.send(error)

@@ -19,7 +19,10 @@
 <body>
   <main>
     @if(flashMessages.has('success'))
-    @!component('components/alert-success', { message: flashMessages.get('success') })
+    @!component('components/alert-success', { success: flashMessages.get('success') })
+    @endif
+    @if(flashMessages.has('errors'))
+    @!component('components/alert-error', { error: flashMessages.get('errors') })
     @endif
     @!section('body')
   </main>
@@ -44,7 +47,7 @@
       var alertElements = document.getElementsByClassName('alert');
       if (alertElements && alertElements.length > 0)
       {
-        alertsFadeOut(alertElements)
+        // alertsFadeOut(alertElements)
       }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
