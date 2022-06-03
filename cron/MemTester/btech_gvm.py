@@ -81,7 +81,6 @@ class GvmSSH:
     def downloadReportPDF(self, report_id, path='report.pdf'):
         cmd = f'gvm-cli --gmp-username admin --gmp-password ldap2retro socket --xml "<get_reports report_id=\\"{report_id}\\" format_id=\\"c402cc3e-b531-11e1-9163-406186ea4fc5\\"/>"'
         payload = self._sshExec(cmd)
-
         content = payload['get_reports_response']['report']["#text"]
         binaryBase64EncodedPdf = str(content).encode('ascii')
         binaryPdf = b64decode(binaryBase64EncodedPdf)
