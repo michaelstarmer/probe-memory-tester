@@ -10,7 +10,7 @@ COPY . /app
 WORKDIR /app
 
 # RUN npm run build
-#RUN yarn
+RUN yarn
 
 RUN yarn build
 
