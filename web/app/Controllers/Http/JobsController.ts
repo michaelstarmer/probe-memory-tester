@@ -129,6 +129,7 @@ Message: ${error.message}
         console.log(`\t- ${job.logs.length} logs`)
         job.securityAudit &&
         console.log(`\t- 1 securityAudit`)
+        console.log(job.securityAudit.toJSON())
 
         return view.render('job', { job, probeIp });
     }
