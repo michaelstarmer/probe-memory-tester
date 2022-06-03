@@ -151,7 +151,9 @@
                         @endif
                         
                     </p>
-                    {{--  <a href="#" class="btn btn-primary">View PDF</a>  --}}
+                    @if(job.securityAudit.pdf)
+                    <a href="/{{job.securityAudit.pdf}}" class="btn btn-primary">View PDF</a>
+                    @endif
                 </div>
                 <div class="card-footer text-muted">
                     @if(job.securityAudit.status == 'waiting')
