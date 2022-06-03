@@ -28,7 +28,7 @@ Route.post('/api/stats/btech/:jobId', 'BtechProcController.create')
 /* Deprecated routes */
 Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
-Route.get('/api/queue/active', 'ApiController.running_job')
+Route.get('/api/queue/active', 'ApiController.get_running_job')
 
 Route.get('/api/xml', 'JobsController.get_all_xml')
 Route.get('/uploads', 'FilesController.upload_view')
