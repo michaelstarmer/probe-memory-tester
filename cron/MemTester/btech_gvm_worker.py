@@ -74,12 +74,13 @@ if securityAudit['status'] == 'running':
 
 if securityAudit['status'] == 'completed':
     if not securityAudit['pdf']:
-        
+        Log.info('Downloading PDF report')
         try:
-
             status = gvm.taskStatus(task_id)
             report_id = securityAudit['gvm_report_id']
-            dl = gvm.downloadReportPDF(report_id, f'public/report-{report_id}.pdf')
+            pdfPath = f'public/report-{report_id}.pdf'
+            dl = gvm.downloadReportPDF(report_id, pdfPath)
+            updateAudit = api.updateSecurityAudit(currentJob['id'], { 'pdf': pdfPath })
         
             if dl:
                 Log.success('Report downloaded updated!')

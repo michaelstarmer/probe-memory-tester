@@ -125,8 +125,8 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-lg-12">
-            <h3>Reports</h3>
             @if(job.securityAudit)
+            <h3>Reports</h3>
             <div class="card text-center mb-5">
                 <div class="card-header">
                     <h5 class="card-title">Security Audit</h5>
@@ -134,10 +134,11 @@
                 <div class="card-body">
 
                     <p class="card-text my-3">
-                        @if(job.securityAudit.status == 'waiting')
-                        Probe will be scanned for vulnerabilities using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability Manager)</a>
-                        @else
+                        @if(job.securityAudit.status != 'waiting')
                         
+                        <p>
+                            Security audit using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability Manager) instance</a>
+                        </p>
                         <span class="mx-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ff0000"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
@@ -148,25 +149,7 @@
 
                         </span>
                         @endif
-                        {{--  <span class="mx-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ffcc00"
-                                class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                            </svg>
-                            {{ securityAudit.cveHigh }} high severity
-
-                        </span>
-
-                        <span class="mx-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#696969"
-                                class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                            </svg>
-                            {{ securityAudit.cveHigh }} high severity
-
-                        </span>  --}}
+                        
                     </p>
                     {{--  <a href="#" class="btn btn-primary">View PDF</a>  --}}
                 </div>
@@ -175,7 +158,7 @@
                     WAITING
                     @else
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {{ job.securityAudit.progress }}%;"
+                        <div class="progress-bar {{ job.securityAudit.status == 'running' ? 'bg-warning' : 'bg-success'}}" role="progressbar" style="width: {{ job.securityAudit.progress }}%;"
                             aria-valuenow="{{ job.securityAudit.progress }}" aria-valuemin="0" aria-valuemax="100">
                             {{ job.securityAudit.progress }}%</div>
                     </div>
