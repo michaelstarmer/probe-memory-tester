@@ -23,7 +23,7 @@ if securityAudit['status'] == 'completed':
             pdfPath = f'/app/public/report-{report_id}.pdf'
             dl = gvm.downloadReportPDF(report_id, pdfPath)
             updateAudit = api.updateSecurityAudit(
-                currentJob['id'], {'pdf': pdfPath})
+                currentJob['id'], {'pdf': f'report-{report_id}.pdf'})
 
             if dl:
                 Log.success('Report downloaded updated!')
