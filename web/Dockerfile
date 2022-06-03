@@ -12,7 +12,7 @@ WORKDIR /app
 # RUN npm run build
 #RUN yarn
 
-RUN npm run build
+RUN yarn build
 
 RUN cp .env ./build/.env
 
