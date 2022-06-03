@@ -19,7 +19,6 @@ if securityAudit['status'] == 'completed':
     if not securityAudit['pdf']:
         Log.info('Downloading PDF report')
         try:
-            status = gvm.taskStatus(task_id)
             report_id = securityAudit['gvm_report_id']
             pdfPath = f'/app/public/report-{report_id}.pdf'
             dl = gvm.downloadReportPDF(report_id, pdfPath)
