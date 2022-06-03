@@ -16,6 +16,24 @@ if not securityAudit:
     exit()
 
 if securityAudit['status'] == 'completed':
+    if not securityAudit['pdf']:
+        Log.info('Downloading PDF report')
+        try:
+            status = gvm.taskStatus(task_id)
+            report_id = securityAudit['gvm_report_id']
+            pdfPath = f'/app/public/report-{report_id}.pdf'
+            dl = gvm.downloadReportPDF(report_id, pdfPath)
+            updateAudit = api.updateSecurityAudit(
+                currentJob['id'], {'pdf': pdfPath})
+
+            if dl:
+                Log.success('Report downloaded updated!')
+            else:
+                Log.error('Report failed to download!')
+
+        except Exception as e:
+            Log.error('Status error!')
+            print(e)
     Log.info('[ GVM SEC ] Security audit already handled for this job')
     exit()
     
