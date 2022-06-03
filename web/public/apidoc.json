@@ -127,11 +127,11 @@
                 }
             }
         },
-        "/queue/next": {
+        "/jobs/next": {
             "get": {
-                "summary": "Start next job",
-                "description": "This endpoint will return the next job in queue and trigger it's start.",
-                "operationId": "nextJob",
+                "summary": "Get job waiting to start",
+                "description": "Return the next job in the queue if there are no jobs running.",
+                "operationId": "getNextJob",
                 "consumes": [
                     "application/json",
                     "application/xml"
@@ -155,7 +155,7 @@
                 }
             }
         },
-        "/queue/active": {
+        "/jobs/active": {
             "get": {
                 "summary": "Get active job",
                 "description": "The job currently being run (if any).",
@@ -182,10 +182,10 @@
                 }
             }
         },
-        "/stats/job/{jobId}": {
+        "/jobs/{jobId}/log": {
             "get": {
-                "summary": "Stats by job ID",
-                "description": "Returns all the recorded memory/cpu stats for a single job.",
+                "summary": "Job logs",
+                "description": "Returns all the recorded logs belonging to a praticular job.",
                 "operationId": "statsByJobId",
                 "consumes": [
                     "application/json",
@@ -202,7 +202,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/Stat"
+                                "$ref": "#/definitions/Log"
                             }
                         }
                     },
@@ -366,6 +366,39 @@
             },
             "xml": {
                 "name": "q"
+            }
+        },
+        "Log": {
+            "type": "object",
+            "required": [],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "job_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Log level (info, warn, error)"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Log message"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "xml": {
+                "name": "Log"
             }
         },
         "Tag": {
