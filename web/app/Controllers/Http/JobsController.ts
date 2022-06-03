@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job';
 import JobLog from 'App/Models/JobLog';
+import JobSecurityAudit from 'App/Models/JobSecurityAudit';
 import Settings from 'App/Models/Setting';
 import XmlFile from 'App/Models/XmlFile';
 import axios from 'axios';
@@ -60,7 +61,7 @@ Message: ${error.message}
     }
 
     public async save_custom_job({ request, response }: HttpContextContract) {
-        const { jenkinsJob, duration, xmlFileId, memory } = request.all();
+        const { jenkinsJob, duration, xmlFileId, memory, securityAudit } = request.all();
 
         let buildNumber = null;
         const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
@@ -79,6 +80,11 @@ Message: ${error.message}
                 isManual: true,
             })
             console.log("Manual job created successfully:", job)
+            if (securityAudit)
+            {
+                const jobSecurityAudit = new JobSecurityAudit()
+                await job.related('securityAudit').create(jobSecurityAudit)
+            }
             response.redirect().toRoute('view_job', { id: job.id })
         } catch (error) {
             console.error('error creating manual job!', error);

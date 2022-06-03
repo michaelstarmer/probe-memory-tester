@@ -134,6 +134,10 @@
                 <div class="card-body">
 
                     <p class="card-text my-3">
+                        @if(job.securityAudit.status == 'waiting')
+                        Probe will be scanned for vulnerabilities using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability Manager)</a>
+                        @else
+                        
                         <span class="mx-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ff0000"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
@@ -143,6 +147,7 @@
                             {{ job.securityAudit.vulns }} vulnerabilities
 
                         </span>
+                        @endif
                         {{--  <span class="mx-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ffcc00"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
@@ -163,14 +168,18 @@
 
                         </span>  --}}
                     </p>
-                    <a href="#" class="btn btn-primary">View PDF</a>
+                    {{--  <a href="#" class="btn btn-primary">View PDF</a>  --}}
                 </div>
                 <div class="card-footer text-muted">
+                    @if(job.securityAudit.status == 'waiting')
+                    WAITING
+                    @else
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: {{ job.securityAudit.progress }}%;"
                             aria-valuenow="{{ job.securityAudit.progress }}" aria-valuemin="0" aria-valuemax="100">
                             {{ job.securityAudit.progress }}%</div>
                     </div>
+                    @endif
                 </div>
             </div>
             @endif
