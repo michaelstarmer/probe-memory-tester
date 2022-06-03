@@ -15,6 +15,7 @@ RUN yarn
 RUN yarn build
 
 RUN cp .env ./build/.env
+RUN cp public/apidoc.json ./build/public/apidoc.json
 
 ENV TZ = 'Europe/Amsterdam'
 
