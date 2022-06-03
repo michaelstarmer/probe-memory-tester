@@ -78,7 +78,7 @@ if securityAudit['status'] == 'completed':
         try:
             status = gvm.taskStatus(task_id)
             report_id = securityAudit['gvm_report_id']
-            pdfPath = f'public/report-{report_id}.pdf'
+            pdfPath = f'/app/public/report-{report_id}.pdf'
             dl = gvm.downloadReportPDF(report_id, pdfPath)
             updateAudit = api.updateSecurityAudit(currentJob['id'], { 'pdf': pdfPath })
         
