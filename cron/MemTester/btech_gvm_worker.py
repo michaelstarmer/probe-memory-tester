@@ -49,7 +49,7 @@ if securityAudit['status'] == 'running':
         report_id = securityAudit['gvm_report_id']
         report = gvm.taskReport(report_id)
         # print(json.dumps(report, indent=2))
-        print(json.dumps(status, indent=2))
+        # print(json.dumps(status, indent=2))
         
         
         payload = {
