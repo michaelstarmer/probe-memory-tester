@@ -23,7 +23,7 @@
                     <div class="col-12 col-lg-8">
                         <div class="form-group mt-3">
                             <label for="">Jenkins job</label>
-                            <select name="jenkinsJob" class="form-select">
+                            <select name="jenkinsJob" class="form-select" required>
                                 <option disabled selected>Select</option>
                                 @if(jobs)
                                 @each(job in jobs)
@@ -80,7 +80,7 @@
                         <div class="form-group">
                             <label>Select a file</label>
                             <select name="xmlFileId" id="xmlFileId" size="5" class="form-select"
-                                onchange="showXmlInfo()">
+                                onchange="showXmlInfo()" required>
                                 @each(file in xmlFiles)
                                 @if (!file.isArchived)
                                 <option value="{{file.id}}" data-filename="{{file.filename}}"
