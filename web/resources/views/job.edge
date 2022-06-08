@@ -135,11 +135,12 @@
 
                     <p class="card-text my-3">
                         @if(job.securityAudit.status != 'waiting')
-                        
+
                         <p>
-                            Security audit using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability Manager) instance</a>
+                            Security audit using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability
+                                Manager) instance</a>
                         </p>
-                        <span class="mx-2">
+                        {{--  <span class="mx-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ff0000"
                                 class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
                                 <path
@@ -147,20 +148,29 @@
                             </svg>
                             {{ job.securityAudit.vulns }} vulnerabilities
 
-                        </span>
+                        </span> --}}
                         @endif
-                        
+
                     </p>
                     @if(job.securityAudit.pdf)
-                    <a href="/{{job.securityAudit.pdf}}" class="btn btn-primary">View PDF</a>
+                    <a href="/{{job.securityAudit.pdf}}" class="btn"><img src="/ic/pdf-48.png" height="24" width="24">
+                        Scan report</a>
+                    {{--  <a href="/jobs/{{ job.id }}/export-security-report" class="btn btn-primary">Export</a> --}}
                     @endif
                 </div>
                 <div class="card-footer text-muted">
                     @if(job.securityAudit.status == 'waiting')
                     WAITING
+                    @elseif(job.securityAudit.status == 'completed')
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">
+                            Done</div>
+                    </div>
                     @else
                     <div class="progress">
-                        <div class="progress-bar {{ job.securityAudit.status == 'running' ? 'bg-warning' : 'bg-success'}}" role="progressbar" style="width: {{ job.securityAudit.progress }}%;"
+                        <div class="progress-bar {{ job.securityAudit.status == 'running' ? 'bg-warning' : 'bg-success'}}"
+                            role="progressbar" style="width: {{ job.securityAudit.progress }}%;"
                             aria-valuenow="{{ job.securityAudit.progress }}" aria-valuemin="0" aria-valuemax="100">
                             {{ job.securityAudit.progress }}%</div>
                     </div>

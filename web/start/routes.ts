@@ -25,10 +25,7 @@ Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')
 Route.post('/api/stats/job/:jobId', 'SystemStatController.create_by_job')
 Route.post('/api/stats/btech/:jobId', 'BtechProcController.create')
 
-/* Deprecated routes */
-Route.post('/api/queue', 'ApiController.create_job')
-Route.get('/api/queue/next', 'ApiController.next_job')
-Route.get('/api/queue/active', 'ApiController.get_running_job')
+
 
 Route.get('/api/xml', 'JobsController.get_all_xml')
 Route.get('/uploads', 'FilesController.upload_view')
@@ -42,5 +39,14 @@ Route.post('/host/edit', 'AppController.update_host')
 Route.get('jobs', 'JobsController.view_all_jobs')
 Route.get('jobs/new', 'JobsController.new_job_view')
 Route.get('jobs/:id', 'JobsController.view_job').as('view_job')
+Route.get('jobs/:id/export-security-report', 'PdfController.view_generate_report').as('view.generate.report')
+Route.post('jobs/:id/export-security-report', 'PdfController.generate_report').as('generate.report')
+
 Route.get('jobs/:id/stop', 'JobsController.stop_job')
 Route.post('/jobs/createCustom', 'JobsController.save_custom_job')
+
+/* deprecated routes */
+Route.post('/api/queue', 'ApiController.create_job')
+Route.get('/api/queue/next', 'ApiController.next_job')
+Route.get('/api/queue/active', 'ApiController.get_running_job')
+/* end deprecated routes */

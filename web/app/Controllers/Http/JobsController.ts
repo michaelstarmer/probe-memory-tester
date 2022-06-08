@@ -66,17 +66,16 @@ Message: ${error.message}
         const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
         const { data } = await axios.get(jenkinsJobUrl);
 
-        if (buildNumber)
-        {
+        if (buildNumber) {
             const buildUrl = `http://10.0.31.142/job/${jenkinsJob}/${buildNumber}/api/json?pretty=true`
             console.log(`Verifying that build number ${buildNumber} exists @ ${buildUrl}`)
             try {
                 const buildNumberResponse = await axios.get(buildUrl);
                 console.log(buildNumberResponse.data)
-                
+
             } catch (error) {
                 console.error('Invalid build number!');
-                session.flash('errors', { 
+                session.flash('errors', {
                     title: 'Invalid build number!',
                     description: `See which build number exists for <a href="http://10.0.31.142/job/${jenkinsJob}/">${jenkinsJob}</a>`
                 })
@@ -97,8 +96,7 @@ Message: ${error.message}
                 isManual: true,
             })
             console.log("Manual job created successfully:", job)
-            if (securityAudit)
-            {
+            if (securityAudit) {
                 const jobSecurityAudit = new JobSecurityAudit()
                 await job.related('securityAudit').create(jobSecurityAudit)
             }
@@ -127,9 +125,10 @@ Message: ${error.message}
         console.log('This job contains:')
         console.log(`\t- ${job.systemStats.length} systemStats`)
         console.log(`\t- ${job.logs.length} logs`)
-        job.securityAudit &&
-        console.log(`\t- 1 securityAudit`)
-        console.log(job.securityAudit.toJSON())
+        if (job.securityAudit) {
+            console.log(`\t- 1 securityAudit`)
+            console.log(job.securityAudit.toJSON())
+        }
 
         return view.render('job', { job, probeIp });
     }

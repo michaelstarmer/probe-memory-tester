@@ -1,0 +1,233 @@
+@layout('layouts.pdf')
+@section('body')
+
+<div class="" style="margin: 0 80px; padding-top: 50px;">
+
+    <div class="header">
+        <!-- https://www.ntbinfo.no/data/images/00987/776f818b-f8b4-41ff-a496-e8250e26788c.png -->
+        <!-- http://kriminalitetsforebygging.no/wp-content/uploads/2017/11/Politidirektoratet.png -->
+        <img src="http://localhost:3333/btech-v1.png" alt="" width="300" class="margin-center">
+    </div>
+    <div class="container-fluid">
+
+        <table style="margin-top: 60px;" width="100%" border="0" cellpadding="0" cellspacing="0" class="meta-data">
+            <tr>
+                <td height="25">
+                    <span class="italic">Product:</span><br />
+                    <span>VB330</span>
+                </td>
+                <td height="25">
+                    <span class="italic">Date performed:</span><br />
+                    <span>-- placeholder --</span>
+                </td>
+                <td height="25">
+                    <span class="italic">Sted, Dato:</span><br />
+                    <span>-- placeholder --</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="main" style="margin-top: 50px;">
+        <div class="container-fluid mb-5">
+            <h1 class="uppercase" style="font-weight: 700;">Results of security audit</h1>
+            <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi nihil quidem hic beatae, ab sed ad magnam
+                repudiandae omnis optio, nesciunt in modi voluptate soluta earum sunt repellendus rerum. Neque.
+            </p>
+        </div>
+
+        @if(tables)
+        @each(table in tables)
+
+        @endeach
+        @endif
+
+        <div class="container-fluid my-5">
+            <h4>Vulnerability Analysis</h4>
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Result</th>
+                        <th scope="col">Attachment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col" scope="row">OSCAP System Scan (RHEL OVAL definition)</th>
+                        <td class="col-2 result-success">OK</td>
+                        <td class="col-2" scope="row">#1</th>
+                    </tr>
+                    <tr>
+                        <td class="col" scope="row">Nmap port scan for CVE (OpenVAS, ExploitDB, VulDB)</th>
+                        <td class="col-2 result-success">OK</td>
+                        <td class="col-2" scope="row">#2</th>
+                    </tr>
+                    <tr>
+                        <td class="col" scope="row">Nmap port scan for CVE (Vulners)</th>
+                        <td class="col-2 result-success">OK</td>
+                        <td class="col-2" scope="row">#3</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container-fluid my-5">
+            <h4>Authentication</h4>
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Result</th>
+                        <th scope="col">Attachment</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="col" scope="row">SSH authentication</th>
+                        <td class="col-2 result-success">PASSWORD</td>
+                        <td class="col-2" scope="row">
+                            </th>
+                    </tr>
+                    <tr>
+                        <th class="col" scope="row">Web UI</th>
+                        <td class="col-2 result-success">PASSWORD</td>
+                        <td class="col-2" scope="row">
+                            </th>
+                    </tr>
+                    <tr>
+                        <th class="col" scope="row">Web UI vulnerabilities</th>
+                        <td class="col-2 result-warning">N/A</td>
+                        <td class="col-2" scope="row">
+                            </th>
+                    </tr>
+                    <tr>
+                        <th class="col" scope="row">Eii authentication</th>
+                        <td class="col-2 result-warning">N/A</td>
+                        <td class="col-2" scope="row">
+                            </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <!--<p>
+        Viser til 2. gangs behandling av reguleringsplan for Norheim næringspark IV, mottatt her den
+        17.02.2014.
+      </p>
+      <h5>Liten overskrift</h5>
+      <p class="mt-0">
+        Formålet med reguleringsendringen er å legge til rette for næringsvirksomhet.
+      </p>
+      <h5>Liten overskrift</h5>
+      <p class="mt-0">
+        Statens vegvesen hadde følgende merknader ved offentlig ettersyn ved 1. behandling av
+        reguleringsplanforslaget:
+        <ul>
+          <li>Planområdet må utvides inn i Haugesund kommune, og ta med vegareal, rundkjøring
+              og g/s-veg
+          </li>
+          <li>
+            Planen må tilpasses tilstøtende planer.
+          </li>
+          <li>
+            Byggegrense må fremgå av tegnforklaringen.
+          </li>
+          <li>
+            Krav om at Statens vegvesen skal godkjenne teknisk plan
+          </li>
+        </ul>
+      </p>
+      <p class="mt-0">
+        Bortsett fra merknaden angående byggegrense, kan ikke Statens vegvesen se at våre
+        merknader er imøtekommet.
+      </p>
+    -->
+    </div>
+
+
+    <!-- <div class="page-footer">
+    <p class="page-footer__top">Med hilsen</p>
+    <p class="page-footer__bottom">
+      Bridge Technologies AS
+    </p>
+  </div> -->
+</div>
+
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .margin-center {
+        margin: 0 auto;
+    }
+
+    .header {
+        /* margin-left: -25px; */
+    }
+
+    .italic {
+        font-style: italic;
+        font-weight: 600;
+    }
+
+    .meta-data {
+        font-size: 12px;
+    }
+
+    .meta-data td {
+        width: 25%;
+    }
+
+    h5 {
+        margin-bottom: 0;
+    }
+
+    .uppercase {
+        text-transform: uppercase;
+    }
+
+    .mt-0 {
+        margin-top: 0;
+    }
+
+    p,
+    li {
+        font-weight: 100;
+        font-size: 12px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    table tbody th {
+        font-weight: 100;
+    }
+
+    .page-footer__top {
+        margin-bottom: 40px !important;
+    }
+
+    .page-footer {
+        /* position: absolute;
+    bottom: 200px; */
+    }
+
+    .result-success {
+        color: #4BB543;
+        font-weight: 700;
+    }
+
+    .result-warning {
+        color: darkgoldenrod;
+        font-weight: 700;
+    }
+</style>
+
+@endsection
