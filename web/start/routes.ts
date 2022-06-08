@@ -39,7 +39,9 @@ Route.post('/host/edit', 'AppController.update_host')
 Route.get('jobs', 'JobsController.view_all_jobs')
 Route.get('jobs/new', 'JobsController.new_job_view')
 Route.get('jobs/:id', 'JobsController.view_job').as('view_job')
-Route.get('jobs/:id/export-security-report', 'PdfController.view_generate_report')
+Route.get('jobs/:id/export-security-report', 'PdfController.view_generate_report').as('view.generate.report')
+Route.post('jobs/:id/export-security-report', 'PdfController.generate_report').as('generate.report')
+
 Route.get('jobs/:id/stop', 'JobsController.stop_job')
 Route.post('/jobs/createCustom', 'JobsController.save_custom_job')
 
