@@ -3,26 +3,282 @@
 
 @section('body')
 
-<div class="container-fluid">
-    <h1>PDF Generator</h1>
+<style>
+    .bs-callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .bs-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+        font-size: 16px !important;
+
+    }
+
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+
+    .bs-callout code {
+        border-radius: 3px;
+    }
+
+    .bs-callout+.bs-callout {
+        margin-top: -5px;
+    }
+
+    .bs-callout-default {
+        border-left-color: #777;
+    }
+
+    .bs-callout-default h4 {
+        color: #777;
+    }
+
+    .bs-callout-info {
+        border-left-color: #5bc0de;
+    }
+
+    .bs-callout-info h4 {
+        color: #5bc0de;
+    }
+
+    .bs-callout-warning {
+        border-left-color: #f0ad4e;
+    }
+
+    .bs-callout-warning h4 {
+        color: #f0ad4e;
+    }
+</style>
+
+<div class="container-fluid pt-5">
+    <h1>PDF Generator (not functional)</h1>
+    <p>
+        The form and preview is functional, but there is no actual PDF generation taking place in the backend.
+    </p>
 </div>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 col-lg-6">
-            <form action="/jobs/{{ job.id }}/export-security-report" method="post">
-                <div class="form-group">
-                    <label for="">Remark</label>
-                    <input type="text" class="form-control">
+        <div class="col-12 col-lg-12">
+            <form action="/jobs/{{ job.id }}/export-security-report" method="post" onchange="updatePreviewPane()">
+                <div class="form-group mt-3">
+                    <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
+                        rows="5">Below is a brief overview of results from the audit. For more details, please see the corresponding attachments.</textarea>
                 </div>
-                <button type="button" class="btn btn-default">Preview</button>
-                <button type="submit" class="btn btn-success">Export</button>
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>Table rows</h3>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-light text-dark" onclick="addInput('frmRows')">
+                                Add row
+                            </button>
+                        </div>
+                        <div id="frmRows">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="frmRows[]"
+                                    value="Vulnerability scan (GVM/OpenVAS)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>Remarks</h3>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-light text-dark"
+                                onclick="addInput('frmRemarks')">
+                                Add remark
+                            </button>
+                        </div>
+                        <div id="frmRemarks" class="frmRemarks">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="frmRemarks[]" value="TCP timestamps: on legacy Linux-kernels this will leak information about uptime.
+                                Is required for some saturation-related TCP-mechanisms to work, and performance will
+                                be negatively
+                                affected
+                                without it. As such, it is not considered a security concern.">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--  <button type="button" class="btn btn-default" onclick="updatePreviewPane()">Preview</button>  --}}
+                <button type="submit" class="btn btn-success">Export to PDF</button>
             </form>
         </div>
     </div>
 </div>
 
-<script>
+<div class="container-fluid py-5">
+    <h3 class="text-center">Preview</h3>
+    <div id="preview" class="py-3">
 
+        <page size="A4">
+
+            <div class="" style="margin: 0 80px; padding-top: 50px;">
+
+                <div class="header">
+                    <!-- https://www.ntbinfo.no/data/images/00987/776f818b-f8b4-41ff-a496-e8250e26788c.png -->
+                    <!-- http://kriminalitetsforebygging.no/wp-content/uploads/2017/11/Politidirektoratet.png -->
+                    <img src="http://localhost:3333/btech-v1.png" alt="" width="300" class="margin-center">
+                </div>
+                <div class="container-fluid">
+
+                    <table style="margin-top: 60px;" width="100%" border="0" cellpadding="0" cellspacing="0"
+                        class="meta-data">
+                        <tr>
+                            <td height="25">
+                                <span class="italic">Product:</span><br />
+                                <span>VB330 ({{job.jenkinsJob}})</span>
+                            </td>
+                            <td height="25">
+                                <span class="italic">Date performed:</span><br />
+                                <span>{{job.createdAt.setLocale('no').toFormat('f')}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="" style="margin-top: 50px;">
+                    <div class="container-fluid mb-5">
+                        <h1 class="uppercase" style="font-weight: 700;">Security audit</h1>
+                        <p id="previewIngress"></p>
+                    </div>
+
+                    @if(tables)
+                    @each(table in tables)
+
+                    @endeach
+                    @endif
+
+                    <div class="container-fluid my-5">
+                        <h4>Vulnerability Analysis</h4>
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewTableBody">
+                                <tr>
+                                    <td class="col" scope="row">Vulnerability Scan (GVM/OpenVAS)</td>
+                                    <td class="col color-success">OK</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="container-fluid my-5">
+
+                    <div class="bs-callout bs-callout-warning">
+                        <h4>Remarks</h4>
+                        <ul id="previewRemarks">
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </page>
+    </div>
+</div>
+
+<script>
+    const inputDiv = `<div class="input-group mb-3">
+        <input type="text" class="form-control" name="frmRows[]" placeholder="Table row text">
+        <button type="button" class="btn btn-outline-secondary" type="button" id="button-addon2"
+            onclick="removeInput(this)">Remove</button>
+    
+    </div>`
+    const remarksInputDiv = `<div class="input-group mb-3">
+        <input type="text" class="form-control" name="frmRemarks[]" placeholder="Remark">
+        <button type="button" class="btn btn-outline-secondary" type="button" id="button-addon2"
+            onclick="removeInput(this)">Remove</button>
+    
+    </div>`
+    function addInput(divId)
+    {
+        let el = document.getElementById(divId);
+        el.insertAdjacentHTML('beforeend', inputDiv);
+    }
+
+    
+
+    function previewClearRemarks()
+    {
+        const remarksEl = document.getElementById('previewRemarks')
+        remarksEl.innerHTML = ""
+    }
+    function previewPopulateRemarks(inputElements)
+    {
+        const remarksEl = document.getElementById('previewRemarks')
+        for (item of inputElements)
+        {
+            const rowHtml = `<li>${item.value}</li>`
+            remarksEl.insertAdjacentHTML('beforeend', rowHtml)
+        }
+    }
+
+    function previewClearTable()
+    {
+        const tableBody = document.getElementById('previewTableBody')
+        tableBody.innerHTML = ""
+    }
+
+    function previewPopulateTable(inputElements)
+    {
+        const tablebodyEl = document.getElementById('previewTableBody')
+        for (item of inputElements)
+        {
+            const rowHtml = `<tr><td class="col" scope="row">${item.value}</td><td class="col color-success">OK</td></tr>`
+            tablebodyEl.insertAdjacentHTML('beforeend', rowHtml)
+        }
+    }
+
+    
+
+    function updatePreviewPane()
+    {
+        let ingressEl = document.getElementById('previewIngress')
+        let tablebodyEl = document.getElementById('previewTablebody')
+        let remarksEl = document.getElementById('previewRemarks')
+        
+        let frmIngress = document.getElementById('frmIngress')
+        let frmInputRows = document.getElementById('frmRows').getElementsByTagName('input')
+        let frmInputRemarks = document.getElementById('frmRemarks').getElementsByTagName('input')
+
+        frmIngress.value = frmIngress.value.replace(/\r?\n/g, '<br />')
+        ingressEl.innerHTML = frmIngress.value
+
+
+        previewClearRemarks()
+        previewPopulateRemarks(frmInputRemarks)
+        previewClearTable()
+        previewPopulateTable(frmInputRows)
+        
+        
+
+        console.log('frmIngress:', frmIngress.value)
+    }
+
+    function removeInput(div)
+    {
+        div.parentNode.remove();
+        updatePreviewPane()
+    }
+
+    updatePreviewPane()
 </script>
 @end
