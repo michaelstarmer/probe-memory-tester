@@ -69,12 +69,12 @@
                 This cover page will be merged with the GVM-report in a PDF.
             </p>
             <form action="/jobs/{{ job.id }}/export-security-report" method="post" onchange="updatePreviewPane()">
-                <div class="form-group mt-3">
+                <div class="form-group mt-5">
                     <h5 for="">INGRESS</h5>
                     <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
                         rows="5">Below is a brief overview of results from the audit. For more details, please see the corresponding attachments.</textarea>
                 </div>
-                <div class="form-group mt-3">
+                <div class="form-group mt-5">
                     <h5>
                         TABLE ROWS
                         <span class="" style="float: right;">
@@ -96,7 +96,7 @@
                             value="Vulnerability scan (GVM/OpenVAS)">
                     </div>
                 </div>
-                <div class="form-group mt-3">
+                <div class="form-group mt-5">
                     <h5>
                         REMARKS
                         <span class="" style="float: right;">
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 {{--  <button type="button" class="btn btn-default" onclick="updatePreviewPane()">Preview</button>  --}}
-                <button type="submit" class="btn btn-success">Export to PDF</button>
+                <button type="submit" class="btn btn-success">Download PDF</button>
             </form>
         </div>
         <div class="col-12 col-lg-6">
@@ -167,12 +167,12 @@
                             @endif
 
                             <div class="container-fluid my-5">
-                                <h4>Vulnerability Analysis</h4>
+                                {{--  <h4>Vulnerability Analysis</h4>  --}}
                                 <table class="table">
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col">Description</th>
-                                            <th scope="col">Result</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="previewTableBody">
@@ -279,8 +279,8 @@
         let frmInputRows = document.getElementById('frmRows').getElementsByTagName('input')
         let frmInputRemarks = document.getElementById('frmRemarks').getElementsByTagName('input')
 
-        frmIngress.value = frmIngress.value.replace(/\r?\n/g, '<br />')
-        ingressEl.innerHTML = frmIngress.value
+        let parsedIngressHtml = frmIngress.value.replace(/\r?\n/g, '<br />')
+        ingressEl.innerHTML = parsedIngressHtml
 
 
         previewClearRemarks()
