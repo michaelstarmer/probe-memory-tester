@@ -130,27 +130,9 @@
 
             <h3 class="text-center">Preview</h3>
             <div id="preview" class="py-3">
-                <span id="arrow-ingress">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                    </svg>
-                </span>
-                <span id="arrow-table">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                    </svg>
-                </span>
-                <span id="arrow-remarks">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                    </svg>
-                </span>
+
+
+
 
                 <page size="A4">
 
@@ -181,7 +163,15 @@
                         <div class="" style="margin-top: 50px;">
                             <div class="container-fluid mb-5">
                                 <h1 class="uppercase" style="font-weight: 700;">Security audit</h1>
-                                <p id="previewIngress"></p>
+                                <span id="arrow-ingress">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red"
+                                        class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                    </svg>
+                                </span>
+                                <p id="previewIngress">
+                                </p>
                             </div>
 
                             @if(tables)
@@ -193,6 +183,13 @@
                             <div class="container-fluid my-5">
                                 {{--  <h4>Vulnerability Analysis</h4>  --}}
                                 <table class="table">
+                                    <span id="arrow-table">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red"
+                                            class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                        </svg>
+                                    </span>
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col">Description</th>
@@ -211,8 +208,14 @@
 
                         </div>
                         <div class="container-fluid my-5">
-
                             <div class="bs-callout bs-callout-warning">
+                                <span id="arrow-remarks">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red"
+                                        class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                    </svg>
+                                </span>
                                 <h4>Remarks</h4>
                                 <ul id="previewRemarks">
                                 </ul>

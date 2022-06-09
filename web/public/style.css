@@ -263,19 +263,20 @@ table.table tbody th {
 
 #preview #arrow-ingress {
   position: absolute;
-  top: 380px;
+  transform: translateX(-100px);
   visibility: hidden;
-  /* left: 50px; */
 }
 
 #preview #arrow-table {
   position: absolute;
-  top: 470px;
+
+  transform: translateX(-100px);
   visibility: hidden;
 }
 
 #preview #arrow-remarks {
   position: absolute;
-  top: 600px;
+
+  transform: translateX(-120px);
   visibility: hidden;
 }
