@@ -31,8 +31,36 @@ export default class ApiController {
             .preload('systemStats')
             .preload('logs')
             .first();
+
+        if (job) {
+            console.log('job length:', job.systemStats.length)
+        }
+
+        console.log(job?.systemStats.length)
+        const maxSystemStats = 40;
+        let systemStats: object[] = []
+        let jobJson = job?.toJSON()
+        if (!job || !jobJson) {
+            return response.json({ success: false, error: 'Job not found' })
+        }
+
+        if (jobJson.systemStats.length > maxSystemStats) {
+            const step = Math.round(job.systemStats.length / maxSystemStats);
+            for (let i = 0; i < jobJson.systemStats.length; i++) {
+                let stat = jobJson.systemStats[i]
+                if (i % step == 0) {
+                    if (i < jobJson.systemStats.length - 10)
+                        systemStats.push(stat)
+                }
+            }
+            // 50 systemStat items, plus 10 latest items
+            jobJson.systemStats = systemStats.concat(jobJson.systemStats.slice(-10))
+        }
+
+        console.log('System stat trimmed count:', jobJson.systemStats.length)
+
         try {
-            return response.json(job);
+            return response.json(jobJson);
         } catch (error) {
             console.error('Error fetching job!', error);
             return response.json({ error });
@@ -177,6 +205,9 @@ export default class ApiController {
         await job?.load('securityAudit')
         await job?.load('systemStats')
 
+
+
+
         if (!job) {
             return response.json({})
         }
@@ -264,7 +295,7 @@ export default class ApiController {
             return response.status(400).json({ error: `Job not found with ID: ${id}` });
         }
 
-        console.log(`Logs saved to job: ${job.logs.length}`)
+
         return response.json(job.logs)
     }
 
@@ -331,10 +362,9 @@ export default class ApiController {
         }
     }
 
-    public async update_security_audit({ params, request, response }: HttpContextContract)
-    {
+    public async update_security_audit({ params, request, response }: HttpContextContract) {
         const { jobId } = params;
-        const payload = request.only([ 'gvmReportId', 'progress', 'inUse', 'status', 'pdf', 'vulns' ])
+        const payload = request.only(['gvmReportId', 'progress', 'inUse', 'status', 'pdf', 'vulns'])
         const audit = await JobSecurityAudit.findBy('job_id', jobId)
         await audit?.merge(payload).save()
         console.log(audit)
@@ -345,7 +375,7 @@ export default class ApiController {
         const { jobId, status } = params;
         const audit = await JobSecurityAudit.findBy('job_id', jobId)
 
-        const validStatuses = [ 'waiting', 'initializing', 'completed', 'running', 'failed' ];
+        const validStatuses = ['waiting', 'initializing', 'completed', 'running', 'failed'];
         if (!validStatuses.includes(status)) {
             return response.status(400).json({ error: 'Status not valid', validStatuses })
         }
