@@ -80,7 +80,7 @@
                 <div class="form-group mt-3">
                     <h5 for="">INGRESS</h5>
                     <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
-                        onfocus="showArrow('ingress')" onblur="hideArrow('ingress')"
+                        onfocus="showArrow('ingress')"
                         rows="5">Below is a brief overview of results from the audit. For more details, please see the corresponding attachments.</textarea>
                 </div>
                 <div class="form-group mt-5">
@@ -102,8 +102,7 @@
                 <div id="frmRows">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="frmRows[]"
-                            value="Vulnerability scan (GVM/OpenVAS)" onfocus="showArrow('table')"
-                            onblur="hideArrow('table')">
+                            value="Vulnerability scan (GVM/OpenVAS)" onfocus="showArrow('table')">
                     </div>
                 </div>
                 <div class="form-group mt-5">
@@ -126,7 +125,6 @@
                 <div id="frmRemarks" class="frmRemarks">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="frmRemarks[]" onfocus="showArrow('remarks')"
-                            onblur="hideArrow('remarks')"
                             value="TCP timestamps: on legacy Linux-kernels this will leak information about uptime. Is required for some saturation-related TCP-mechanisms to work, and performance will be negatively affected without it. As such, it is not considered a security concern.">
                     </div>
                 </div>
@@ -259,6 +257,9 @@
 
     function showArrow(field)
     {
+        document.getElementById('arrow-ingress').classList.remove('visible')
+        document.getElementById('arrow-table').classList.remove('visible')
+        document.getElementById('arrow-remarks').classList.remove('visible')
         document.getElementById(`arrow-${field}`).classList.add('visible')
     }
     function hideArrow(field)
