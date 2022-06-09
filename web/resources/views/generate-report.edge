@@ -72,6 +72,7 @@
                 <div class="form-group mt-5">
                     <h5 for="">INGRESS</h5>
                     <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
+                        onfocus="showArrow('ingress')" onblur="hideArrow('ingress')"
                         rows="5">Below is a brief overview of results from the audit. For more details, please see the corresponding attachments.</textarea>
                 </div>
                 <div class="form-group mt-5">
@@ -93,7 +94,8 @@
                 <div id="frmRows">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="frmRows[]"
-                            value="Vulnerability scan (GVM/OpenVAS)">
+                            value="Vulnerability scan (GVM/OpenVAS)" onfocus="showArrow('table')"
+                            onblur="hideArrow('table')">
                     </div>
                 </div>
                 <div class="form-group mt-5">
@@ -115,7 +117,8 @@
                 </div>
                 <div id="frmRemarks" class="frmRemarks">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="frmRemarks[]"
+                        <input type="text" class="form-control" name="frmRemarks[]" onfocus="showArrow('remarks')"
+                            onblur="hideArrow('remarks')"
                             value="TCP timestamps: on legacy Linux-kernels this will leak information about uptime. Is required for some saturation-related TCP-mechanisms to work, and performance will be negatively affected without it. As such, it is not considered a security concern.">
                     </div>
                 </div>
@@ -127,6 +130,27 @@
 
             <h3 class="text-center">Preview</h3>
             <div id="preview" class="py-3">
+                <span id="arrow-ingress">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </span>
+                <span id="arrow-table">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </span>
+                <span id="arrow-remarks">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="red" class="bi bi-arrow-right"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                </span>
 
                 <page size="A4">
 
@@ -209,21 +233,33 @@
 
 <script>
     const inputDiv = `<div class="input-group mb-3">
-        <input type="text" class="form-control" name="frmRows[]" autofocus>
+        <input type="text" class="form-control" name="frmRows[]" autofocus onfocus="showArrow('table')" onblur="hideArrow('table')">
         <button type="button" class="btn btn-outline-secondary" type="button" id="button-addon2"
             onclick="removeInput(this)">Remove</button>
     
     </div>`
     const remarksInputDiv = `<div class="input-group mb-3">
-        <input type="text" class="form-control" name="frmRemarks[]" autofocus>
+        <input type="text" class="form-control" name="frmRemarks[]" autofocus onfocus="showArrow('remarks')" onblur="hideArrow('remarks')">
         <button type="button" class="btn btn-outline-secondary" type="button" id="button-addon2"
             onclick="removeInput(this)">Remove</button>
     
     </div>`
+
+    function showArrow(field)
+    {
+        document.getElementById(`arrow-${field}`).classList.add('visible')
+    }
+    function hideArrow(field)
+    {
+    document.getElementById(`arrow-${field}`).classList.remove('visible')
+    }
+
     function addInput(divId)
     {
         let el = document.getElementById(divId);
-        el.insertAdjacentHTML('beforeend', inputDiv);
+        
+        el.insertAdjacentHTML('beforeend', divId == 'frmRows' ? inputDiv : remarksInputDiv);
+        
     }
 
     

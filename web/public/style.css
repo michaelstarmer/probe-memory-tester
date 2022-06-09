@@ -254,3 +254,28 @@ table.table tbody th {
   font-style: italic;
   font-weight: 600;
 }
+
+#preview {}
+
+.visible {
+  visibility: visible;
+}
+
+#preview #arrow-ingress {
+  position: absolute;
+  top: 380px;
+  visibility: hidden;
+  /* left: 50px; */
+}
+
+#preview #arrow-table {
+  position: absolute;
+  top: 470px;
+  visibility: hidden;
+}
+
+#preview #arrow-remarks {
+  position: absolute;
+  top: 600px;
+  visibility: hidden;
+}
