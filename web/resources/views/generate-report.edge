@@ -68,7 +68,7 @@
             <p>
                 This cover page will be merged with the GVM-report in a PDF.
             </p>
-            <form action="/jobs/{{ job.id }}/export-security-report" method="post" onchange="updatePreviewPane()">
+            <form action="/jobs/{{ job.id }}/export-security-report" method="post" oninput="updatePreviewPane()">
                 <div class="form-group mt-5">
                     <h5 for="">INGRESS</h5>
                     <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
