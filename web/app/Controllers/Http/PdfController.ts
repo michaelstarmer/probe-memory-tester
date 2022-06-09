@@ -18,7 +18,7 @@ export default class PdfController {
         const { id } = params;
         const job = await Job.find(id);
         await job?.load('securityAudit')
-        const { frmIngress, frmRows, frmRemarks } = request.all()
+        const { frmIngress, frmRows, frmRemarks, attachScanReport } = request.all()
 
 
         try {
@@ -31,9 +31,13 @@ export default class PdfController {
                 return response.send("Error: missing pdf cover or attachment.")
             }
 
-            const merged = await report.merge(pdfCover['pdf'], pdfAttachment);
-            console.log(merged)
-            return response.redirect(merged)
+            let generatedReport = pdfCover['pdf'];
+            if (attachScanReport) {
+                generatedReport = await report.merge(pdfCover['pdf'], pdfAttachment);
+            }
+
+            console.log(generatedReport)
+            return response.redirect(generatedReport)
         } catch (error) {
             console.error(error)
             return response.send("Something went wrong!", error);

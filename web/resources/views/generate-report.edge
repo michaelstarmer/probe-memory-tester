@@ -70,6 +70,14 @@
             </p>
             <form action="/jobs/{{ job.id }}/export-security-report" method="post" oninput="updatePreviewPane()">
                 <div class="form-group mt-5">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="attachScanReport" class="form-check-input" checked>
+                            Include report from GVM-scan as attachment
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
                     <h5 for="">INGRESS</h5>
                     <textarea name="frmIngress" id="frmIngress" class="form-control" cols="30"
                         onfocus="showArrow('ingress')" onblur="hideArrow('ingress')"
@@ -123,6 +131,7 @@
                     </div>
                 </div>
                 {{--  <button type="button" class="btn btn-default" onclick="updatePreviewPane()">Preview</button>  --}}
+
                 <button type="submit" class="btn btn-success">Download PDF</button>
             </form>
         </div>
