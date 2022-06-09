@@ -14,15 +14,11 @@
             <tr>
                 <td height="25">
                     <span class="italic">Product:</span><br />
-                    <span>VB330</span>
+                    <span>VB330 ({{ job.jenkinsJob }})</span>
                 </td>
                 <td height="25">
                     <span class="italic">Date performed:</span><br />
-                    <span>-- placeholder --</span>
-                </td>
-                <td height="25">
-                    <span class="italic">Sted, Dato:</span><br />
-                    <span>-- placeholder --</span>
+                    <span>{{ job.createdAt.setLocale('no').toFormat('f') }}</span>
                 </td>
             </tr>
         </table>
@@ -32,121 +28,40 @@
         <div class="container-fluid mb-5">
             <h1 class="uppercase" style="font-weight: 700;">Results of security audit</h1>
             <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi nihil quidem hic beatae, ab sed ad magnam
-                repudiandae omnis optio, nesciunt in modi voluptate soluta earum sunt repellendus rerum. Neque.
+                {{ ingress }}
             </p>
         </div>
 
-        @if(tables)
-        @each(table in tables)
-
-        @endeach
-        @endif
 
         <div class="container-fluid my-5">
-            <h4>Vulnerability Analysis</h4>
             <table class="table">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Description</th>
-                        <th scope="col">Result</th>
-                        <th scope="col">Attachment</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    @each(row in rows)
                     <tr>
-                        <td class="col" scope="row">OSCAP System Scan (RHEL OVAL definition)</th>
+                        <td class="col" scope="row">{{ row }}</th>
                         <td class="col-2 result-success">OK</td>
-                        <td class="col-2" scope="row">#1</th>
                     </tr>
-                    <tr>
-                        <td class="col" scope="row">Nmap port scan for CVE (OpenVAS, ExploitDB, VulDB)</th>
-                        <td class="col-2 result-success">OK</td>
-                        <td class="col-2" scope="row">#2</th>
-                    </tr>
-                    <tr>
-                        <td class="col" scope="row">Nmap port scan for CVE (Vulners)</th>
-                        <td class="col-2 result-success">OK</td>
-                        <td class="col-2" scope="row">#3</th>
-                    </tr>
+                    @endeach
                 </tbody>
             </table>
         </div>
 
         <div class="container-fluid my-5">
-            <h4>Authentication</h4>
-            <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Description</th>
-                        <th scope="col">Result</th>
-                        <th scope="col">Attachment</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class="col" scope="row">SSH authentication</th>
-                        <td class="col-2 result-success">PASSWORD</td>
-                        <td class="col-2" scope="row">
-                            </th>
-                    </tr>
-                    <tr>
-                        <th class="col" scope="row">Web UI</th>
-                        <td class="col-2 result-success">PASSWORD</td>
-                        <td class="col-2" scope="row">
-                            </th>
-                    </tr>
-                    <tr>
-                        <th class="col" scope="row">Web UI vulnerabilities</th>
-                        <td class="col-2 result-warning">N/A</td>
-                        <td class="col-2" scope="row">
-                            </th>
-                    </tr>
-                    <tr>
-                        <th class="col" scope="row">Eii authentication</th>
-                        <td class="col-2 result-warning">N/A</td>
-                        <td class="col-2" scope="row">
-                            </th>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="bs-callout bs-callout-warning">
+                <h4>Remarks</h4>
+                <ul id="previewRemarks">
+                    @each(remark in remarks)
+                    <li>{{ remark }}</li>
+                    @endeach
+                </ul>
+            </div>
         </div>
-
-
-
-        <!--<p>
-        Viser til 2. gangs behandling av reguleringsplan for Norheim næringspark IV, mottatt her den
-        17.02.2014.
-      </p>
-      <h5>Liten overskrift</h5>
-      <p class="mt-0">
-        Formålet med reguleringsendringen er å legge til rette for næringsvirksomhet.
-      </p>
-      <h5>Liten overskrift</h5>
-      <p class="mt-0">
-        Statens vegvesen hadde følgende merknader ved offentlig ettersyn ved 1. behandling av
-        reguleringsplanforslaget:
-        <ul>
-          <li>Planområdet må utvides inn i Haugesund kommune, og ta med vegareal, rundkjøring
-              og g/s-veg
-          </li>
-          <li>
-            Planen må tilpasses tilstøtende planer.
-          </li>
-          <li>
-            Byggegrense må fremgå av tegnforklaringen.
-          </li>
-          <li>
-            Krav om at Statens vegvesen skal godkjenne teknisk plan
-          </li>
-        </ul>
-      </p>
-      <p class="mt-0">
-        Bortsett fra merknaden angående byggegrense, kan ikke Statens vegvesen se at våre
-        merknader er imøtekommet.
-      </p>
-    -->
     </div>
 
 
@@ -227,6 +142,58 @@
     .result-warning {
         color: darkgoldenrod;
         font-weight: 700;
+    }
+
+    .bs-callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .bs-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+        font-size: 16px !important;
+
+    }
+
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+
+    .bs-callout code {
+        border-radius: 3px;
+    }
+
+    .bs-callout+.bs-callout {
+        margin-top: -5px;
+    }
+
+    .bs-callout-default {
+        border-left-color: #777;
+    }
+
+    .bs-callout-default h4 {
+        color: #777;
+    }
+
+    .bs-callout-info {
+        border-left-color: #5bc0de;
+    }
+
+    .bs-callout-info h4 {
+        color: #5bc0de;
+    }
+
+    .bs-callout-warning {
+        border-left-color: #f0ad4e;
+    }
+
+    .bs-callout-warning h4 {
+        color: #f0ad4e;
     }
 </style>
 

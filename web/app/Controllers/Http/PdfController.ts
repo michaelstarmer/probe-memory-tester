@@ -15,12 +15,28 @@ export default class PdfController {
         // 2. Parse strings[] to table (only 1 table)
 
         // 3. Parse remarks[] to info-box below table
+        const { id } = params;
+        const job = await Job.find(id);
+        await job?.load('securityAudit')
         const { frmIngress, frmRows, frmRemarks } = request.all()
-        console.log({ frmIngress, frmRows, frmRemarks })
 
-        console.log('POST generate report')
-        const report = new BtechReport()
-        const json = await report.generate({ frmIngress, })
-        return response.json(json)
+
+        try {
+            console.log('POST generate report')
+            const report = new BtechReport()
+            const pdfCover = await report.generate({ job, ingress: frmIngress, rows: frmRows, remarks: frmRemarks })
+            const pdfAttachment = job?.securityAudit.pdf;
+
+            if (!pdfCover['pdf'] || !pdfAttachment) {
+                return response.send("Error: missing pdf cover or attachment.")
+            }
+
+            const merged = await report.merge(pdfCover['pdf'], pdfAttachment);
+            console.log(merged)
+            return response.redirect(merged)
+        } catch (error) {
+            console.error(error)
+            return response.send("Something went wrong!", error);
+        }
     }
 }
