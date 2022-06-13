@@ -18,6 +18,7 @@
 
 <body>
   <main>
+    @!component('components/nav', { nav })
     @if(flashMessages.has('success'))
     @!component('components/alert-success', { success: flashMessages.get('success') })
     @endif

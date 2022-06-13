@@ -1,4 +1,5 @@
 @layout('layouts/default')
+@set('nav', 'settings')
 @section('body')
 <div class="container my-5">
     @if(error)
@@ -51,8 +52,7 @@
                     </div>
                     <div class="col">
                         <label class="form-label">Base snapshot ID</label>
-                        <input type="number" class="form-control" name="esxi_snapshot_id"
-                            value="{{esxi_snapshot_id}}">
+                        <input type="number" class="form-control" name="esxi_snapshot_id" value="{{esxi_snapshot_id}}">
                     </div>
                 </div>
 

@@ -1,0 +1,81 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <h4>MEMTEST</h4>
+        </a>
+        <div id="c-nav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    @if(nav == 'newJob')
+                    <a href="/jobs/new" class="nav-link active">New job</a>
+                    @else
+                    <a href="/jobs/new" class="nav-link">New job</a>
+                    @endif
+                </li>
+                <li class="nav-item">
+                    @if(nav == 'uploads')
+                    <a href="/uploads" class="nav-link active">Uploads</a>
+                    @else
+                    <a href="/uploads" class="nav-link">Uploads</a>
+                    @endif
+                </li>
+                <li class="nav-item">
+                    @if(nav == 'settings')
+                    <a href="/settings" class="nav-link active">Settings</a>
+                    @else
+                    <a href="/settings" class="nav-link">Settings</a>
+                    @endif
+                </li>
+
+            </ul>
+        </div>
+
+        <div id="c-nav-sm" class="c-navbar-collapse">
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <div id="myNav" class="overlay">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <div class="overlay-content">
+                    <ul class="navbar-nav c-navbar-light">
+                        <li class="nav-item">
+                            @if(nav == 'newJob')
+                            <a href="/jobs/new" class="nav-link active">New job</a>
+                            @else
+                            <a href="/jobs/new" class="nav-link">New job</a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if(nav == 'uploads')
+                            <a href="/uploads" class="nav-link active">Uploads</a>
+                            @else
+                            <a href="/uploads" class="nav-link">Uploads</a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if(nav == 'settings')
+                            <a href="/settings" class="nav-link active">Settings</a>
+                            @else
+                            <a href="/settings" class="nav-link">Settings</a>
+                            @endif
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {{--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>  --}}
+
+    </div>
+</nav>
+
+<script>
+    function openNav() {
+      document.getElementById("myNav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.width = "0%";
+    }
+
+</script>

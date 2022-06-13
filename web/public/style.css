@@ -24,6 +24,100 @@ main {
   min-height: 100vh;
 }
 
+@media only screen and (min-width: 996px) {
+  #c-nav-sm {
+    display: none;
+  }
+
+  #c-nav {
+    display: block;
+  }
+
+}
+
+@media only screen and (max-width: 996px) {
+  #c-nav {
+    display: none;
+  }
+
+  #c-nav-sm {
+    display: block;
+  }
+}
+
+.c-navbar-light li a {
+  color: rgb(240, 240, 240) !important;
+}
+
+.c-navbar-collapse .overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, .9);
+  overflow-x: hidden;
+  transition: .25s;
+}
+
+
+.c-navbar-collapse .overlay-content {
+  position: relative;
+  top: 15%;
+  width: 100%;
+  /* text-align: center; */
+  margin: 2rem 3rem;
+}
+
+.c-navbar-collapse .overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 24px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.c-navbar-collapse .overlay a:hover,
+.c-navbar-collapse .overlay a:focus {
+  color: #f1f1f1;
+}
+
+.c-navbar-collapse .overlay .closebtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 60px;
+}
+
+.c-navbar-collapse ul.dropdown-menu {
+  background-color: inherit;
+  /* text-align: center; */
+}
+
+.c-navbar-collapse ul.dropdown-menu li a.dropdown-item {
+  font-size: 1.3rem;
+}
+
+.c-navbar-collapse ul.dropdown-menu li a.dropdown-item:hover {
+  background-color: rgba(0, 0, 0, .5);
+}
+
+
+@media screen and (max-height: 450px) {
+  .c-navbar-collapse .overlay a {
+    font-size: 20px
+  }
+
+  .c-navbar-collapse .overlay .closebtn {
+    font-size: 40px;
+    /* top: 15px;
+    right: 35px; */
+  }
+}
+
 .title {
   font-size: 50px;
   /* line-height: 50px;
