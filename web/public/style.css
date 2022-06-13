@@ -280,3 +280,8 @@ table.table tbody th {
   transform: translateX(-120px);
   visibility: hidden;
 }
+
+#chart {
+  /* overflow-x: scroll; */
+  overflow-y: hidden;
+}

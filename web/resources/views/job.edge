@@ -185,7 +185,7 @@
 
 
 @!component('components/cmd-modal')
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script>
     var job = {{{JSON.stringify(job)}}}
@@ -194,6 +194,9 @@
     var jobLog = [];
     var logDiv = document.getElementById('log')
     var logLoadingState = document.getElementById('log-loading')
+
+    var logDiv = document.getElementById('log')
+    let userScrolledLog = false;
     
     function stopJob(jobId)
     {
@@ -230,7 +233,7 @@
                         label: 'CPU %',
                         data: cpu,
                         borderColor: 'rgba(0,0,0, 0.8)',
-                        fill: false,
+                        fill: true,
                         tension: .1
                     },
                     {
@@ -254,7 +257,7 @@
                             parser: 'MM/DD/YYYY HH:mm',
                             tooltipFormat: 'll HH:mm',
                             unit: 'minute',
-                            unitStepSize: 20,
+                            unitStepSize: 10,
                             displayFormats: {
                             'hour': 'HH:mm'
                             }
@@ -265,18 +268,75 @@
         })
     }
 
+    google.charts.load('current', {
+        callback: drawChart,
+        packages: ['corechart', 'line']
+    })
+    google.charts.setOnLoadCallback(drawChart)
+
+    function drawChart(stats)
+    {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'X')
+        data.addColumn('number', 'Mem')
+        data.addColumn('number', 'Cpu')
+
+        var rows = []
+        if (!stats) return
+        stats.map(it => rows.push([new Date(it.timestamp), it.mem, it.cpu]))
+        console.log(rows)
+        
+        data.addRows(rows)
+
+        var options = {
+            height: 500,
+            enableInteractivity: true,
+            chartArea: {
+                width: '85%'
+            },
+            hAxis: {
+                title: 'Time',
+                logScale: false,
+                gridlines: {
+                    units: {
+                    days: {format: ['MMM dd']},
+                    hours: {format: ['HH:mm', 'ha']},
+                    }
+                },
+                minorGridlines: {
+                    units: {
+                        hours: { format: ['hh:mm:ss f', 'no'] }
+                    }
+                }
+            },
+            vAxis: {
+                title: 'Resources',
+                logScale: false,
+            },
+            colors: ['#a52714', '#097138'],
+            backgroundColor: 'transparent',
+            legend: {
+                position: 'bottom',
+            }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart'))
+        chart.draw(data, options);
+    }
+
     function refreshData(jobData)
     {
-        var el = document.getElementById('job-status')
+        var jobStatus = document.getElementById('job-status')
         var minutesRemaining = document.getElementById('minutes-remaining')
         var startedAt = document.getElementById('started-at')
         var frmStopJob = document.getElementById('frm-stop-job')
         var btnStopJob = document.getElementById('btn-stop-job')
         
-        el.textContent = jobData.status
-        el.className = '' // remove classes
-        el.classList.add(`color-${jobData.status}`)
-        el.classList.add('uppercase')
+        jobStatus.textContent = jobData.status
+        jobStatus.className = '' // remove classes
+        
+        jobStatus.classList.add(`color-${jobData.status}`)
+        jobStatus.classList.add('uppercase')
 
         if (jobData.remaining && jobData.remaining >= 1)
         {
@@ -285,17 +345,17 @@
             minutesRemaining.textContent = `${jobData.duration} minutes`
         }
 
-        if (jobData.status !== 'running' && !frmStopJob.classList.contains('hidden'))
+        if (jobData.status !== 'running' && frmStopJob)
         {
-            frmStopJob.classList.add('hidden')
-            btnStopJob.classList.add('hidden')
+            frmStopJob.classList.toggle('hidden')
+            btnStopJob.classList.toggle('hidden')
+            
         }
 
     }
 
     function logScrollToBottom()
     {
-        var logDiv = document.getElementById('log')
         logDiv.scrollTop = logDiv.scrollHeight;
     }
 
@@ -358,10 +418,7 @@
         return new Promise((resolve, reject) => {
             fetch(`/api/jobs/${jobId}/log`)
             .then(res => res.json())
-            .then(logArray => {
-                // console.log(logArray)
-                resolve(logArray)
-            })
+            .then(logArray => resolve(logArray))
             .catch(e => reject(e))
         })
     }
@@ -382,12 +439,18 @@
         fetchLogs()
         .then(logArray => {
             parseLogs(logArray)
-            logScrollToBottom()
+            if (!userScrolledLog)
+            {
+                // don't auto scroll if user scrolled logs
+                logScrollToBottom()
+            }
         })
         generateData()
     }, 1000*2)
 
     setInterval(() => generateChart(), 1000*25)
+
+    logDiv.addEventListener('scroll', () => userScrolledLog = true)
 
 </script>
 @end

@@ -60,7 +60,7 @@ export default class ApiController {
         console.log('System stat trimmed count:', jobJson.systemStats.length)
 
         try {
-            return response.json(jobJson);
+            return response.json(job);
         } catch (error) {
             console.error('Error fetching job!', error);
             return response.json({ error });

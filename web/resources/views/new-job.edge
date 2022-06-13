@@ -23,7 +23,7 @@
                     <div class="col-12 col-lg-8">
                         <div class="form-group mt-3">
                             <label for="">Jenkins job</label>
-                            <select name="jenkinsJob" class="form-select" required>
+                            <select name="jenkinsJob" id="jenkinsJob" class="form-select" required>
                                 <option disabled selected>Select</option>
                                 @if(jobs)
                                 @each(job in jobs)
@@ -35,8 +35,12 @@
                     </div>
                     <div class="col-12 col-lg-4">
                         <div class="form-group mt-3">
-                            <label for="">Build no. (optional)</label>
-                            <input type="number" name="buildNumber" class="form-control" placeholder="Latest build">
+                            <label for="selectBuildNumber">Build no.</label>
+                            <select name="buildNumber" id="selectBuildNumber" class="form-select" required>
+                                <option disabled selected>Build number</option>
+                            </select>
+                            {{--  <label for="">Build no. (optional)</label>
+                            <input type="number" name="buildNumber" class="form-control" placeholder="Latest build">  --}}
                         </div>
                     </div>
                 </div>
@@ -54,7 +58,6 @@
                             <label>Test duration</label>
                             <select name="duration" class="form-select">
                                 <option value="30" selected>30 minutes</option>
-                                <option value="30">30 minutes</option>
                                 <option value="60">1 hour</option>
                                 <option value="120">2 hours</option>
                                 <option value="460">6 hours</option>
@@ -134,11 +137,17 @@
     var selectedXmlFileDescription = document.getElementById('selectedXmlFileDescription')
     var selectedXmlFileUploadedAt = document.getElementById('selectedXmlFileUploadedAt')
     var metadataWrap = document.getElementById('metadata')
+    var selectBuildNumber = document.getElementById('selectBuildNumber')
+    var selectJenkinsJob = document.getElementById('jenkinsJob')
+
     function showXmlInfo()
     {
         var xmlSelector = document.getElementById('xmlFileId')
         var selectedOption = xmlSelector.options[xmlSelector.selectedIndex];
-        console.log('Show XML info for:')
+        if (!selectedOption)
+        {
+            return false;
+        }
         console.log(selectedOption.dataset)
         let host = window.location.hostname
         host = `${window.location.protocol}//${host}`
@@ -151,7 +160,46 @@
         selectedXmlFileDescription.textContent = `${selectedOption.dataset.description}`;
         selectedXmlFileUploadedAt.textContent = `Uploaded ${selectedOption.dataset.uploadedat}`;
     }
-
     showXmlInfo()
+
+    function fetchJobBuilds(jenkinsJob)
+    {
+        const uri = encodeURI(`http://10.0.31.142/job/${jenkinsJob}/api/json`)
+        console.log('Fetching jobs from:', uri)
+        return new Promise((resolve, reject) => {
+            fetch(uri)
+            .then(res => res.json())
+            .then(job => resolve({ builds: job.builds, lastSuccessful: job.lastSuccessfulBuild }))
+            .catch(e => reject(e))
+        })
+    }
+    function populateBuildNumberDropdown(buildData)
+    {
+    
+        let defaultBuildNumber = document.createElement('option')
+        let lastSuccessfulBuildNo = buildData['lastSuccessful'].number;
+        selectBuildNumber.innerHTML = ""
+        defaultBuildNumber.textContent = lastSuccessfulBuildNo;
+        defaultBuildNumber.setAttribute('value', lastSuccessfulBuildNo)
+        defaultBuildNumber.setAttribute('selected', 'selected')
+        selectBuildNumber.appendChild(defaultBuildNumber);
+        for (const build of buildData.builds)
+        {
+            if (build.number === lastSuccessfulBuildNo)
+                continue;
+            let option = document.createElement('option')
+            option.textContent = build.number;
+            option.setAttribute('value', build.number)
+            selectBuildNumber.appendChild(option)
+        }
+        
+    }
+
+    selectJenkinsJob.addEventListener('change', (e) => {
+        fetchJobBuilds(selectJenkinsJob.value)
+        .then(buildData => populateBuildNumberDropdown(buildData))
+        .catch(e => console.error('Error fetching builds!', e));
+    })
+    // populateBuildNumberDropdown('CentOS7-based_6.1')
 </script>
 @end
