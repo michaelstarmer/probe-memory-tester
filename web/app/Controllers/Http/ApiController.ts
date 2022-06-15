@@ -184,6 +184,8 @@ export default class ApiController {
             if (!payload.duration)
                 return response.json({ error: 'Missing parameter: duration' })
 
+            console.log('payload:', payload)
+
             // set default value
             if (!payload.cpu) {
                 payload.cpu = 8
@@ -194,7 +196,7 @@ export default class ApiController {
                 const { data } = await axios.get(jenkinsJobUrl);
 
                 if (data) {
-                    payload.buildNumber = data['builds'][0]['number']
+                    payload.buildNumber = data['build']['number']
                 }
             }
 
