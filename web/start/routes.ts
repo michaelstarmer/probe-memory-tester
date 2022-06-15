@@ -5,7 +5,11 @@ Route.get('apidoc', async ({ view }) => view.render('api-doc'))
 
 Route.get('/', 'AppController.index').as('home')
 
-Route.get('/api/probe-config', 'AppController.get_probe_config')
+Route.get('/api/probe-config', 'ApiController.get_probe_config')
+Route.post('/api/probe-config', 'ApiController.set_probe_config')
+Route.get('/api/settings', 'ApiController.get_probe_config')
+Route.post('/api/settings', 'ApiController.set_probe_config')
+
 Route.get('/api/jobs', 'ApiController.all_jobs')
 Route.get('/api/jobs/next', 'ApiController.get_next_job')
 Route.get('/api/jobs/active', 'ApiController.get_running_job')

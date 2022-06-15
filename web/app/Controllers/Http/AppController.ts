@@ -36,19 +36,19 @@ export default class AppController {
          * perform a simple check to see if probe is online and reachable
          */
         try {
-            const payload = await axios.get(`http://${probeIp.value}/probe/status`, { timeout: 3000 });
+            // const payload = await axios.get(`http://${probeIp.value}/probe/status`, { timeout: 3000 });
 
             if (activeJobsCount > 0) {
                 probeData.isAvailable = false;
             }
-            if (!payload) {
-                console.error('No response from probe.')
-                probeData.isOffline = true;
-            }
-            const json = await parser.parseStringPromise(payload.data);
-            if (json && json.Status) {
-                probeData.swVersion = json.Status.System[0].software_version;
-            }
+            // if (!payload) {
+            //     console.error('No response from probe.')
+            //     probeData.isOffline = true;
+            // }
+            // const json = await parser.parseStringPromise(payload.data);
+            // if (json && json.Status) {
+            //     probeData.swVersion = json.Status.System[0].software_version;
+            // }
 
             return view.render('landing', { jobs, probeData, jenkinsJob })
 
@@ -78,12 +78,7 @@ export default class AppController {
 
     }
 
-    async get_probe_config({ response }: HttpContextContract) {
-        const payload = {}
-        const setting = await Setting.all()
-        setting.forEach(it => payload[it.key] = it.value)
-        return response.json(payload)
-    }
+
 
     async edit_host({ view, request }: HttpContextContract) {
         const probeIp = await Setting.findBy('key', 'probe_ip')
@@ -134,7 +129,7 @@ export default class AppController {
             await Setting.query().where('key', 'duration').update({ value: duration });
             await Setting.query().where('key', 'esxi_vmid').update({ value: esxi_vmid });
             await Setting.query().where('key', 'esxi_snapshot_id').update({ value: esxi_snapshot_id });
-            session.flash('success', { description: 'Settings updated!'})
+            session.flash('success', { description: 'Settings updated!' })
             return response.redirect('/')
         } catch (error) {
             console.error(error)

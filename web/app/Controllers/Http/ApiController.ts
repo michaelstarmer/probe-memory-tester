@@ -6,8 +6,33 @@ import JobLog from 'App/Models/JobLog'
 import axios from 'axios'
 import Application from '@ioc:Adonis/Core/Application'
 import JobSecurityAudit from 'App/Models/JobSecurityAudit'
+import Setting from 'App/Models/Setting'
 
 export default class ApiController {
+    async get_probe_config({ response }: HttpContextContract) {
+        const payload = {}
+        const setting = await Setting.all()
+        setting.forEach(it => payload[it.key] = it.value)
+        return response.json(payload)
+    }
+
+    async set_probe_config({ request, response }) {
+        const { key, value } = request.all()
+        const setting = await Setting.findBy('key', key);
+        if (!setting) {
+            return response.json({ success: false, error: 'Missing key/value for setting.' })
+        }
+        try {
+
+            await setting.merge({ value });
+
+        } catch (error) {
+            return response.json({ success: false, error });
+        }
+
+        return response.json({ success: true, message: 'Config updated.' });
+    }
+
     public async all_jobs({ response }: HttpContextContract) {
         const jobs = await Job.query()
             .preload('xmlConfig')
@@ -165,7 +190,7 @@ export default class ApiController {
             }
 
             if (!payload.buildNumber) {
-                const jenkinsJobUrl = `http://10.0.31.142/job/${payload.jenkinsJob}/api/json?pretty=true`
+                const jenkinsJobUrl = `http://10.0.31.142/job/${payload.jenkinsJob}/lastSuccessfulBuild/api/json?pretty=true`
                 const { data } = await axios.get(jenkinsJobUrl);
 
                 if (data) {

@@ -11,23 +11,30 @@ jobNameAutoTest = settings['jenkins_job']
 jenkins = JenkinsBuild(version=None, job=jobNameAutoTest)
 latestJenkinsBuild = jenkins.loadLastSuccessfulBuild()
 
+
 print(latestJenkinsBuild.job)
 print(latestJenkinsBuild.buildNumber)
 
 foundExistingJob = api.checkPreviousTestExists(
     latestJenkinsBuild.job, latestJenkinsBuild.buildNumber)
 
+buildNumber = latestJenkinsBuild.buildNumber
+
+
+print('found existing job:', foundExistingJob)
 if foundExistingJob:
     Log.warn(
-        f'Latest Jenkins-build (#{latestJenkinsBuild.buildNumber}) matched with a previous build already tested. Skipping...')
+        f'Latest Jenkins-build (#{buildNumber}) matched with a previous build already tested. Skipping...')
     exit()
 
-jobCreated = api.createJob({
+payload = {
     'jenkinsJob': latestJenkinsBuild.job,
     'memory': 4,
-    'build_number': latestJenkinsBuild.buildNumber,
+    'build_number': buildNumber,
     'duration': settings['duration'],
     'xmlFileId': 5,
-})
-print(jobCreated)
+}
+jobCreated = api.createJob(payload)
+print('payload', payload)
+print('jobCreated', jobCreated)
 Log.success('New job created!')

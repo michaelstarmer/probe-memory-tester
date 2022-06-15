@@ -260,6 +260,22 @@
       })
     }
 
+    let probeIsOnline = false;
+    let probeIp = {{{JSON.stringify(probeData.ip)}}}
+    async function fetchProbeStatus()
+    {
+      return new Promise((resolve, reject) => {
+        fetch(`http://${probeIp}/probe/status`)
+        .then(res => res.json())
+        .then(status => console.log(status))
+      })
+    }
+
+    fetchProbeStatus()
+    setInterval(() => {
+      // fetchProbeStatus()
+    }, 5000)
+
 
     // fetchProbeConfig()
     //   .then(config => console.log(config))
