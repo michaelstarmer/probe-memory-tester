@@ -41,7 +41,7 @@ def getProcStats(name='ewe'):
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f"""
-    ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,rss | head -n 2 | tail -n 1
+    ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,%cpu | head -n 2 | tail -n 1
     """
         )
         type(stdin)
@@ -197,14 +197,14 @@ etr = getProcStats('etr')
 ott = getProcStats('ott')
 vidana = getProcStats('vidana')
 data = {'cpu': float(cpu_usr), 'mem': float(mem_pct),
-        'eweCpu': float(ewe[0]),
-        'eweMem': float(ewe[1]),
-        'etrCpu': float(etr[0]),
-        'etrMem': float(etr[1]),
-        'ottCpu': float(ott[0]),
-        'ottMem': float(ott[1]),
-        'vidanaCpu': float(vidana[0]),
-        'vidanaMem': float(vidana[1]),
+        'eweCpu': float(ewe[1]),
+        'eweMem': float(ewe[0]),
+        'etrCpu': float(etr[1]),
+        'etrMem': float(etr[0]),
+        'ottCpu': float(ott[1]),
+        'ottMem': float(ott[0]),
+        'vidanaCpu': float(vidana[1]),
+        'vidanaMem': float(vidana[0]),
         }
 print(data)
 if add_job_stats(data):
