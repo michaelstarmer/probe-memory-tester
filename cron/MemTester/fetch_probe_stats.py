@@ -34,6 +34,23 @@ if os.environ.get('VM_HOST'):
 print('LOCAL TIME:', time.strftime('%c'))
 
 
+def getProcStats(name='ewe'):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(VM_HOST, username='root', password='elvis')
+    try:
+        (stdin, stdout, stderr) = ssh.exec_command(
+            f"""
+    ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,rss | head -n 2 | tail -n 1
+    """
+        )
+        type(stdin)
+        data = ''.join(stdout.readlines()).split()
+        return data
+    except Exception as e:
+        print('getProcStat error!', e)
+
+
 def get_proc_mem():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -175,7 +192,20 @@ cpu_sys = c[1]
 job_id = get_current_job_id()
 if not job_id:
     sys.exit('No active jobs to log.')
-data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
+ewe = getProcStats('ewe')
+etr = getProcStats('etr')
+ott = getProcStats('ott')
+vidana = getProcStats('vidana')
+data = {'cpu': float(cpu_usr), 'mem': float(mem_pct),
+        'ewe_cpu': float(ewe[0]),
+        'ewe_mem': float(ewe[1]),
+        'etr_cpu': float(etr[0]),
+        'etr_mem': float(etr[1]),
+        'ott_cpu': float(ott[0]),
+        'ott_mem': float(ott[1]),
+        'vidana_cpu': float(vidana[0]),
+        'vidana_mem': float(vidana[1]),
+        }
 print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
