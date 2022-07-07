@@ -197,14 +197,14 @@ etr = getProcStats('etr')
 ott = getProcStats('ott')
 vidana = getProcStats('vidana')
 data = {'cpu': float(cpu_usr), 'mem': float(mem_pct),
-        'ewe_cpu': float(ewe[0]),
-        'ewe_mem': float(ewe[1]),
-        'etr_cpu': float(etr[0]),
-        'etr_mem': float(etr[1]),
-        'ott_cpu': float(ott[0]),
-        'ott_mem': float(ott[1]),
-        'vidana_cpu': float(vidana[0]),
-        'vidana_mem': float(vidana[1]),
+        'eweCpu': float(ewe[0]),
+        'eweMem': float(ewe[1]),
+        'etrCpu': float(etr[0]),
+        'etrMem': float(etr[1]),
+        'ottCpu': float(ott[0]),
+        'ottMem': float(ott[1]),
+        'vidanaCpu': float(vidana[0]),
+        'vidanaMem': float(vidana[1]),
         }
 print(data)
 if add_job_stats(data):
