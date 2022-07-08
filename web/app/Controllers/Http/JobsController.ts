@@ -134,12 +134,12 @@ Message: ${error.message}
         }
         for (let [k,v] of Object.entries(procStats))
         {
-            console.log(k,v)
-            v.cpu = Number(v.cpu.toPrecision(2))
-            v.mem = Number(v.mem.toPrecision(2))
+            if (v.cpu)
+                v.cpu = Number(v.cpu.toPrecision(2))
+            if (v.mem)
+                v.mem = Number(v.mem.toPrecision(2))
         }
         console.log(procStats)
-        console.log(latestStat[0])
 
 
         return view.render('job', { job, probeIp, procStats });
