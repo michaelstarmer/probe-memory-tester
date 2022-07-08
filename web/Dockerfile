@@ -23,12 +23,12 @@ COPY . /app
 WORKDIR /app
 
 # RUN npm run build
-RUN yarn
 
 RUN yarn build
 
 RUN cp .env ./build/.env
 RUN cp public/apidoc.json ./build/public/apidoc.json
+RUN cp -r public/assets ./build/public/assets
 
 ENV TZ = 'Europe/Amsterdam'
 
