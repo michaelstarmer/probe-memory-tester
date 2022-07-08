@@ -112,10 +112,10 @@
 <div class="container-fluid my-3">
 
   @each(job in jobs)
-  @!component('components/job-card', {job})
+  @!component('components/job-card-alt', {job})
   @endeach
 
-  @each(job in jobs)
+  {{--  @each(job in jobs)
   <div class="card card--job">
     <div class="card-body">
       <h6 class="card-title">
@@ -154,7 +154,7 @@
       <a href="/jobs/{{job.id}}" class="card-link">View test details</a>
     </div>
   </div>
-  @endeach
+  @endeach  --}}
 
 </div>
 

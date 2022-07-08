@@ -381,11 +381,29 @@ table.table tbody th {
 }
 
 .job-card {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
     .card {
         border-radius: 7px;
         border: transparent;
     }
 
+}
+
+.job-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 2px 2px 8px #ECF0F1;
+    &--title {
+        font-weight: 500;
+    }
+    &:hover {
+        color: inherit;
+    }
 }
 
 

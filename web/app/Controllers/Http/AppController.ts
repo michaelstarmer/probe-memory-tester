@@ -32,6 +32,14 @@ export default class AppController {
             isAvailable: true,
             isOffline: false,
         }
+
+        for (const j of jobs)
+        {
+            console.log(`Job ${j.id}`)
+            console.log('created_at:', j.createdAt)
+            console.log('remaining :', j.remaining)
+        }
+
         /**
          * perform a simple check to see if probe is online and reachable
          */

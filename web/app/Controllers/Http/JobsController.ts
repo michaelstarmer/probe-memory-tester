@@ -122,13 +122,7 @@ Message: ${error.message}
             return response.send(`Job with ID ${params.id} not found.`);
         }
 
-        console.log('This job contains:')
-        console.log(`\t- ${job.systemStats.length} systemStats`)
-        console.log(`\t- ${job.logs.length} logs`)
-        if (job.securityAudit) {
-            console.log(`\t- 1 securityAudit`)
-            console.log(job.securityAudit.toJSON())
-        }
+        console.log(job)
 
         return view.render('job', { job, probeIp });
     }
