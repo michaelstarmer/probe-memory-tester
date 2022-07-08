@@ -122,9 +122,27 @@ Message: ${error.message}
             return response.send(`Job with ID ${params.id} not found.`);
         }
 
-        console.log(job)
+        const latestStat = job.systemStats.slice(-1)[0]
+        console.log(job.systemStats.slice(-1))
+        
+        
+        const procStats = {
+            ewe: { cpu: latestStat.eweCpu, mem: latestStat.eweMem },
+            etr: { cpu: latestStat.etrCpu, mem: latestStat.etrMem },
+            ott: { cpu: latestStat.ottCpu, mem: latestStat.ottMem },
+            vidana: { cpu: latestStat.vidanaCpu, mem: latestStat.vidanaMem },
+        }
+        for (let [k,v] of Object.entries(procStats))
+        {
+            console.log(k,v)
+            v.cpu = Number(v.cpu.toPrecision(2))
+            v.mem = Number(v.mem.toPrecision(2))
+        }
+        console.log(procStats)
+        console.log(latestStat[0])
 
-        return view.render('job', { job, probeIp });
+
+        return view.render('job', { job, probeIp, procStats });
     }
 
     public async stop_job({ response, params }: HttpContextContract) {
