@@ -55,6 +55,8 @@
         </div>
 
 
+
+
         <div class="card-body text-center">
           <a href="/settings" class="btn btn-warning btn-sm">Settings</a>
           <a href="/apidoc" class="btn btn-secondary btn-sm">API doc</a>
@@ -108,6 +110,10 @@
   </div>
 </div>
 <div class="container-fluid my-3">
+
+  @each(job in jobs)
+  @!component('components/job-card', {job})
+  @endeach
 
   @each(job in jobs)
   <div class="card card--job">

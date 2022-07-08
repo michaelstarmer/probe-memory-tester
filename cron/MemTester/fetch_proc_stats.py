@@ -3,6 +3,7 @@ import sys
 from time import sleep
 from numpy import number
 import paramiko
+import requests
 from logger import Log
 
 PROBE_IP = '10.0.28.140'
@@ -25,27 +26,27 @@ def parseProcStats(status):
 def getProcStats(name='ewe'):
     (stdin, stdout, stderr) = ssh.exec_command(
         f"""
-ps -p "/proc/$(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,rss"
+ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,cpu | head -n 2 | tail -n 1
 """
     )
     type(stdin)
     data = ''.join(stdout.readlines()).split()
-    return parseProcStats(data)
+    return data
 
 
-def printStat(stat):
-    print(
-        f"""{int(stat['VmSize'])/1000} KB ({stat['Name']} - {stat['State']})""")
+def saveSystemStats(data):
+    response = requests.post(f'http://localhost:3333/api/stats', data)
+    if response.status_code != 200:
+        print(response)
+        sys.exit(f"Bad request ({response.status_code})!")
+    print('System stats saved!')
+    return True
 
 
-procs = [getProcStats('ewe'), getProcStats(
-    'etr'), getProcStats('ott'), getProcStats('vidana')]
+print('ewe:', getProcStats('ewe'))
+print('etr:', getProcStats('etr'))
+print('ott:', getProcStats('ott'))
+print('vidana:', getProcStats('vidana'))
 
-for proc in procs:
-    procName = str(proc['Name'])
-    if len(procName) < 8:
-        for x in range(8 - len(procName)):
-            procName = procName + ' '
-    print(f'{procName} {proc["VmData"]} kB')
 
 ssh.close()
