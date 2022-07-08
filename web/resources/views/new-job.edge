@@ -152,7 +152,7 @@
         console.log(selectedOption.dataset)
         let host = window.location.hostname
         host = `${window.location.protocol}//${host}`
-        let fullFilePath = `/uploads/xml/${selectedOption.dataset.filename}`
+        let fullFilePath = `/public/uploads/xml/${selectedOption.dataset.filename}`
         let url = encodeURI(fullFilePath.trim())
 
         metadataWrap.classList.contains('hidden') && metadataWrap.classList.remove('hidden')

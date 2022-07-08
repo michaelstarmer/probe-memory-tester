@@ -16,7 +16,7 @@ export default class FilesController {
         xmlFile.description = description
 
         try {
-            await file?.move(Application.publicPath('/uploads/xml'), {
+            await file?.move(Application.publicPath('/public/uploads/xml'), {
                 name: xmlFile.filename
             })
 
@@ -44,7 +44,7 @@ export default class FilesController {
     public async upload_view({ view, response, session }) {
         const files = await XmlFile.query().orderBy('created_at', 'desc')
 
-        const xmlUploadPath = '/uploads/xml'
+        const xmlUploadPath = '/public/uploads/xml'
 
         try {
             return view.render('upload', { files, xmlUploadPath })
