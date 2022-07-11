@@ -124,25 +124,25 @@ Message: ${error.message}
 
         const latestStat = job.systemStats.slice(-1)[0]
         console.log(job.systemStats.slice(-1))
-        
-        
-        const procStats = {
-            ewe: { cpu: latestStat.eweCpu, mem: latestStat.eweMem },
-            etr: { cpu: latestStat.etrCpu, mem: latestStat.etrMem },
-            ott: { cpu: latestStat.ottCpu, mem: latestStat.ottMem },
-            vidana: { cpu: latestStat.vidanaCpu, mem: latestStat.vidanaMem },
-        }
-        for (let [k,v] of Object.entries(procStats))
-        {
-            if (v.cpu)
-                v.cpu = Number(v.cpu.toPrecision(2))
-            if (v.mem)
-                v.mem = Number(v.mem.toPrecision(2))
-        }
-        console.log(procStats)
 
 
-        return view.render('job', { job, probeIp, procStats });
+        // const procStats = {
+        //     ewe: { cpu: latestStat.eweCpu, mem: latestStat.eweMem },
+        //     etr: { cpu: latestStat.etrCpu, mem: latestStat.etrMem },
+        //     ott: { cpu: latestStat.ottCpu, mem: latestStat.ottMem },
+        //     vidana: { cpu: latestStat.vidanaCpu, mem: latestStat.vidanaMem },
+        // }
+        // for (let [k,v] of Object.entries(procStats))
+        // {
+        //     if (v.cpu)
+        //         v.cpu = Number(v.cpu.toPrecision(2))
+        //     if (v.mem)
+        //         v.mem = Number(v.mem.toPrecision(2))
+        // }
+        // console.log(procStats)
+
+
+        return view.render('job', { job, probeIp });
     }
 
     public async stop_job({ response, params }: HttpContextContract) {
