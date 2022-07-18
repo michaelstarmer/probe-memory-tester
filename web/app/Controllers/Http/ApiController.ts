@@ -7,6 +7,7 @@ import axios from 'axios'
 import Application from '@ioc:Adonis/Core/Application'
 import JobSecurityAudit from 'App/Models/JobSecurityAudit'
 import Setting from 'App/Models/Setting'
+import ProcStat from 'App/Models/ProcStat'
 
 export default class ApiController {
     async get_probe_config({ response }: HttpContextContract) {
@@ -413,5 +414,34 @@ export default class ApiController {
 
         await audit.merge({ status }).save()
         return response.status(200).json({ success: true })
+    }
+
+    public async add_proc_stats({ params, request, response }: HttpContextContract) {
+        const payload = request.body()
+        const job = await Job.find(params.jobId);
+        if (!job) {
+            return response.status(400).json({ success: false, error: "Job not found." })
+        }
+
+        const procStats: ProcStat[] = []
+
+        payload.map(it => {
+            const procStat = new ProcStat()
+            procStat.name = it['name']
+            procStat.mem = it['mem']
+            procStat.cpu = it['cpu']
+            procStats.push(procStat);
+        })
+
+        try {
+            await job.related('procStats').saveMany(procStats);
+            const createdProcStats = await ProcStat.createMany(procStats);
+            console.log(`Created ${createdProcStats.length} successfully.`);
+            return response.json({ success: true })
+        } catch (error) {
+            console.error("Create ProcStat error!", error);
+            return response.status(400).json({ error });
+        }
+
     }
 }
