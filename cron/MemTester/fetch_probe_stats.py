@@ -201,12 +201,8 @@ cpu_sys = c[1]
 job_id = get_current_job_id()
 if not job_id:
     sys.exit('No active jobs to log.')
-ewe = getProcStats('ewe')
-etr = getProcStats('etr')
-ott = getProcStats('ott')
-vidana = getProcStats('vidana')
-data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)
-        }
+
+data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)}
 print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
