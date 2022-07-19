@@ -1,6 +1,6 @@
 from sys import stderr, stdin, stdout
 import sys
-from time import sleep
+from time import time
 from numpy import number
 import paramiko
 import requests
@@ -16,16 +16,6 @@ ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh.connect(PROBE_IP, username='root', password='elvis')
 
 
-def parseProcStats(status):
-    keys = ['Name', 'Pid', 'VmSize', 'VmPeak', 'VmData', 'State']
-    parsed = {}
-    for idx, value in enumerate(status):
-        if str(value).replace(':', '') not in keys:
-            continue
-        parsed[str(value.replace(':', ''))] = status[idx+1]
-    return parsed
-
-
 def getProcStats(name='ewe'):
     (stdin, stdout, stderr) = ssh.exec_command(
         f"""
@@ -37,16 +27,7 @@ ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem
     return data
 
 
-def saveSystemStats(data):
-    response = requests.post(f'http://localhost:3333/api/stats', data)
-    if response.status_code != 200:
-        print(response)
-        sys.exit(f"Bad request ({response.status_code})!")
-    print('System stats saved!')
-    return True
-
-
-def getProbeProcs():
+def getAllProbeProcs():
     payload = []
     btechProcesses = ['ana', 'capture', 'database', 'dbana', 'esyslog', 'etr', 'ewe', 'flashserver', 'hugepages',
                       'linkout', 'microbitr', 'ott', 'psi', 'relay', 'sap', 'storage', 'tsoffload', 'ucast_relay', 'vidana', 'ott*']
@@ -68,8 +49,27 @@ def saveProcStats(jobId, payload):
     return True
 
 
-payload = getProbeProcs()
+def get_current_job_id():
+    try:
+        response = requests.get(f'{API_HOST}/api/queue/active')
+        if response.status_code != 200:
+            sys.exit(f"Bad request ({response.status_code})!")
+        job = json.loads(response.content)
+        return job['id']
+    except Exception as e:
+        print("No job id found in queue.", e)
 
-saveProcStats(4, payload)
 
+job_id = get_current_job_id()
+if not job_id:
+    sys.exit('No active jobs to log.')
+
+start = time()
+payload = getAllProbeProcs()
+
+api.addProcStats(job_id, payload)
+finish = time()
+
+delta = finish - start
 ssh.close()
+Log.success(f'Proc stats finished in {delta} s.')

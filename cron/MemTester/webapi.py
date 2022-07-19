@@ -7,9 +7,12 @@ class WebApi:
     def __init__(self, host):
         self.host = host
 
-    def _post(self, endpoint, payload):
+    def _post(self, endpoint, payload, isJson=False):
         url = f'{self.host}/{endpoint}'
-        response = requests.post(url, data=payload)
+        if isJson:
+            response = requests.post(url, json=payload)
+        else:
+            response = requests.post(url, data=payload)
         if response.status_code != 200:
             Log.warn(f'POST error: ({response.reason}): {url}')
             return False
@@ -37,7 +40,8 @@ class WebApi:
         return response
 
     def addProcStats(self, jobId, payload):
-        response = self._post(f'api/jobs/{jobId}/proc-stats', payload)
+        response = self._post(
+            f'api/jobs/{jobId}/proc-stats', payload=payload, isJson=True)
         return response
 
     def setSecurityAuditStatus(self, id, status):
