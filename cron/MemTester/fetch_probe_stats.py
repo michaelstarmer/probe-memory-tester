@@ -35,20 +35,26 @@ print('LOCAL TIME:', time.strftime('%c'))
 
 
 def getProcStats(name='ewe'):
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(VM_HOST, username='root', password='elvis')
-    try:
-        (stdin, stdout, stderr) = ssh.exec_command(
-            f"""
-    ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,%cpu | head -n 2 | tail -n 1
-    """
-        )
-        type(stdin)
-        data = ''.join(stdout.readlines()).split()
-        return data
-    except Exception as e:
-        print('getProcStat error!', e)
+    (stdin, stdout, stderr) = ssh.exec_command(
+        f"""
+ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,%cpu | head -n 2 | tail -n 1
+"""
+    )
+    type(stdin)
+    data = ''.join(stdout.readlines()).split()
+    return data
+
+
+def getAllProbeProcs():
+    payload = []
+    btechProcesses = ['ana', 'capture', 'database', 'dbana', 'esyslog', 'etr', 'ewe', 'flashserver', 'hugepages',
+                      'linkout', 'microbitr', 'ott', 'psi', 'relay', 'sap', 'storage', 'tsoffload', 'ucast_relay', 'vidana', 'ott*']
+    for pName in btechProcesses:
+        c = getProcStats(pName)
+        if c:
+            #print(f'{pName} - cpu: {c[0]}, mem: {c[1]}')
+            payload.append({'name': pName, 'cpu': c[0], 'mem': c[1]})
+    return payload
 
 
 def get_proc_mem():
@@ -196,19 +202,20 @@ ewe = getProcStats('ewe')
 etr = getProcStats('etr')
 ott = getProcStats('ott')
 vidana = getProcStats('vidana')
-data = {'cpu': float(cpu_usr), 'mem': float(mem_pct),
-        'eweCpu': float(ewe[1]),
-        'eweMem': float(ewe[0]),
-        'etrCpu': float(etr[1]),
-        'etrMem': float(etr[0]),
-        'ottCpu': float(ott[1]),
-        'ottMem': float(ott[0]),
-        'vidanaCpu': float(vidana[1]),
-        'vidanaMem': float(vidana[0]),
+data = {'cpu': float(cpu_usr), 'mem': float(mem_pct)
         }
 print(data)
 if add_job_stats(data):
     print('[ SUCCESS ] System data saved.')
 else:
     api.logToJob(job_id, 'Error while reading CPU/RAM from probe.', 'error')
+
+payload = getAllProbeProcs()
+
+if api.addProcStats(job_id, payload):
+    print('[ SUCCESS ] System data saved.')
+else:
+    api.logToJob(
+        job_id, 'Error while reading CPU/RAM from btech processes.', 'error')
+
 exit(0)
