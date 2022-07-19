@@ -19,9 +19,9 @@ export default class SystemStatController {
                 return response.json({ error: 'No active jobs.' });
             }
 
-            const { cpu, mem, eweCpu, eweMem, etrCpu, etrMem, ottCpu, ottMem, vidanaCpu, vidanaMem } = request.all()
+            const { cpu, mem } = request.all()
 
-            await activeJob.related('systemStats').create({ cpu, mem, eweCpu, eweMem, etrCpu, etrMem, ottCpu, ottMem, vidanaCpu, vidanaMem })
+            await activeJob.related('systemStats').create({ cpu, mem })
         } catch (error) {
             console.error('create SystemStat error!', error);
             return response.status(412).json({ error });
@@ -35,7 +35,7 @@ export default class SystemStatController {
             return response.json({ error: 'Job not found.' });
         }
 
-        let { cpu, mem, eweCpu, eweMem, etrCpu, etrMem, ottCpu, ottMem, vidanaCpu, vidanaMem } = request.all();
+        let { cpu, mem } = request.all();
 
         if (!cpu || !mem) {
             return response.json({ error: 'Missing fields.' });
@@ -45,8 +45,7 @@ export default class SystemStatController {
             const systemStat = new SystemStat()
             systemStat.fill({
                 cpu,
-                mem,
-                eweCpu, eweMem, etrCpu, etrMem, ottCpu, ottMem, vidanaCpu, vidanaMem
+                mem
             })
             await job.related('systemStats').save(systemStat);
             return response.json({})
