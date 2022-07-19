@@ -35,6 +35,9 @@ print('LOCAL TIME:', time.strftime('%c'))
 
 
 def getProcStats(name='ewe'):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(VM_HOST, username='root', password='elvis')
     (stdin, stdout, stderr) = ssh.exec_command(
         f"""
 ps -p $(systemctl --property=MainPID show probe.{name} | cut -d '=' -f2) -o %mem,%cpu | head -n 2 | tail -n 1
