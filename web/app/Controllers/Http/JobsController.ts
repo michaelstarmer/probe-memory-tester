@@ -33,16 +33,12 @@ export default class JobsController {
         try {
 
             const { data } = await axios.get(jobsUrl);
-
             data.jobs.map(it => {
                 if (it.name.search(/CentOS\d\-based/i) === 0) {
                     jobs.push(it.name)
                 }
             })
-            // for (const f of xmlFiles)
-            // {
-            //     console.log('file:', f)
-            // }
+
             return view.render('new-job', { jobs, xmlFiles })
         } catch (error) {
             console.error(error)
@@ -114,6 +110,7 @@ Message: ${error.message}
             .preload('systemStats')
             .preload('procStats', procStatsQuery => {
                 procStatsQuery.limit(15)
+                procStatsQuery.orderBy('id', 'desc')
                 procStatsQuery.orderBy('mem', 'desc')
                 procStatsQuery.orderBy('cpu', 'desc')
             })
