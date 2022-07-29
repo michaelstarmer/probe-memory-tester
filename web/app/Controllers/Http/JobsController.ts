@@ -112,6 +112,11 @@ Message: ${error.message}
             .query()
             .where('id', params.id)
             .preload('systemStats')
+            .preload('procStats', procStatsQuery => {
+                procStatsQuery.limit(15)
+                procStatsQuery.orderBy('mem', 'desc')
+                procStatsQuery.orderBy('cpu', 'desc')
+            })
             .preload('logs')
             .preload('securityAudit')
             .preload('xmlConfig')
@@ -123,7 +128,7 @@ Message: ${error.message}
         }
 
         const latestStat = job.systemStats.slice(-1)[0]
-        console.log(job.systemStats.slice(-1))
+        console.log(job.procStats)
 
 
         // const procStats = {

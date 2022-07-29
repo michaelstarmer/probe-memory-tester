@@ -4,16 +4,16 @@ export default class ProcStats extends BaseSchema {
   protected tableName = 'proc_stats'
 
   public async up() {
-    this.schema.alterTable('system_stats', table => {
-      table.dropColumn('ewe_cpu')
-      table.dropColumn('ewe_mem')
-      table.dropColumn('etr_cpu')
-      table.dropColumn('etr_mem')
-      table.dropColumn('ott_cpu')
-      table.dropColumn('ott_mem')
-      table.dropColumn('vidana_cpu')
-      table.dropColumn('vidana_mem')
-    })
+    // this.schema.alterTable('system_stats', table => {
+    //   table.dropColumn('ewe_cpu')
+    //   table.dropColumn('ewe_mem')
+    //   table.dropColumn('etr_cpu')
+    //   table.dropColumn('etr_mem')
+    //   table.dropColumn('ott_cpu')
+    //   table.dropColumn('ott_mem')
+    //   table.dropColumn('vidana_cpu')
+    //   table.dropColumn('vidana_mem')
+    // })
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('name')

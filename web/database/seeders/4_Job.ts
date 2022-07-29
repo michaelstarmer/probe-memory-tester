@@ -1,74 +1,76 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Job from 'App/Models/Job'
-import JobLog from 'App/Models/JobLog'
-import SystemStat from 'App/Models/SystemStat'
 import { DateTime } from 'luxon'
+
+const jobs: object[] = [
+  {
+    memory: 4,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.1',
+    buildNumber: 1,
+    isManual: 0,
+    status: 'completed',
+    duration: 60
+  },
+  {
+    memory: 4,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.1',
+    buildNumber: 4,
+    isManual: 1,
+    status: 'completed',
+    duration: 60
+  },
+  {
+    memory: 4,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.1',
+    buildNumber: 10,
+    isManual: 0,
+    status: 'completed',
+    duration: 60
+  },
+  {
+    memory: 4,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.1',
+    buildNumber: 11,
+    isManual: 1,
+    status: 'running',
+    duration: 60
+  },
+  {
+    memory: 4,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.1',
+    buildNumber: 12,
+    isManual: 0,
+    status: 'waiting',
+    duration: 60
+  },
+  {
+    memory: 6,
+    cpu: 0,
+    xmlFileId: 2,
+    jenkinsJob: 'CentOS7-based_6.0',
+    buildNumber: 1,
+    isManual: 1,
+    status: 'waiting',
+    duration: 30
+  },
+];
+
+const randomBetween = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+} 
 
 export default class JobSeeder extends BaseSeeder {
   public async run() {
-
-    const jobs: object[] = [
-      {
-        memory: 4,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.1',
-        buildNumber: 1,
-        isManual: 0,
-        status: 'completed',
-        duration: 60
-      },
-      {
-        memory: 4,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.1',
-        buildNumber: 4,
-        isManual: 1,
-        status: 'completed',
-        duration: 60
-      },
-      {
-        memory: 4,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.1',
-        buildNumber: 10,
-        isManual: 0,
-        status: 'completed',
-        duration: 60
-      },
-      {
-        memory: 4,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.1',
-        buildNumber: 11,
-        isManual: 1,
-        status: 'running',
-        duration: 60
-      },
-      {
-        memory: 4,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.1',
-        buildNumber: 12,
-        isManual: 0,
-        status: 'waiting',
-        duration: 60
-      },
-      {
-        memory: 6,
-        cpu: 0,
-        xmlFileId: 2,
-        jenkinsJob: 'CentOS7-based_6.0',
-        buildNumber: 1,
-        isManual: 1,
-        status: 'waiting',
-        duration: 30
-      },
-    ];
 
     let initialDateTime = DateTime.now().minus({ days: jobs.length })
 
@@ -100,8 +102,8 @@ export default class JobSeeder extends BaseSeeder {
         for (let i = 0; i < statsTotalCount; i++) {
           await newJob.related('systemStats').create(
             {
-              cpu: Math.random() * 10,
-              mem: Math.random() * 10,
+              cpu: randomBetween(0, 8),
+              mem: randomBetween(60, 70),
               createdAt: initialDateTime.plus({ days: i, minutes: Math.round(Math.random() * 60) })
             }
           );

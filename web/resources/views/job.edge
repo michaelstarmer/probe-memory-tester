@@ -20,7 +20,27 @@
 <div class="container">
 
     <div class="row">
-        <div id="chart" class="col-12 col-lg-12"></div>
+        <div id="chart" class="col-12 col-lg-6"></div>
+        <div id="procs" class="col-12 col-lg-6">
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Proc</th>
+                        <th scope="col">Mem%</th>
+                        <th scope="col">CPU%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @each(proc in job.procStats)
+                    <tr>
+                        <td class="col" scope="row">{{ proc.name }}</td>
+                        <td class="col" scope="row">{{ proc.mem }}</td>
+                        <td class="col" scope="row">{{ proc.cpu }}</td>
+                    </tr>
+                    @endeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="container mt-5">

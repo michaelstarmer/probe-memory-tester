@@ -58,11 +58,7 @@ export default class ApiController {
             .preload('logs')
             .first();
 
-        if (job) {
-            console.log('job length:', job.systemStats.length)
-        }
 
-        console.log(job?.systemStats.length)
         const maxSystemStats = 40;
         let systemStats: object[] = []
         let jobJson = job?.toJSON()
@@ -82,8 +78,6 @@ export default class ApiController {
             // 50 systemStat items, plus 10 latest items
             jobJson.systemStats = systemStats.concat(jobJson.systemStats.slice(-10))
         }
-
-        console.log('System stat trimmed count:', jobJson.systemStats.length)
 
         try {
             return response.json(jobJson);

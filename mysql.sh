@@ -1,5 +1,5 @@
 #!/bin/bash
-HOST="172.18.0.2"
+HOST="localhost"
 if [ "$1" == "prod" ] ; then
   printf "Using prod!\n"
   HOST="10.0.28.187"
