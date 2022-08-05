@@ -438,4 +438,14 @@ export default class ApiController {
         }
 
     }
+
+    public async get_proc_stats_by_job_id({ params, response }) {
+        const { jobId } = params;
+        const procStats = await ProcStat.findBy('job_id', jobId);
+        if (!procStats) {
+            console.error('no proc stats found.');
+            return response.json()
+        }
+        return response.json(procStats);
+    }
 }

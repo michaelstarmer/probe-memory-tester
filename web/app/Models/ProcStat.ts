@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { afterSave, BaseModel, BelongsTo, belongsTo, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Job from 'App/Models/Job'
+import ProcStatAlert from './ProcStatAlert'
 
 export default class ProcStat extends BaseModel {
   @column({ isPrimary: true })
@@ -21,9 +22,19 @@ export default class ProcStat extends BaseModel {
   @column()
   public cpu: number
 
+  @afterSave()
+  public static async(procstat: ProcStat) {
+    // Get avg of all recorded procs w/same name
+    // Find mar
+  }
+
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasOne(() => ProcStatAlert)
+  public alert: HasOne<typeof ProcStatAlert>
 }

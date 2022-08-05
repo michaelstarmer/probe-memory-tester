@@ -5,7 +5,7 @@ import { DateTime } from 'luxon'
 const jobs: object[] = [
   {
     memory: 4,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 1,
@@ -15,7 +15,7 @@ const jobs: object[] = [
   },
   {
     memory: 4,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 4,
@@ -25,7 +25,7 @@ const jobs: object[] = [
   },
   {
     memory: 4,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 10,
@@ -35,7 +35,7 @@ const jobs: object[] = [
   },
   {
     memory: 4,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 11,
@@ -45,7 +45,7 @@ const jobs: object[] = [
   },
   {
     memory: 4,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 12,
@@ -55,7 +55,7 @@ const jobs: object[] = [
   },
   {
     memory: 6,
-    cpu: 0,
+    cpu: undefined,
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.0',
     buildNumber: 1,
@@ -67,7 +67,7 @@ const jobs: object[] = [
 
 const randomBetween = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
-} 
+}
 
 export default class JobSeeder extends BaseSeeder {
   public async run() {
