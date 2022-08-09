@@ -1,5 +1,25 @@
 {
   "commands": {
+    "save:procstat": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/SaveDummyProcStat",
+      "commandName": "save:procstat",
+      "description": "Creates an instance of model ProcStat, and saves it to the database.",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "count",
+          "propertyName": "count",
+          "type": "string",
+          "alias": "n",
+          "description": "Number of fake stats to add."
+        }
+      ]
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

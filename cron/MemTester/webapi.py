@@ -72,6 +72,10 @@ class WebApi:
         response = self._get(f'api/jobs/next')
         return response
 
+    def getProcStats(self):
+        response = self._get(f'api/jobs/{id}/proc-stats')
+        return response
+
     def getJenkinsJobForAutoTesting(self):
         print('Get Jenkins job for auto testing')
 

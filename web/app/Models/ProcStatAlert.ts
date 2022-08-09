@@ -10,7 +10,7 @@ export default class ProcStatAlert extends BaseModel {
   public procStatId: Number
 
   @column()
-  public type: string
+  public level: string
 
   @column()
   public message: string

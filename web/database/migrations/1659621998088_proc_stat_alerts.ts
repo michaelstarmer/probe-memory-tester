@@ -8,7 +8,7 @@ export default class ProcStatAlerts extends BaseSchema {
       table.increments('id')
       table.integer('proc_stat_id').unsigned().references('id').inTable('proc_stats')
       table.integer('job_id').unsigned().references('id').inTable('jobs')
-      table.enum('type', ['low', 'medium', 'high']).notNullable()
+      table.enum('level', ['low', 'medium', 'high']).notNullable()
       table.string('message').notNullable()
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
