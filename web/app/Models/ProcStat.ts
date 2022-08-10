@@ -42,11 +42,16 @@ export default class ProcStat extends BaseModel {
      */
     if (savedProcStatMem > memStdDev) {
       Logger.warn(`Above one standard deviation for memory. Latest memory reading is ${savedProcStatMem} (${memStdDev})`);
-      await ProcStatAlert.create({
-        procStatId: procstat.id,
-        level: 'medium',
-        message: 'Above one standard deviation'
-      })
+      try {
+        await ProcStatAlert.create({
+          procStatId: procstat.id,
+          level: 'medium',
+          message: 'Above one standard deviation'
+        })
+      } catch (error) {
+        Logger.error('Failed to created ProcStatAlert')
+        console.log(error);
+      }
       Logger.info('Added new alert.')
     } else {
       Logger.info(`Within one standard deviation. Latest memory reading is ${savedProcStatMem}. Std: (${memStdDev})`)

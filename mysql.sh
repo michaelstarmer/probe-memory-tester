@@ -5,4 +5,4 @@ if [ "$1" == "prod" ] ; then
   HOST="10.0.28.187"
 fi
 
-mysql -h "$HOST" --protocol=TCP -u memtest -pldap2retro
+mysql -h "$HOST" --protocol=TCP -u root -pldap2retro

@@ -10,8 +10,6 @@ export default class AppController {
         const parser = new xml2js.Parser()
 
         // Fetch all jobs and limit each of them to display the 10 latest system stats (cpu/mem)
-
-
         const jobs = await Job.query()
             .preload('xmlConfig')
             .preload('systemStats', statsQuery => {
@@ -33,13 +31,6 @@ export default class AppController {
             isOffline: false,
         }
 
-        for (const j of jobs)
-        {
-            console.log(`Job ${j.id}`)
-            console.log('created_at:', j.createdAt)
-            console.log('remaining :', j.remaining)
-        }
-
         /**
          * perform a simple check to see if probe is online and reachable
          */
@@ -49,14 +40,6 @@ export default class AppController {
             if (activeJobsCount > 0) {
                 probeData.isAvailable = false;
             }
-            // if (!payload) {
-            //     console.error('No response from probe.')
-            //     probeData.isOffline = true;
-            // }
-            // const json = await parser.parseStringPromise(payload.data);
-            // if (json && json.Status) {
-            //     probeData.swVersion = json.Status.System[0].software_version;
-            // }
 
             return view.render('landing', { jobs, probeData, jenkinsJob })
 
@@ -75,8 +58,6 @@ export default class AppController {
                 probeData.isOffline = true;
                 const e = "Probe connection timed out."
                 return view.render('landing', { jobs, probeData, error: e })
-                return response.send("Probe connection timed out. Is probe online and reachable?\n" + "URL: " + error.config.url)
-
             }
 
             return response.send("Connection error: " + error.errcode)
