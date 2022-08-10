@@ -418,17 +418,16 @@ export default class ApiController {
         }
 
         const procStats: ProcStat[] = []
-        if (!payload['name'] || !payload['mem']) {
-            console.error('Missing payload values!', payload)
-            return response.status(400).json({ success: false, error: 'Missing payload values.', code: 1001 })
-        }
 
         payload.map(it => {
             const procStat = new ProcStat()
             procStat.name = it['name']
             procStat.mem = it['mem']
             procStat.cpu = it['cpu']
-            procStats.push(procStat);
+            if (it['name'] && it['mem'] && it['cpu']) {
+                procStats.push(procStat);
+            }
+
         })
 
         try {
