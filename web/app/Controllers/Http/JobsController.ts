@@ -113,6 +113,7 @@ Message: ${error.message}
                 procStatsQuery.orderBy('id', 'desc')
                 procStatsQuery.orderBy('mem', 'desc')
                 procStatsQuery.orderBy('cpu', 'desc')
+                procStatsQuery.preload('alert')
             })
             .preload('logs')
             .preload('securityAudit')

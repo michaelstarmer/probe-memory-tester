@@ -60,6 +60,7 @@ export default class ProcStat extends BaseModel {
         const newAlert = new ProcStat()
         newAlert['level'] = 'low';
         newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
+        newAlert['jobId'] = procstat.job.id;
 
         if (v['stdDevFactor'] >= 2) {
           newAlert['level'] = 'medium';

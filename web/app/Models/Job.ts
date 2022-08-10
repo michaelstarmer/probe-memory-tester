@@ -6,6 +6,7 @@ import Snapshot from './Snapshot'
 import JobLog from './JobLog'
 import JobSecurityAudit from './JobSecurityAudit'
 import ProcStat from './ProcStat'
+import ProcStatAlert from './ProcStatAlert'
 
 export default class Job extends BaseModel {
 
@@ -91,6 +92,9 @@ export default class Job extends BaseModel {
 
   @hasMany(() => ProcStat)
   public procStats: HasMany<typeof ProcStat>
+
+  @hasMany(() => ProcStatAlert)
+  public procStatAlerts: HasMany<typeof ProcStatAlert>
 
   @hasOne(() => JobSecurityAudit)
   public securityAudit: HasOne<typeof JobSecurityAudit>
