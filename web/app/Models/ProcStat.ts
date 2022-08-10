@@ -26,22 +26,67 @@ export default class ProcStat extends BaseModel {
 
   @afterSave()
   public static async calculateDeviations(procstat: ProcStat) {
-    // Get avg of all recorded procs w/same name
+    /**
+     * Compare the saved proc_stat to the standard deviation of the same process values for all other similar jobs.
+     * If the value exceeds X times standard deviation, create a new ProcStatAlert.
+     * ProcStatAlert uses [low, medium, high] to classify the level of deviation.
+     */
     const allProcStats = await ProcStat.query().where('name', procstat.name)
     const allMem = allProcStats.map(it => it.mem)
     const allCpu = allProcStats.map(it => it.cpu)
 
+    const procHistory = {
+      mem: {
+        stdDev: 0,
+        stdDevFactor: 0,
+        values: allProcStats.map(it => it.mem)
+      },
+      cpu: {
+        stdDev: 0,
+        stdDevFactor: 0,
+        values: allProcStats.map(it => it.cpu),
+      }
+    }
+
+    for (const [k, v] of Object.entries(procHistory)) {
+      v['stdDev'] = Number(std(v.values));
+      v['stdDevFactor'] = Math.floor(procstat[k] / procHistory[k].stdDev)
+      if (procHistory[k].stdDevFactor !== undefined) {
+        Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
+      }
+      if (v['stdDevFactor'] >= 1) {
+        Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
+
+        const newAlert = new ProcStat()
+        newAlert['level'] = 'low';
+        newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
+
+        if (v['stdDevFactor'] >= 2) {
+          newAlert['level'] = 'medium';
+        } else if (v['stdDevFactor'] >= 5) {
+          newAlert['level'] = 'high';
+        }
+
+        console.log(newAlert['message'])
+        try {
+          await newAlert.save();
+          Logger.info('New ProcStatAlert saved!')
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+    }
+    return
 
     const savedProcStatMem = Number(procstat.mem);
+    const savedProcStatCpu = Number(procstat.cpu)
     const memStdDev = Number(std(allMem))
-    const memoryAlert = savedProcStatMem > memStdDev;
-    // const
+    const cpuStdDev = Number(std(allCpu))
 
-    /**
-     * Check if latest memory reading is above one standard deviation.
-     */
     if (savedProcStatMem > memStdDev) {
-      Logger.warn(`Above one standard deviation for memory. Latest memory reading is ${savedProcStatMem} (${memStdDev})`);
+      const stdDevFactor = Math.floor(savedProcStatMem / memStdDev);
+      Logger.info(`Value=${savedProcStatMem}, StdDev=${memStdDev.toFixed(2)} (${stdDevFactor} standard deviations)`);
       try {
         await ProcStatAlert.create({
           procStatId: procstat.id,
