@@ -32,6 +32,9 @@ export default class ProcStat extends BaseModel {
      * ProcStatAlert uses [low, medium, high] to classify the level of deviation.
      */
     const allProcStats = await ProcStat.query().where('name', procstat.name)
+    if (!allProcStats || allProcStats.length < 1) {
+      return;
+    }
     const allMem = allProcStats.map(it => it.mem)
     const allCpu = allProcStats.map(it => it.cpu)
 
