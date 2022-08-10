@@ -418,6 +418,9 @@ export default class ApiController {
         }
 
         const procStats: ProcStat[] = []
+        if (!payload['name'] || !payload['mem']) {
+            return response.status(1001).json({ success: false, error: 'Missing payload values.' })
+        }
 
         payload.map(it => {
             const procStat = new ProcStat()
