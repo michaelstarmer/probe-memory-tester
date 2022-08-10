@@ -428,7 +428,7 @@ export default class ApiController {
         })
 
         try {
-            await job.related('procStats').saveMany(procStats);
+            // await job.related('procStats').saveMany(procStats);
             const createdProcStats = await ProcStat.createMany(procStats);
             console.log(`Created ${createdProcStats.length} successfully.`);
             return response.json({ success: true })
