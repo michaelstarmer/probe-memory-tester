@@ -74,23 +74,23 @@ export default class ProcStat extends BaseModel {
 
       Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
 
-      const newAlert = {}
-      newAlert['level'] = 'low';
-      newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
-      newAlert['jobId'] = procstat.jobId;
-      newAlert['procStatId'] = procstat.id;
+      const newAlert = new ProcStatAlert()
+      newAlert.fill({
+        level: 'low',
+        message: `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`,
+        jobId: procstat.jobId,
+        procStatId: procstat.id,
+      })
 
       if (v['stdDevFactor'] >= 2) {
-        newAlert['level'] = 'medium';
+        newAlert.merge({ level: 'medium' })
       } else if (v['stdDevFactor'] >= 5) {
-        newAlert['level'] = 'high';
+        newAlert.merge({ level: 'high' })
       }
 
-      console.log(newAlert['message'])
-      console.log(procstat.jobId)
-      console.log(procstat.id)
+      console.log(newAlert.message)
       try {
-        await ProcStatAlert.create(newAlert);
+        await newAlert.save()
         Logger.info('New ProcStatAlert saved!')
       } catch (error) {
         console.error(error);
