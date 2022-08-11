@@ -417,7 +417,7 @@ export default class ApiController {
             return response.status(400).json({ success: false, error: "Job not found." })
         }
 
-        const procStats: ProcStat[] = []
+        const procStats: Object[] = []
 
         payload.map(it => {
             const procStat = new ProcStat()
