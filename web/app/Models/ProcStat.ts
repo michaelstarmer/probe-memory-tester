@@ -83,6 +83,7 @@ export default class ProcStat extends BaseModel {
 
       console.log(newAlert['message'])
       console.log(procstat.jobId)
+      console.log(procstat.id)
       try {
         await ProcStatAlert.create(newAlert);
         Logger.info('New ProcStatAlert saved!')
