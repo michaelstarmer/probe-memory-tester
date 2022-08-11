@@ -6,6 +6,9 @@ export default class ProcStatAlert extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column({ columnName: 'job_id' })
+  public jobId: number
+
   @column({ columnName: 'proc_stat_id' })
   public procStatId: Number
 

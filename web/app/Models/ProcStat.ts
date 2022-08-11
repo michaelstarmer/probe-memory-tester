@@ -66,10 +66,11 @@ export default class ProcStat extends BaseModel {
       if (v['stdDevFactor'] >= 1) {
         Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
 
-        const newAlert = new ProcStat()
+        const newAlert = {}
         newAlert['level'] = 'low';
         newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
         newAlert['jobId'] = procstat.jobId;
+        newAlert['procStatId'] = procstat.id;
 
         if (v['stdDevFactor'] >= 2) {
           newAlert['level'] = 'medium';
@@ -80,7 +81,7 @@ export default class ProcStat extends BaseModel {
         console.log(newAlert['message'])
         console.log(procstat.job)
         try {
-          await newAlert.save();
+          await ProcStatAlert.create(newAlert);
           Logger.info('New ProcStatAlert saved!')
         } catch (error) {
           console.error(error);
