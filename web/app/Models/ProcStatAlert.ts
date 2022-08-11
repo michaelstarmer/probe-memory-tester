@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import ProcStat from './ProcStat'
 
 export default class ProcStatAlert extends BaseModel {
+  protected tableName = 'proc_stat_alerts';
   @column({ isPrimary: true })
   public id: number
 
