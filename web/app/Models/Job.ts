@@ -93,7 +93,7 @@ export default class Job extends BaseModel {
   @hasMany(() => ProcStat)
   public procStats: HasMany<typeof ProcStat>
 
-  @hasMany(() => ProcStatAlert)
+  @hasMany(() => ProcStatAlert, { foreignKey: 'jobId' })
   public procStatAlerts: HasMany<typeof ProcStatAlert>
 
   @hasOne(() => JobSecurityAudit)

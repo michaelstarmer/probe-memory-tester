@@ -19,6 +19,7 @@ Route.get('/api/jobs/last', 'ApiController.last_job')
 Route.get('/api/search-job/:jenkinsJob/buildNumber/:buildNumber/', 'ApiController.find_identical_jobs')
 
 Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
+Route.get('/api/jobs/:id/alerts', 'ApiController.get_job_alerts')
 Route.get('/api/jobs/:id/stop', 'ApiController.stop_job')
 Route.get('/api/jobs/:id/status/:status', 'ApiController.set_job_status')
 Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')

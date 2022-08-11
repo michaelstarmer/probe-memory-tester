@@ -56,6 +56,7 @@ export default class ApiController {
             .where('id', id)
             .preload('systemStats')
             .preload('logs')
+            .preload('procStatAlerts')
             .first();
 
 
@@ -319,6 +320,24 @@ export default class ApiController {
 
 
         return response.json(job.logs)
+    }
+
+    public async get_job_alerts({ params, response }: HttpContextContract) {
+        const { id } = params;
+        const job = await Job.find(id);
+        await job?.load('procStatAlerts');
+
+        if (!job) {
+            return response.status(400).json({ error: 'Could not get alerts because the job was not found.' })
+        }
+
+        try {
+            console.log(job.procStatAlerts)
+            return response.json(job.procStatAlerts);
+        } catch (error) {
+            console.error(error)
+            return response.json({ success: false, error })
+        }
     }
 
     public async set_job_status({ request, response, params }: HttpContextContract) {

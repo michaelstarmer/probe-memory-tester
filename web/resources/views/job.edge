@@ -453,7 +453,18 @@
         jobLog.push(log)
     }
 
-    function parseLogs(log)
+    function addAlertEntryDiv(log)
+    {
+        var logDiv = document.getElementById('log')
+        let logItemDiv = document.createElement('div')
+        logItemDiv.setAttribute('id', `logitem-${log.id}`)
+        logItemDiv.classList.add(`log-alert--${log.level}`)
+        logItemDiv.textContent = `${log.created_at} - ${log.message}`;
+        logDiv.appendChild(logItemDiv)
+        jobLog.push(log)
+    }
+
+    function parseLogs(log, isAlert=false)
     {
         if (log)
         {
@@ -468,7 +479,11 @@
         {
             if (log[i] && !jobLog[i])
             {
-                addLogEntryDiv(log[i])
+                if (isAlert) {
+                    addAlertEntryDiv(log[i])
+                } else {
+                    addLogEntryDiv(log[i])
+                }
             }
         }
     }
@@ -483,12 +498,24 @@
         })
     }
 
+    function fetchAlerts()
+    {
+        return new Promise((resolve, reject) => {
+            fetch(`/api/jobs/${jobId}/alerts`)
+            .then(res => res.json())
+            .then(alerts => resolve(alerts))
+            .catch(e => reject(e))
+        })
+    }
+
     function initializeLogs()
     {
         fetchLogs()
         .then(logArray => parseLogs(logArray))
         .then(() => logScrollToBottom())
         .catch(e => console.error('parse log error!', e))
+
+
     }
 
     generateData()
@@ -499,6 +526,15 @@
         fetchLogs()
         .then(logArray => {
             parseLogs(logArray)
+            if (!userScrolledLog)
+            {
+                // don't auto scroll if user scrolled logs
+                logScrollToBottom()
+            }
+        })
+        fetchAlerts()
+        .then(alertArray => {
+            parseLogs(alertArray, true)
             if (!userScrolledLog)
             {
                 // don't auto scroll if user scrolled logs

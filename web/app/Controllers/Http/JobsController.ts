@@ -118,6 +118,7 @@ Message: ${error.message}
             .preload('logs')
             .preload('securityAudit')
             .preload('xmlConfig')
+            .preload('procStatAlerts')
             .first()
         const probeIp = await Settings.findBy('key', 'probe_ip')
 
@@ -126,6 +127,7 @@ Message: ${error.message}
         }
 
         const latestStat = job.systemStats.slice(-1)[0]
+        console.log(job.procStatAlerts)
 
 
         // const procStats = {

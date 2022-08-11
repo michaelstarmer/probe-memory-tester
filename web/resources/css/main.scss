@@ -384,6 +384,7 @@ table.table tbody th {
     display: flex;
     text-decoration: none;
     color: inherit;
+
     .card {
         border-radius: 7px;
         border: transparent;
@@ -398,9 +399,11 @@ table.table tbody th {
     background-color: #fff;
     border-radius: 7px;
     box-shadow: 2px 2px 8px #ECF0F1;
+
     &--title {
         font-weight: 500;
     }
+
     &:hover {
         color: inherit;
     }
@@ -414,4 +417,18 @@ table.table tbody th {
     left: 0;
     background-color: #c0392b;
     color: #fff;
+}
+
+.log-alert {
+    &--low {
+        color: orange;
+    }
+
+    &--medium {
+        color: orangered;
+    }
+
+    &--high {
+        color: red;
+    }
 }
