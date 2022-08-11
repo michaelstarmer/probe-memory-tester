@@ -31,7 +31,13 @@ export default class ProcStat extends BaseModel {
      * If the value exceeds X times standard deviation, create a new ProcStatAlert.
      * ProcStatAlert uses [low, medium, high] to classify the level of deviation.
      */
+
+
+    if (!procstat.name)
+      return
     const allProcStats = await ProcStat.query().where('name', procstat.name)
+    console.log(procstat.name)
+
     if (!allProcStats || allProcStats.length < 1) {
       return;
     }
