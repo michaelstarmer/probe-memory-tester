@@ -435,23 +435,26 @@ export default class ApiController {
             return response.status(400).json({ success: false, error: "Job not found." })
         }
 
-        const procStats: Object[] = []
-
-        payload.map(it => {
-            const procStat = new ProcStat()
-            procStat.jobId = job.id;
-            procStat.name = it['name']
-            procStat.mem = it['mem']
-            procStat.cpu = it['cpu']
-            if (procStat.jobId && procStat.mem && procStat.name && procStat.cpu) {
-                procStats.push(procStat);
-            }
-        })
 
         try {
-            // await job.related('procStats').saveMany(procStats);
-            const createdProcStats = await ProcStat.createMany(procStats);
-            console.log(`Created ${createdProcStats.length} successfully.`);
+
+            for (const ps in payload) {
+                if (!ps['name'] || !ps['mem'] || !ps['cpu']) {
+                    continue
+                }
+                try {
+                    await ProcStat.create({
+                        jobId: job.id,
+                        name: ps['name'],
+                        mem: ps['mem'],
+                        cpu: ps['cpu'],
+                    })
+                    console.log('Saved procstat:', ps['name']);
+                } catch (error) {
+                    console.error('Failed to save procstat: ' + ps['name'] + ':', error);
+                }
+            }
+
             return response.json({ success: true })
         } catch (error) {
             console.error("Create ProcStat error!", error);
