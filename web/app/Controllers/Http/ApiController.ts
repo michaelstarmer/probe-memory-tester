@@ -431,7 +431,7 @@ export default class ApiController {
     }
 
     public async add_proc_stats({ params, request, response }: HttpContextContract) {
-        const payload = request.body()
+        let payload = request.body()
         const job = await Job.find(params.jobId);
         if (!job) {
             return response.status(400).json({ success: false, error: "Job not found." })
@@ -439,9 +439,8 @@ export default class ApiController {
 
 
         try {
-
-            for (const ps in payload) {
-                console.log({ ps })
+            for (const ps of payload) {
+                console.log(ps)
 
                 if (!ps['name']) {
                     Logger.warn('Payload (procstat) missing param: <name>')
