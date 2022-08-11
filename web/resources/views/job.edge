@@ -486,6 +486,7 @@
         {
             if (log[i] && !jobLog[i])
             {
+                console.log(`log[${i}] =`, log[i])
                 if (isAlert) {
                     addAlertEntryDiv(log[i])
                 } else {
