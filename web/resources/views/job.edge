@@ -465,7 +465,8 @@
         let logItemDiv = document.createElement('div')
         logItemDiv.setAttribute('id', `logitem-${log.id}`)
         logItemDiv.classList.add(`log-alert--${log.level}`)
-        logItemDiv.textContent = `${log.created_at} - ${log.message}`;
+        logItemDiv.textContent = `${log.created_at}: ${log.message}`;
+        console.log('Parsing alert:', logItemDiv)
         logDiv.appendChild(logItemDiv)
         jobLog.push(log)
     }
