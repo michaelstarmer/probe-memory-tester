@@ -41,8 +41,6 @@ export default class ProcStat extends BaseModel {
     if (!allProcStats || allProcStats.length < 1) {
       return;
     }
-    const allMem = allProcStats.map(it => it.mem)
-    const allCpu = allProcStats.map(it => it.cpu)
 
     const procHistory = {
       mem: {
@@ -90,6 +88,7 @@ export default class ProcStat extends BaseModel {
 
       console.log(newAlert.message)
       try {
+        Logger.info('Attemting to save alert:', newAlert)
         await newAlert.save()
         Logger.info('New ProcStatAlert saved!')
       } catch (error) {
