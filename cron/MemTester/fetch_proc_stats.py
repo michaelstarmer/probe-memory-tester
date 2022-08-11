@@ -35,7 +35,7 @@ def getAllProbeProcs():
         c = getProcStats(pName)
         if c:
             #print(f'{pName} - cpu: {c[0]}, mem: {c[1]}')
-            payload.append({'name': pName, 'cpu': c[0], 'mem': c[1]})
+            payload.append({'name': pName, 'cpu': c[1], 'mem': c[0]})
     return payload
 
 
