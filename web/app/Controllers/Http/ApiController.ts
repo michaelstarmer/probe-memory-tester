@@ -425,10 +425,9 @@ export default class ApiController {
             procStat.name = it['name']
             procStat.mem = it['mem']
             procStat.cpu = it['cpu']
-            if (it['name'] && it['mem'] && it['cpu']) {
+            if (procStat.jobId && procStat.mem && procStat.name && procStat.cpu) {
                 procStats.push(procStat);
             }
-
         })
 
         try {
