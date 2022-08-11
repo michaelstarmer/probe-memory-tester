@@ -11,7 +11,7 @@ export default class ProcStatAlert extends BaseModel {
   public jobId: number
 
   @column({ columnName: 'proc_stat_id' })
-  public procStatId: Number
+  public procStatId: number
 
   @column()
   public level: string
