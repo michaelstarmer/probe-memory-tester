@@ -18,7 +18,12 @@ export default class ProcStatAlert extends BaseModel {
   @column()
   public message: string
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({
+    autoCreate: true,
+    serialize: (value: DateTime | null) => {
+      return value ? value.setLocale('no').toFormat('f') : value
+    },
+  })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
