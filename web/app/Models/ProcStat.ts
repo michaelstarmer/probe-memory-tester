@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { afterSave, BaseModel, BelongsTo, belongsTo, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Job from 'App/Models/Job'
-import ProcStatAlert from './ProcStatAlert'
+import ProcStatAlert from 'App/Models/ProcStatAlert'
 import { std } from 'mathjs'
 import Logger from '@ioc:Adonis/Core/Logger'
 
