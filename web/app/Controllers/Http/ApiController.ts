@@ -332,7 +332,6 @@ export default class ApiController {
         }
 
         try {
-            console.log(job.procStatAlerts)
             return response.json(job.procStatAlerts);
         } catch (error) {
             console.error(error)
