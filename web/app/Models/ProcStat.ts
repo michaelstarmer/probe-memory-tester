@@ -58,7 +58,7 @@ export default class ProcStat extends BaseModel {
     }
 
     for (const [k, v] of Object.entries(procHistory)) {
-      v['stdDev'] = Number(std(v.values));
+      v['stdDev'] = Number(Number(std(v.values)).toFixed(2));
       v['stdDevFactor'] = Number(Math.floor(procstat[k] / procHistory[k].stdDev))
       if (procHistory[k].stdDevFactor !== undefined) {
         Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
