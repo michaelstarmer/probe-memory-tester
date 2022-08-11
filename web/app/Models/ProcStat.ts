@@ -63,56 +63,36 @@ export default class ProcStat extends BaseModel {
       if (procHistory[k].stdDevFactor !== undefined) {
         Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
       }
-      if (v['stdDevFactor'] >= 1) {
-        Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
-
-        const newAlert = {}
-        newAlert['level'] = 'low';
-        newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
-        newAlert['jobId'] = procstat.jobId;
-        newAlert['procStatId'] = procstat.id;
-
-        if (v['stdDevFactor'] >= 2) {
-          newAlert['level'] = 'medium';
-        } else if (v['stdDevFactor'] >= 5) {
-          newAlert['level'] = 'high';
-        }
-
-        console.log(newAlert['message'])
-        console.log(procstat.job)
-        try {
-          await ProcStatAlert.create(newAlert);
-          Logger.info('New ProcStatAlert saved!')
-        } catch (error) {
-          console.error(error);
-        }
+      if (v['stdDevFactor'] < 1) {
+        continue
       }
 
-    }
-    return
+      Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
 
-    const savedProcStatMem = Number(procstat.mem);
-    const savedProcStatCpu = Number(procstat.cpu)
-    const memStdDev = Number(std(allMem))
-    const cpuStdDev = Number(std(allCpu))
+      const newAlert = {}
+      newAlert['level'] = 'low';
+      newAlert['message'] = `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`
+      newAlert['jobId'] = procstat.jobId;
+      newAlert['procStatId'] = procstat.id;
 
-    if (savedProcStatMem > memStdDev) {
-      const stdDevFactor = Math.floor(savedProcStatMem / memStdDev);
-      Logger.info(`Value=${savedProcStatMem}, StdDev=${memStdDev.toFixed(2)} (${stdDevFactor} standard deviations)`);
+      if (v['stdDevFactor'] >= 2) {
+        newAlert['level'] = 'medium';
+      } else if (v['stdDevFactor'] >= 5) {
+        newAlert['level'] = 'high';
+      }
+
+      console.log(newAlert['message'])
+      console.log(procstat.jobId)
       try {
-        await ProcStatAlert.create({
-          procStatId: procstat.id,
-          level: 'medium',
-          message: 'Above one standard deviation'
-        })
+        await ProcStatAlert.create(newAlert);
+        Logger.info('New ProcStatAlert saved!')
       } catch (error) {
-        Logger.error('Failed to created ProcStatAlert')
-        console.log(error);
+        console.error(error);
       }
-      Logger.info('Added new alert.')
-    } else {
-      Logger.info(`Within one standard deviation. Latest memory reading is ${savedProcStatMem}. Std: (${memStdDev})`)
+
+
     }
+
 
   }
 

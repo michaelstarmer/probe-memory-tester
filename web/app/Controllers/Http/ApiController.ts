@@ -421,6 +421,7 @@ export default class ApiController {
 
         payload.map(it => {
             const procStat = new ProcStat()
+            procStat.jobId = job.id;
             procStat.name = it['name']
             procStat.mem = it['mem']
             procStat.cpu = it['cpu']
