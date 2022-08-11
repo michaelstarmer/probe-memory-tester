@@ -126,7 +126,6 @@ Message: ${error.message}
         }
 
         const latestStat = job.systemStats.slice(-1)[0]
-        console.log(job.procStats)
 
 
         // const procStats = {
