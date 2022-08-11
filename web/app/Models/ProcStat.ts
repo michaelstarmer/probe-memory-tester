@@ -84,7 +84,7 @@ export default class ProcStat extends BaseModel {
         message: `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`,
         jobId: procstat.jobId,
         procStatId: procstat.id,
-        lever: alertLevel,
+        level: alertLevel,
       }
 
       try {
