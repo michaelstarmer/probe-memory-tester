@@ -441,6 +441,7 @@ export default class ApiController {
         try {
 
             for (const ps in payload) {
+                console.log({ ps })
 
                 if (!ps['name']) {
                     Logger.warn('Payload (procstat) missing param: <name>')
