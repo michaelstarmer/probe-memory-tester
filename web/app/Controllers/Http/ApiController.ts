@@ -8,6 +8,8 @@ import Application from '@ioc:Adonis/Core/Application'
 import JobSecurityAudit from 'App/Models/JobSecurityAudit'
 import Setting from 'App/Models/Setting'
 import ProcStat from 'App/Models/ProcStat'
+import Logger from '@ioc:Adonis/Core/Logger'
+
 
 export default class ApiController {
     async get_probe_config({ response }: HttpContextContract) {
@@ -439,7 +441,9 @@ export default class ApiController {
         try {
 
             for (const ps in payload) {
-                if (!ps['name'] || !ps['mem'] || !ps['cpu']) {
+
+                if (!ps['name']) {
+                    Logger.warn('Payload (procstat) missing param: <name>')
                     continue
                 }
                 try {
