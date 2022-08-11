@@ -58,11 +58,15 @@ export default class ProcStat extends BaseModel {
     }
 
     for (const [k, v] of Object.entries(procHistory)) {
-      if (!procstat[k] || procstat[k] < 1)
+      if (!procstat[k] || procstat[k] < 1) {
+        Logger.info(`${procstat.name}'s latest ${procstat[k]} below 1. Not checking for variance.`)
         continue
+      }
       v['stdDev'] = Number(std(v.values));
-      if (!v['stdDev'] || v['stdDev'] < 1)
+      if (!v['stdDev'] || v['stdDev'] < 1) {
+        Logger.info(`${procstat.name}'s latest ${procstat[k]} reading is normal.`)
         continue
+      }
       v['stdDevFactor'] = Number(Math.floor(procstat[k] / procHistory[k].stdDev))
       if (procHistory[k].stdDevFactor !== undefined) {
         Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
