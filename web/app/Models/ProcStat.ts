@@ -101,9 +101,11 @@ LEFT JOIN proc_stats S ON S.id = ${procstat.id}
 WHERE A.created_at > '${DateTime.now().minus({ minutes: recentAlertSpanMinutes }).toSQL()}'
 `)
       let hasRecentSimilarAlert = false;
-      if (r1 && r1[0])
-        hasRecentSimilarAlert = true;
-
+      if (r1) {
+        if (r1[0] && r1[0].length > 0) {
+          hasRecentSimilarAlert = true;
+        }
+      }
 
       if (hasRecentSimilarAlert) {
         Logger.info(`Found existing alert on process ${procstat.name} from within last ${recentAlertSpanMinutes} minutes. Not adding new alert.`)
