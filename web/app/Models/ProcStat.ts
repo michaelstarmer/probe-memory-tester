@@ -30,7 +30,7 @@ export default class ProcStat extends BaseModel {
     /**
      * Compare the saved proc_stat to the standard deviation of the same process values for all other similar jobs.
      * If the value exceeds X times standard deviation, create a new ProcStatAlert.
-     * ProcStatAlert uses [low, medium, high] to classify the level of deviation.
+     * ProcStatAlert uses [low, medium, high] to classify outlier values.
      */
 
 
