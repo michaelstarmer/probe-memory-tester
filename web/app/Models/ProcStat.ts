@@ -5,6 +5,7 @@ import ProcStatAlert from 'App/Models/ProcStatAlert'
 import { std } from 'mathjs'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Database from '@ioc:Adonis/Lucid/Database'
+import JobLog from './JobLog'
 
 export default class ProcStat extends BaseModel {
   @column({ isPrimary: true })
@@ -113,12 +114,14 @@ WHERE PS.name = '${procstat.name}' AND J.jenkins_job = '${procstat.job.jenkinsJo
         const savedAlert = await ProcStatAlert.create(newAlert);
         if (!savedAlert) {
           Logger.error('Failed to save new alert.')
+          await JobLog.create({ jobId: procstat.jobId, type: 'warn', message: 'Failed to save ProcStat alert. Check API logs.' })
         } else {
           Logger.info('New ProcStatAlert saved!')
         }
       } catch (error) {
         Logger.error('failed to save alert.')
         console.error(error);
+        await JobLog.create({ jobId: procstat.jobId, type: 'warn', message: 'Failed to save ProcStat alert. Check API logs.' })
       }
 
 
