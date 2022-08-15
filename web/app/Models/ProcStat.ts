@@ -66,8 +66,9 @@ export default class ProcStat extends BaseModel {
         continue
       }
       v['stdDevFactor'] = Number(Math.floor(procstat[k] / procHistory[k].stdDev))
-      if (procHistory[k].stdDevFactor !== undefined) {
+      if (!procHistory[k].stdDevFactor || procHistory[k].stdDevFactor < 1) {
         Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
+        continue
       }
 
       Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
