@@ -58,8 +58,6 @@ WHERE PS.name = '${procstat.name}' AND J.jenkins_job = '${procstat.job.jenkinsJo
       Logger.info(`No job history for process ${procstat.name} at job of type ${procstat.job.jenkinsJob}`)
     }
 
-    console.log(allProcStats)
-
     if (!allProcStats || allProcStats.length < 1) {
       return;
     }
