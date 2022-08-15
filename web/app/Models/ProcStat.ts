@@ -95,7 +95,6 @@ export default class ProcStat extends BaseModel {
           Logger.error('Failed to save new alert.')
         } else {
           Logger.info('New ProcStatAlert saved!')
-          console.log(savedAlert);
         }
       } catch (error) {
         Logger.error('failed to save alert.')

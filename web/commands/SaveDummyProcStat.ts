@@ -12,6 +12,9 @@ export default class SaveDummyProcStat extends BaseCommand {
 
   @flags.string({ alias: 'n', description: 'Number of fake stats to add.' })
   public count: string
+
+  @flags.string({ alias: 'j', description: 'Job id in which to save proc stat' })
+  public jobId: string
   /**
    * Command description is displayed in the "help" output
    */
@@ -60,11 +63,26 @@ export default class SaveDummyProcStat extends BaseCommand {
     const { default: Job } = await import('App/Models/Job');
 
     this.logger.info('Attempting to save dummy ProcStat.');
-    const latestJob = await Job.first();
-    if (!latestJob) {
+    let jobs;
+
+    /**
+     * If a jobId is supplied as flag argument, then use this job.
+     * In all other cases, default to the latest job.
+     */
+    if (this.jobId) {
+      this.logger.info(`Fetching job w/id ${this.jobId}.`)
+      jobs = await Job.query().where('id', this.jobId).limit(1);
+    } else {
+      this.logger.info('Defaulting to last job.')
+      jobs = await Job.query().orderBy('createdAt', 'desc').limit(1)
+    }
+
+    if (!jobs || !jobs.length) {
       this.logger.error('No jobs found in jobs table.')
       return null;
     }
+
+    const latestJob = jobs[0];
 
     if (this.count) {
       for (let i = 0; i < Number(this.count); i++) {

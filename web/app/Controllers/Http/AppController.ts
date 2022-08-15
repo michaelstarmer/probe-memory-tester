@@ -15,6 +15,7 @@ export default class AppController {
             .preload('systemStats', statsQuery => {
                 statsQuery.groupLimit(10)
             })
+            .preload('procStatAlerts')
             .orderBy('created_at', 'desc')
             .limit(10)
 
@@ -40,6 +41,7 @@ export default class AppController {
             if (activeJobsCount > 0) {
                 probeData.isAvailable = false;
             }
+
 
             return view.render('landing', { jobs, probeData, jenkinsJob })
 

@@ -17,6 +17,13 @@
           "type": "string",
           "alias": "n",
           "description": "Number of fake stats to add."
+        },
+        {
+          "name": "job-id",
+          "propertyName": "jobId",
+          "type": "string",
+          "alias": "j",
+          "description": "Job id in which to save proc stat"
         }
       ]
     },

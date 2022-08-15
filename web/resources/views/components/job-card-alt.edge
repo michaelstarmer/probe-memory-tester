@@ -1,4 +1,4 @@
-<a href="/jobs/{{job.id}}" class="job-card my-2 px-3 py-4">
+<a href="/jobs/{{job.id}}" class="job-card my-2 px-3 py-4 {{ job.procStatAlerts.length > 0 ? 'bg-warning' : '' }}">
     <div class="row">
         <div class="col-1">
             @if(job.status == 'completed')

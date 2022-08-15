@@ -258,6 +258,7 @@
     var jobId = job.id;
     var stats = job.systemStats;
     var jobLog = [];
+    var alertLog = [];
     var logDiv = document.getElementById('log')
     var logLoadingState = document.getElementById('log-loading')
 
@@ -441,57 +442,44 @@
         .catch(e => console.error(e))
     }
 
-    function addLogEntryDiv(log)
-    {
-        var logDiv = document.getElementById('log')
-        let logItemDiv = document.createElement('div')
-        logItemDiv.setAttribute('id', `logitem-${log.id}`)
-        if (log.type === 'error')
-        {
-            logItemDiv.classList.add('log-error')
+    function addDivToLogging(singleLog) {
+        var logElement = document.getElementById('log');
+        var newLogDiv = document.createElement('div');
+        newLogDiv.setAttribute('id', `logitem-${singleLog.id}`)
+        if (singleLog.type) {
+            newLogDiv.classList.add(`log-${singleLog.type}`)
         }
-        else if (log.type === 'warn')
-        {
-            logItemDiv.classList.add('log-warn')
+        else if (singleLog.level) {
+            newLogDiv.classList.add(`log-alert--${singleLog.level}`);
         }
-        logItemDiv.textContent = `${log.created_at} - ${log.message}`;
-        logDiv.appendChild(logItemDiv)
-        jobLog.push(log)
+        newLogDiv.textContent = `${singleLog.created_at}: ${singleLog.message}`;
+        logElement.appendChild(newLogDiv);
     }
 
-    function addAlertEntryDiv(log)
-    {
-        var logDiv = document.getElementById('log')
-        let logItemDiv = document.createElement('div')
-        logItemDiv.setAttribute('id', `logitem-${log.id}`)
-        logItemDiv.classList.add(`log-alert--${log.level}`)
-        logItemDiv.textContent = `${log.created_at}: ${log.message}`;
-        console.log('Parsing alert:', logItemDiv)
-        logDiv.appendChild(logItemDiv)
-        jobLog.push(log)
-    }
 
     function parseLogs(log, isAlert=false)
     {
-        if (log)
-        {
-            if (log.length > 0)
-            {
+        // Handle empty state before populating
+        if (log) {
+            if (log.length > 0) {
                 logLoadingState.remove()
             } else {
                 logLoadingState.textContent = 'No logs'
             }
         }
+        // parse each log entry based on log type
         for (let i = 0; i < log.length; i++)
         {
-            if (log[i] && !jobLog[i])
-            {
-                console.log(`log[${i}] =`, log[i])
-                if (isAlert) {
-                    addAlertEntryDiv(log[i])
-                } else {
-                    addLogEntryDiv(log[i])
-                }
+            let logItem = log[i]
+            // default logs
+            if (logItem.type && !jobLog[i]) {
+                addDivToLogging(logItem)
+                jobLog.push(logItem)
+            }
+            // alert logs
+            else if (logItem.level && !alertLog[i]) { // alert log
+                addDivToLogging(logItem)
+                alertLog.push(logItem)
             }
         }
     }
@@ -519,11 +507,15 @@
     function initializeLogs()
     {
         fetchLogs()
-        .then(logArray => parseLogs(logArray))
-        .then(() => logScrollToBottom())
+        .then(logArray => {
+            fetchAlerts()
+            .then(alertArray => {
+                parseLogs(logArray.concat(alertArray))
+            })
+        })
         .catch(e => console.error('parse log error!', e))
 
-
+        logScrollToBottom()
     }
 
     generateData()
@@ -533,18 +525,10 @@
     setInterval(() => {
         fetchLogs()
         .then(logArray => {
-            parseLogs(logArray)
-            if (!userScrolledLog)
-            {
-                // don't auto scroll if user scrolled logs
-                logScrollToBottom()
-            }
-        })
-        fetchAlerts()
-        .then(alertArray => {
-            parseLogs(alertArray, true)
-            if (!userScrolledLog)
-            {
+            fetchAlerts(alertArray => {
+                parseLogs(logArray.concat(alertArray))
+            })
+            if (!userScrolledLog) {
                 // don't auto scroll if user scrolled logs
                 logScrollToBottom()
             }
