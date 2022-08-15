@@ -4,6 +4,7 @@ import Job from 'App/Models/Job'
 import ProcStatAlert from 'App/Models/ProcStatAlert'
 import { std } from 'mathjs'
 import Logger from '@ioc:Adonis/Core/Logger'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class ProcStat extends BaseModel {
   @column({ isPrimary: true })
@@ -35,8 +36,29 @@ export default class ProcStat extends BaseModel {
 
     if (!procstat.name)
       return
-    const allProcStats = await ProcStat.query().where('name', procstat.name)
-    console.log(procstat.name)
+    // const allProcStats = await ProcStat.query().where('name', procstat.name)
+    await procstat.load('job')
+
+    /**
+     * Find all ProcStats in database with:
+     *  - the same name (eg. vidana)
+     *  - belonging to a job of the same type (eg. CentOS7-based_6.0)
+     */
+    const allProcStatsQuery = await Database.rawQuery(`SELECT PS.id, PS.name, PS.mem, PS.cpu, PS.created_at, PS.updated_at FROM proc_stats PS
+LEFT JOIN jobs J ON J.id = PS.job_id
+WHERE PS.name = '${procstat.name}' AND J.jenkins_job = '${procstat.job.jenkinsJob}'`);
+
+    let msg = `Comparing with previous procstats for: ${procstat.name}, AND only using history from job type: ${procstat.job.jenkinsJob}`;
+    Logger.info(msg)
+
+    let allProcStats;
+    if (allProcStatsQuery && allProcStatsQuery.length > 0) {
+      allProcStats = allProcStatsQuery[0];
+    } else {
+      Logger.info(`No job history for process ${procstat.name} at job of type ${procstat.job.jenkinsJob}`)
+    }
+
+    console.log(allProcStats)
 
     if (!allProcStats || allProcStats.length < 1) {
       return;
@@ -89,7 +111,6 @@ export default class ProcStat extends BaseModel {
       }
 
       try {
-        Logger.info('Attemting to save alert:')
         console.log(newAlert)
         const savedAlert = await ProcStatAlert.create(newAlert);
         if (!savedAlert) {
