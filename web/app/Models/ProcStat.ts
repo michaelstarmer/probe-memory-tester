@@ -66,7 +66,7 @@ export default class ProcStat extends BaseModel {
         continue
       }
       v['stdDevFactor'] = Number(Math.floor(procstat[k] / procHistory[k].stdDev))
-      if (!procHistory[k].stdDevFactor || procHistory[k].stdDevFactor < 1) {
+      if (!v['stdDevFactor'] || v['stdDevFactor'] < 1) {
         Logger.info(`${k} variance: value=${procstat[k]}, stdDev=${procHistory[k].stdDev} (${procHistory[k].stdDevFactor} standard deviations)`)
         continue
       }
@@ -75,9 +75,9 @@ export default class ProcStat extends BaseModel {
       let alertLevel = 'low';
 
 
-      if (v['stdDevFactor'] >= 2) {
+      if (v['stdDevFactor'] >= 5) {
         alertLevel = 'medium';
-      } else if (v['stdDevFactor'] >= 5) {
+      } else if (v['stdDevFactor'] >= 10) {
         alertLevel = 'high';
       }
 
