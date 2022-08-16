@@ -97,12 +97,15 @@ WHERE PS.name = '${procstat.name}' AND J.jenkins_job = '${procstat.job.jenkinsJo
 
       const r1 = await Database.rawQuery(`
 SELECT A.id, A.level, A.message, A.created_at FROM proc_stat_alerts A
-LEFT JOIN proc_stats S ON S.id = ${procstat.id}
-WHERE A.created_at > '${DateTime.now().minus({ minutes: recentAlertSpanMinutes }).toSQL()}'
+LEFT JOIN proc_stats S ON S.id = A.proc_stat_id
+WHERE S.name = "${procstat.name}"
+AND A.created_at > '${DateTime.now().minus({ minutes: recentAlertSpanMinutes }).toSQL()}
+AND S.job_id = ${procstat.jobId}'
 `)
       let hasRecentSimilarAlert = false;
       if (r1) {
         if (r1[0] && r1[0].length > 0) {
+          console.log(r1[0])
           hasRecentSimilarAlert = true;
         }
       }

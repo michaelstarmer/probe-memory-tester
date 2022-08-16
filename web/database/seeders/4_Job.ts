@@ -50,7 +50,7 @@ const jobs: object[] = [
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 12,
     isManual: 0,
-    status: 'waiting',
+    status: 'completed',
     duration: 60
   },
   {
@@ -60,7 +60,7 @@ const jobs: object[] = [
     jenkinsJob: 'CentOS7-based_6.0',
     buildNumber: 1,
     isManual: 1,
-    status: 'waiting',
+    status: 'completed',
     duration: 30
   },
 ];
@@ -96,7 +96,7 @@ export default class JobSeeder extends BaseSeeder {
         /**
          * Add random number (1-20) of system stats and set random cpu/mem (1.00-10.00) values
          */
-        const statsTotalCount = Math.round(Math.random() * 20);
+        const statsTotalCount = Math.round(Math.random() * 50);
         console.log(`Adding ${statsTotalCount} to job`)
 
         for (let i = 0; i < statsTotalCount; i++) {
