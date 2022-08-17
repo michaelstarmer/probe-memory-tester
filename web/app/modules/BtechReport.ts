@@ -38,7 +38,7 @@ export default class BtechReport {
             console.log('Done')
             return {
                 success: true,
-                pdf: `/${filePath}.pdf`,
+                pdf: `/public/${filePath}.pdf`,
                 img: `/${filePath}.png`
             }
         } catch (error) {
