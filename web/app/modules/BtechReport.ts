@@ -13,7 +13,7 @@ export default class BtechReport {
     }
 
     async merge(sourcePdf, targetPdf) {
-        let pdfPath = process.env.NODE_ENV === 'development' ? 'public' : '/app/public/uploads/xml'
+        let pdfPath = process.env.NODE_ENV === 'development' ? 'public' : '/app/public'
 
         const publicPath = Application.publicPath();
         let merger = new PDFMerger();
