@@ -7,7 +7,7 @@
 
 
 @section('body')
-<div class="container my-5">
+<div class="container mb-3">
     <div class="row">
         <div class="col-12 text-center">
             <h6>STATUS</h6>
@@ -17,161 +17,134 @@
     </div>
 
 </div>
-<div class="container">
+<div class="container-fluid" style="background: rgba(150, 150, 150, .1);">
+    <div class="container py-5">
 
-    <div class="row">
-        <div id="chart" class="col-12 col-lg-8 offset-lg-2"></div>
-        
-    </div>
-</div>
-<div class="container mt-5">
-    {{--  <div class="row">
-        <div class="col-4 my-3">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th>EWE</th>
-                        <td>
-                            {{ procStats.ewe['cpu'] || '-' }}
-                            /
-                            {{ procStats.ewe['mem'] || '-'}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>ETR</th>
-                        <td>
-                            {{ procStats.etr['cpu'] || '-' }}
-                            /
-                            {{ procStats.etr['mem'] || '-'}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>OTT</th>
-                        <td>
-                            {{ procStats.ott['cpu'] || '-' }}
-                            /
-                            {{ procStats.ott['mem'] || '-'}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Vidana</th>
-                        <td>
-                            {{ procStats.vidana['cpu'] || '-' }}
-                            /
-                            {{ procStats.vidana['mem'] || '-'}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>  --}}
-    <div class="row">
-        <div class="col-md-12 col-lg-5 mb-3">
-            <div class="row">
-                <div class="col-12">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Jenkins job</th>
-                                <td><a target="_blank"
-                                        href="http://build.dev.btech/job/{{job.jenkinsJob}}">{{job.jenkinsJob}}</a>
+        <div class="row">
+            <div class="col-md-12 col-lg-4 mb-3 d-flex flex-column justify-content-center">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Jenkins job</th>
+                                    <td><a target="_blank"
+                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}">{{job.jenkinsJob}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Build no.</th>
+                                    <td>
+                                        <a target="_blank"
+                                            href="http://build.dev.btech/job/{{job.jenkinsJob}}/{{job.buildNumber}}">{{job.buildNumber}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Duration</th>
+                                    <td>
+                                        <span id="minutes-remaining">{{job.duration}} minutes</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Memory stress</th>
+                                    @if (job.memory)
+                                    <td>{{job.memory}}GB</td>
+                                    @else
+                                    <td>Not applied</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Config</th>
+                                    @if (job.xmlConfig)
+                                    <td>
+                                        <a target="_blank"
+                                            href="/public/uploads/xml/{{job.xmlConfig.filename}}">{{job.xmlConfig.filename}}</a>
+                                    </td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Created at</th>
+                                    @if (job.createdAt)
+                                    <td>{{job.createdAt.setLocale('no').toFormat('f')}}</td>
+                                    @else
+                                    <td></td>
+                                    @endif
+                                </tr>
+                                {{--  <tr>
+                                    <th>Started at</th>
+                                    @if (job.startedAt)
+                                    <td>
+                                        <span id="started-at">
+                                            {{job.startedAt.setLocale('no').toFormat('f')}}
+                                </span>
                                 </td>
-                            </tr>
-                            <tr>
-                                <th>Build no.</th>
-                                <td>
-                                    <a target="_blank"
-                                        href="http://build.dev.btech/job/{{job.jenkinsJob}}/{{job.buildNumber}}">{{job.buildNumber}}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Duration</th>
-                                <td>
-                                    <span id="minutes-remaining">{{job.duration}} minutes</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Memory stress</th>
-                                @if (job.memory)
-                                <td>{{job.memory}}GB</td>
-                                @else
-                                <td>Not applied</td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Config</th>
-                                @if (job.xmlConfig)
-                                <td>
-                                    <a target="_blank"
-                                        href="/public/uploads/xml/{{job.xmlConfig.filename}}">{{job.xmlConfig.filename}}</a>
-                                </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Created at</th>
-                                @if (job.createdAt)
-                                <td>{{job.createdAt.setLocale('no').toFormat('f')}}</td>
                                 @else
                                 <td></td>
                                 @endif
-                            </tr>
-                            {{--  <tr>
-                                <th>Started at</th>
-                                @if (job.startedAt)
-                                <td>
-                                    <span id="started-at">
-                                        {{job.startedAt.setLocale('no').toFormat('f')}}
-                            </span>
-                            </td>
-                            @else
-                            <td></td>
-                            @endif
-                            </tr> --}}
-                        </tbody>
-                    </table>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-
-
-            <div class="row my-3">
-                <div class="col-12">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Commands
-                    </button>
-                    @if(job.status == 'running')
-                    <form id="frm-stop-job" action="/jobs/{{ job.id }}/stop" method="get" style="display: inline;"
-                        class="">
-                        <button type="submit" id="btn-stop-job" class="btn btn-danger">
-                            Stop test
+    
+    
+                <div class="row my-3">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Commands
                         </button>
-                    </form>
-                    @endif
+                        @if(job.status == 'running')
+                        <form id="frm-stop-job" action="/jobs/{{ job.id }}/stop" method="get" style="display: inline;"
+                            class="">
+                            <button type="submit" id="btn-stop-job" class="btn btn-danger">
+                                Stop test
+                            </button>
+                        </form>
+                        @endif
+                    </div>
                 </div>
             </div>
+    
+            <div id="chart" class="col-12 col-lg-6 offset-lg-2"></div>
+            
         </div>
+    </div>
 
-        <div id="procs" class="col-12 col-lg-5 offset-lg-2">
-            <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Proc</th>
-                        <th scope="col">Mem%</th>
-                        <th scope="col">CPU%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @each(proc in job.procStats)
-                    <tr>
-                        <td class="col" scope="row">{{ proc.name }}</td>
-                        <td class="col" scope="row">{{ proc.mem }}</td>
-                        <td class="col" scope="row">{{ proc.cpu }}</td>
-                    </tr>
-                    @endeach
-                </tbody>
-            </table>
+</div>
+<div class="container-fluid py-3 mt-5" >
+    <div class="container">
+
+        <div class="row">
+            
+            <div class="col-12 col-lg-6 mb-5 log-wrap">
+                {{--  <h4>LOG</h4>  --}}
+                <div id="log" class="snippet">
+                    <div id="log-loading">Loading logs...</div>
+                </div>
+            </div>
+            <div id="procs" class="col-12 col-lg-3 offset-lg-2">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Proc</th>
+                            <th scope="col">Mem%</th>
+                            <th scope="col">CPU%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @each(proc in job.procStats)
+                        <tr>
+                            <td class="col" scope="row">{{ proc.name }}</td>
+                            <td class="col" scope="row">{{ proc.mem }}</td>
+                            <td class="col" scope="row">{{ proc.cpu }}</td>
+                        </tr>
+                        @endeach
+                    </tbody>
+                </table>
+            </div>
+    
         </div>
-
     </div>
 
 </div>
@@ -179,12 +152,7 @@
 <div class="container my-5">
     <div class="row">
         
-        <div class="col-12 col-lg-12 mb-5 log-wrap">
-            {{--  <h4>LOG</h4>  --}}
-            <div id="log" class="snippet">
-                <div id="log-loading">Loading logs...</div>
-            </div>
-        </div>
+        
     </div>
 </div>
 
