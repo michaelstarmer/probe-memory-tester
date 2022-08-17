@@ -33,6 +33,7 @@ payload = {
     'buildNumber': buildNumber,
     'duration': settings['duration'],
     'xmlFileId': 5,
+    'securityAudit': True
 }
 jobCreated = api.createJob(payload)
 print('payload', payload)

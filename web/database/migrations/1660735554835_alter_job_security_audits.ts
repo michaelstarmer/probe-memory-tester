@@ -5,9 +5,9 @@ export default class AlterJobSecurityAudits extends BaseSchema {
 
   public async up() {
     this.schema.alterTable(this.tableName, (table) => {
-      table.integer('vuln_count_low').nullable().after('pdf')
-      table.integer('vuln_count_medium').nullable().after('pdf')
-      table.integer('vuln_count_high').nullable().after('pdf')
+      table.integer('vuln_count_low').defaultTo(0).after('pdf')
+      table.integer('vuln_count_medium').defaultTo(0).after('pdf')
+      table.integer('vuln_count_high').defaultTo(0).after('pdf')
       table.dropColumn('vulns')
     })
   }

@@ -174,7 +174,7 @@ export default class ApiController {
     }
 
     public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'buildNumber', 'cpu']);
+        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'buildNumber', 'cpu', 'securityAudit']);
 
         try {
             if (!payload.memory || !payload.xmlFileId || !payload.jenkinsJob)
@@ -214,6 +214,11 @@ export default class ApiController {
                 newJob.duration = payload.duration;
             }
             await newJob.save()
+
+            if (payload.securityAudit) {
+                await newJob.related('securityAudit').create({ status: 'waiting' })
+                console.log('Added security audit request to job.')
+            }
 
             return response.json(newJob)
         } catch (error) {
