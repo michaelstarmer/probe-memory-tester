@@ -32,8 +32,8 @@ export default class BtechReport {
         const filePath = `security-reports/report_job-${job.id}`
         try {
             await page.setContent(content)
-            await page.screenshot({ path: Application.publicPath() + `${filePath}.png`, fullPage: true })
-            await page.pdf({ path: Application.publicPath() + `${filePath}.pdf`, format: 'A4', printBackground: true })
+            await page.screenshot({ path: Application.publicPath() + `/${filePath}.png`, fullPage: true })
+            await page.pdf({ path: Application.publicPath() + `/${filePath}.pdf`, format: 'A4', printBackground: true })
             await browser.close()
             console.log('Done')
             return {
