@@ -198,9 +198,13 @@
                     <h5 class="card-title">Greenbone Vulnerability Scanner</h5>
                 </div>
                 <div class="card-body">
-                    @if(job.securityAudit.vulnCountTotal && job.securityAudit.vulnCountTotal > 0)
+                    
                     <p class="card-text my-3">
+                        @if(!job.securityAudit.vulnCountTotal)
+                        <h5>No vulnerabilities discovered</h5>
+                        @else
                         <h5>{{job.securityAudit.vulnCountTotal}} vulnerabilities discovered</h5>
+                        @endif
                         <h5>
                             <span class="mx-2" title="High">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ff0000"
@@ -227,7 +231,7 @@
                             </span>
                         </h5>
                     </p>
-                    @endif
+                    
                     <p class="card-text my-3">
                         @if(job.securityAudit.status != 'waiting')
 
