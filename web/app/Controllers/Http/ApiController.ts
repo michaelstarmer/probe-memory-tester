@@ -59,6 +59,7 @@ export default class ApiController {
             .preload('systemStats')
             .preload('logs')
             .preload('procStatAlerts')
+            .preload('securityAudit')
             .first();
 
 
