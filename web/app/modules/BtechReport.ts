@@ -13,7 +13,7 @@ export default class BtechReport {
     }
 
     async merge(sourcePdf, targetPdf) {
-        let pdfPath = process.env.NODE_ENV === 'development' ? 'public' : '/app/public'
+        let pdfPath = process.env.NODE_ENV === 'development' ? 'public' : '/app/build/public'
 
         const publicPath = Application.publicPath();
         let merger = new PDFMerger();
@@ -32,8 +32,8 @@ export default class BtechReport {
         const filePath = `security-reports/report_job-${job.id}`
         try {
             await page.setContent(content)
-            await page.screenshot({ path: `${Application.publicPath()}/${filePath}.png`, fullPage: true })
-            await page.pdf({ path: `${Application.publicPath()}/${filePath}.pdf`, format: 'A4', printBackground: true })
+            await page.screenshot({ path: Application.publicPath() + `${filePath}.png`, fullPage: true })
+            await page.pdf({ path: Application.publicPath() + `${filePath}.pdf`, format: 'A4', printBackground: true })
             await browser.close()
             console.log('Done')
             return {
