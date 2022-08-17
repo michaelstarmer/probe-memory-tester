@@ -36,7 +36,8 @@ if securityAudit['status'] == 'completed':
     Log.info('[ GVM SEC ] Security audit already handled for this job')
     exit()
     
-task_id = 'b6c05466-6a92-4505-bc33-2a9ee3016b3d'
+# task_id = 'b6c05466-6a92-4505-bc33-2a9ee3016b3d' # "test triggered scan"
+task_id = 'b9a9290e-cde2-4023-ad0f-290944828868' # "test triggered w/o ssh auth"
 
 if securityAudit['status'] == 'waiting':
     try:
@@ -72,7 +73,9 @@ if securityAudit['status'] == 'running':
         payload = {
             'progress': report['report']['report']['task']['progress'],
             'inUse': report['report']['in_use'],
-            'vulns': report['report']['report']['vulns']['count'],
+            'vulnCountLow': report['report']['report']['result_count']['info']['filtered'],
+            'vulnCountMedium': report['report']['report']['result_count']['warning']['filtered'],
+            'vulnCountHigh': report['report']['report']['result_count']['hole']['filtered'],
             
         }
         print(payload)

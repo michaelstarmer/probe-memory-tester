@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Job from 'App/Models/Job'
 
 export default class JobSecurityAudit extends BaseModel {
@@ -29,6 +29,29 @@ export default class JobSecurityAudit extends BaseModel {
 
   @column()
   public vulns: number
+
+  @column()
+  public vulnCountHigh: number
+
+  @column()
+  public vulnCountMedium: number
+
+  @column()
+  public vulnCountLow: number
+
+  @computed()
+  public get vulnCountTotal() {
+    let count = 0;
+
+    if (this.vulnCountLow)
+      count += this.vulnCountLow;
+    if (this.vulnCountMedium)
+      count += this.vulnCountMedium;
+    if (this.vulnCountHigh)
+      count += this.vulnCountHigh;
+
+    return count;
+  }
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

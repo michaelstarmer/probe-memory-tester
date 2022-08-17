@@ -73,10 +73,16 @@ class GvmSSH:
         return payload['get_tasks_response']['task']
 
     def taskReport(self, report_id):
-        cmd = f'gvm-cli --gmp-username admin --gmp-password ldap2retro socket --xml "<get_reports report_id=\\"{report_id}\\" details=\\"1\\"/>"'
+        cmd = f'gvm-cli --gmp-username admin --gmp-password ldap2retro socket --xml "<get_reports report_id=\\"{report_id}\\" details=\\"hml\\"/>"'
         payload = self._sshExec(cmd)
 
         return payload['get_reports_response']
+    
+    def taskResults(self, report_id):
+        cmd = f'gvm-cli --gmp-username admin --gmp-password ldap2retro socket --xml "<get_results report_id=\\"{report_id}\\" details=\\"hml\\"/>"'
+        payload = self._sshExec(cmd)
+        
+        return payload['get_results_response']
 
     def downloadReportPDF(self, report_id, path='report.pdf'):
         cmd = f'gvm-cli --gmp-username admin --gmp-password ldap2retro socket --xml "<get_reports report_id=\\"{report_id}\\" details=\\"1\\" format_id=\\"c402cc3e-b531-11e1-9163-406186ea4fc5\\"/>"'
