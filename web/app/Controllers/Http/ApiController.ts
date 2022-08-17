@@ -407,7 +407,7 @@ export default class ApiController {
 
     public async update_security_audit({ params, request, response }: HttpContextContract) {
         const { jobId } = params;
-        const payload = request.only(['gvmReportId', 'progress', 'inUse', 'status', 'pdf', 'vulns'])
+        const payload = request.only(['gvmReportId', 'progress', 'inUse', 'status', 'pdf', 'vulnCountLow', 'vulnCountMedium', 'vulnCountHigh'])
         const audit = await JobSecurityAudit.findBy('job_id', jobId)
         await audit?.merge(payload).save()
         console.log(audit)
