@@ -25,7 +25,7 @@ export default class PdfController {
             console.log('POST generate report')
             const report = new BtechReport()
             const pdfCover = await report.generate({ job, ingress: frmIngress, rows: frmRows, remarks: frmRemarks })
-            const pdfAttachment = '/app/build/public/public/' + job?.securityAudit.pdf;
+            const pdfAttachment = job?.securityAudit.pdf;
 
             if (!pdfCover['pdf'] || !pdfAttachment) {
                 return response.send("Error: missing pdf cover or attachment.")
