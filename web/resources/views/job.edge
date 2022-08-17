@@ -199,8 +199,7 @@
                         @if(job.securityAudit.status != 'waiting')
 
                         <p>
-                            Security audit using local <a href="https://10.0.28.89/">GVM (Greenbone Vulnerability
-                                Manager) instance</a>
+                            View job <a href="https://10.0.28.89/report/{{ job.securityAudit.gvmReportId }}">in GVM</a>
                         </p>
                         
                         @endif
