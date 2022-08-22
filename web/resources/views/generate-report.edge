@@ -102,8 +102,17 @@
                 <div id="frmRows">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="frmRows[]"
+                            value="Port scan" onfocus="showArrow('table')">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="frmRows[]"
                             value="Vulnerability scan (GVM/OpenVAS)" onfocus="showArrow('table')">
                     </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="frmRows[]"
+                            value="SSH Analysis (ssh-audit)" onfocus="showArrow('table')">
+                    </div>
+                    
                 </div>
                 <div class="form-group mt-5">
                     <h5>
@@ -156,11 +165,19 @@
                                 class="meta-data">
                                 <tr>
                                     <td height="25">
-                                        <span class="italic">Product:</span><br />
-                                        <span>VB330 ({{job.jenkinsJob}})</span>
+                                        <span class="italic">Product</span><br />
+                                        <span>VB330</span>
                                     </td>
                                     <td height="25">
-                                        <span class="italic">Date performed:</span><br />
+                                        <span class="italic">Type</span><br />
+                                        <span>{{job.jenkinsJob}}</span>
+                                    </td>
+                                    <td height="25">
+                                        <span class="italic">Build Number</span><br />
+                                        <span>{{job.buildNumber}}</span>
+                                    </td>
+                                    <td height="25">
+                                        <span class="italic">Date performed</span><br />
                                         <span>{{job.createdAt.setLocale('no').toFormat('f')}}</span>
                                     </td>
                                 </tr>
