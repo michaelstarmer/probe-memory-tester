@@ -235,10 +235,6 @@ export default class ApiController {
         await job?.load('xmlConfig')
         await job?.load('securityAudit')
         await job?.load('systemStats')
-
-
-
-
         if (!job) {
             return response.json({})
         }
