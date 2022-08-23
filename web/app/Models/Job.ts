@@ -63,7 +63,7 @@ export default class Job extends BaseModel {
       // const log = new JobLog()
       // log.type = 'info';
       // log.message = 'Test finished.'
-      await job.related('logs').save(log);
+      // await job.related('logs').save(log);
       if (job.status !== 'completed') {
         job.status = "completed"
         await job.save()
