@@ -60,6 +60,10 @@ export default class Job extends BaseModel {
   public static async checkJobStatus(job: Job) {
     const isExpired = job.startedAt && job.startedAt.plus({ minutes: job.duration }).diffNow().as('minutes') <= 0;
     if (isExpired) {
+      const log = new JobLog()
+      log.type = 'info';
+      log.message = 'Test finished.'
+      await job.related('logs').save(log);
       job.status = "completed"
       await job.save()
     }
