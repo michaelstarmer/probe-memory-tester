@@ -6,10 +6,11 @@ import paramiko
 import requests
 from logger import Log
 from webapi import WebApi
+import json
 
 PROBE_IP = '10.0.28.140'
-
-api = WebApi('http://localhost:3333')
+API_HOST = 'http://localhost:3333'
+api = WebApi(API_HOST)
 
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())

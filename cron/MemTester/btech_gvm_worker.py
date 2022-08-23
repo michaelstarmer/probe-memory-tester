@@ -27,17 +27,20 @@ if securityAudit['status'] == 'completed':
 
             if dl:
                 Log.success('Report downloaded updated!')
+                api.logToJob(currentJob['id'], 'Security audit available.')
             else:
                 Log.error('Report failed to download!')
+                api.logToJob(
+                    currentJob['id'], 'Something went wrong while fetching security audit.', 'error')
 
         except Exception as e:
             Log.error('Status error!')
             print(e)
     Log.info('[ GVM SEC ] Security audit already handled for this job')
     exit()
-    
+
 # task_id = 'b6c05466-6a92-4505-bc33-2a9ee3016b3d' # "test triggered scan"
-task_id = 'b9a9290e-cde2-4023-ad0f-290944828868' # "test triggered w/o ssh auth"
+task_id = 'b9a9290e-cde2-4023-ad0f-290944828868'  # "test triggered w/o ssh auth"
 
 if securityAudit['status'] == 'waiting':
     try:
@@ -62,32 +65,33 @@ if securityAudit['status'] == 'waiting':
 
 if securityAudit['status'] == 'running':
     try:
-        
+
         status = gvm.taskStatus(task_id)
         report_id = securityAudit['gvm_report_id']
         report = gvm.taskReport(report_id)
         # print(json.dumps(report, indent=2))
         # print(json.dumps(status, indent=2))
-        
-        
+
         payload = {
             'progress': report['report']['report']['task']['progress'],
             'inUse': report['report']['in_use'],
             'vulnCountLow': report['report']['report']['result_count']['info']['filtered'],
             'vulnCountMedium': report['report']['report']['result_count']['warning']['filtered'],
             'vulnCountHigh': report['report']['report']['result_count']['hole']['filtered'],
-            
+
         }
         print(payload)
         if report['report']['report']['scan_run_status'] == 'Done':
             payload['status'] = 'completed'
-        
+
         updateAudit = api.updateSecurityAudit(currentJob['id'], payload)
         if updateAudit:
             Log.success('Audit updated!')
         else:
             Log.error('Audit could not be updated!')
-        
+            api.logToJob(
+                currentJob['id'], message='Audit could not be updated.', logType='error')
+
     except Exception as e:
         Log.error('Status error!')
         print(e)
@@ -100,8 +104,9 @@ if securityAudit['status'] == 'completed':
             report_id = securityAudit['gvm_report_id']
             pdfPath = f'/app/public/report-{report_id}.pdf'
             dl = gvm.downloadReportPDF(report_id, pdfPath)
-            updateAudit = api.updateSecurityAudit(currentJob['id'], { 'pdf': pdfPath })
-        
+            updateAudit = api.updateSecurityAudit(
+                currentJob['id'], {'pdf': pdfPath})
+
             if dl:
                 Log.success('Report downloaded updated!')
             else:
