@@ -34,6 +34,13 @@ export default class Job extends BaseModel {
   @column()
   public buildNumber: Number | null
 
+  @computed()
+  public get gitCommitShort() {
+    if (!this.gitCommit || this.gitCommit.length < 1)
+      return;
+    return this.gitCommit.substring(0, 8);
+  }
+
   @belongsTo(() => Snapshot)
   public snapshot: BelongsTo<typeof Snapshot>
 

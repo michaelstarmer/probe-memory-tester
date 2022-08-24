@@ -79,9 +79,8 @@ Message: ${error.message}
                     })
                     return response.redirect('/jobs/new')
                 }
-                const commitIdShort = commitId.substring(0, 8);
-                gitCommit = commitIdShort;
-                console.log({ commitId, commitIdShort })
+                gitCommit = commitId;
+                console.log({ commitId })
 
             } catch (error) {
                 console.error('Invalid build number!', error);

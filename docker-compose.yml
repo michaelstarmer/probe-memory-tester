@@ -18,7 +18,7 @@ services:
     ports:
       - 3333:3333
     volumes:
-      - public:/app/build/public
+      - public:/app/build/public/public
 
   mariadb:
     image: mariadb

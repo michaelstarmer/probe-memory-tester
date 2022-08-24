@@ -33,7 +33,8 @@ payload = {
     'buildNumber': buildNumber,
     'duration': settings['duration'],
     'xmlFileId': 5,
-    'securityAudit': True
+    'securityAudit': True,
+    'gitCommit': latestJenkinsBuild.gitCommit,
 }
 jobCreated = api.createJob(payload)
 print('payload', payload)
