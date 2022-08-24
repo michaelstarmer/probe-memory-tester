@@ -29,7 +29,6 @@ if foundExistingJob:
 
 payload = {
     'jenkinsJob': latestJenkinsBuild.job,
-    'memory': 4,
     'buildNumber': buildNumber,
     'duration': settings['duration'],
     'xmlFileId': 5,

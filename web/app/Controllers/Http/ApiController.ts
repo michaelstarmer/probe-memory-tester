@@ -177,7 +177,7 @@ export default class ApiController {
         const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'gitCommit', 'buildNumber', 'cpu', 'securityAudit']);
 
         try {
-            if (!payload.memory || !payload.xmlFileId || !payload.jenkinsJob)
+            if (!payload.xmlFileId || !payload.jenkinsJob)
                 return response.json({ error: 'Missing parameters. Required: memory, xmlFileId, duration, jenkinsJob' })
 
             if (!payload.duration)
@@ -202,7 +202,7 @@ export default class ApiController {
 
             const newJob = new Job()
             newJob.merge({
-                memory: payload.memory,
+                memory: payload.memory || null,
                 cpu: payload.cpu,
                 xmlFileId: payload.xmlFileId,
                 jenkinsJob: payload.jenkinsJob,
