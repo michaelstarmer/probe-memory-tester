@@ -34,8 +34,13 @@
                                 </tr>
                                 <tr>
                                     <th>Git commit</th>
-                                    <td><a target="_blank"
+                                    <td>
+                                        @if(job.gitCommit)
+                                        <a target="_blank"
                                             href="http://git.dev.btech/cgi-bin/cgit.cgi/btech.git/commit/?id={{job.gitCommit}}">{{job.gitCommitShort}}</a>
+                                        @else
+                                        N/A
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
