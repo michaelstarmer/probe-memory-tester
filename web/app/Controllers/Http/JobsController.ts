@@ -58,6 +58,7 @@ Message: ${error.message}
 
     public async save_custom_job({ request, response, session }: HttpContextContract) {
         let { jenkinsJob, duration, xmlFileId, memory, securityAudit, buildNumber } = request.all();
+        let gitCommit: string = '';
 
         const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
         const { data } = await axios.get(jenkinsJobUrl);
@@ -66,11 +67,24 @@ Message: ${error.message}
             const buildUrl = `http://10.0.31.142/job/${jenkinsJob}/${buildNumber}/api/json?pretty=true`
             console.log(`Verifying that build number ${buildNumber} exists @ ${buildUrl}`)
             try {
-                const buildNumberResponse = await axios.get(buildUrl);
-                console.log(buildNumberResponse.data)
+                const jenkinsResponse = await axios.get(buildUrl);
+                const { data } = jenkinsResponse;
+                console.log(data)
+                const commitId: string = data['changeSet']['items'][0]['commitId']
+                if (!commitId) {
+                    console.error('CommitId not found!');
+                    session.flash('errors', {
+                        title: 'Failed to fetch the git commit id',
+                        description: `This should not happen in normal cases, so it is likely a backend error.`
+                    })
+                    return response.redirect('/jobs/new')
+                }
+                const commitIdShort = commitId.substring(0, 8);
+                gitCommit = commitIdShort;
+                console.log({ commitId, commitIdShort })
 
             } catch (error) {
-                console.error('Invalid build number!');
+                console.error('Invalid build number!', error);
                 session.flash('errors', {
                     title: 'Invalid build number!',
                     description: `See which build number exists for <a href="http://10.0.31.142/job/${jenkinsJob}/">${jenkinsJob}</a>`
@@ -86,12 +100,17 @@ Message: ${error.message}
             const job = await Job.create({
                 memory,
                 jenkinsJob,
+                gitCommit,
                 buildNumber,
                 xmlFileId,
                 duration,
                 isManual: true,
             })
-            console.log("Manual job created successfully:", job)
+            console.log("Manual job created successfully:")
+            console.log(`ID:        ${job.id}`)
+            console.log(`Build:     ${job.jenkinsJob} / ${job.buildNumber}`)
+            console.log(`Url:       http://${request.hostname()}/jobs/${job.id}`)
+
             if (securityAudit) {
                 const jobSecurityAudit = new JobSecurityAudit()
                 await job.related('securityAudit').create(jobSecurityAudit)

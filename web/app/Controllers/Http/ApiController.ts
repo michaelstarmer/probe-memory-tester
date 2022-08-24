@@ -174,7 +174,7 @@ export default class ApiController {
     }
 
     public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'buildNumber', 'cpu', 'securityAudit']);
+        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'gitCommit', 'buildNumber', 'cpu', 'securityAudit']);
 
         try {
             if (!payload.memory || !payload.xmlFileId || !payload.jenkinsJob)
@@ -207,6 +207,7 @@ export default class ApiController {
                 xmlFileId: payload.xmlFileId,
                 jenkinsJob: payload.jenkinsJob,
                 buildNumber: payload.buildNumber,
+                gitCommit: payload.gitCommit,
             })
 
             if (payload.duration) {

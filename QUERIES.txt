@@ -16,3 +16,19 @@ SELECT JL.created_at, JL.type, JL.message, jobs.id AS "Job ID" FROM job_logs JL 
 | 2022-06-28 16:13:32 | error | Probe software upgrade failed. See logs.                                                |    764 |
 +---------------------+-------+-----------------------------------------------------------------------------------------+--------+
 
+SELECT A.id, J.jenkins_job, A.level, A.message, A.created_at FROM proc_stat_alerts A LEFT JOIN jobs J ON A.job_id = J.id ORDER BY A.created_at DESC LIMIT 10;
++-----+--------------------------+--------+--------------------------------------------------------------+---------------------+
+| id  | jenkins_job              | level  | message                                                      | created_at          |
++-----+--------------------------+--------+--------------------------------------------------------------+---------------------+
+| 384 | CentOS7-based_6.1_Arqiva | low    | ewe mem value 1 standard deviations outside normal range.    | 2022-08-17 15:19:05 |
+| 383 | CentOS7-based_master     | low    | ewe mem value 1 standard deviations outside normal range.    | 2022-08-17 14:18:05 |
+| 382 | CentOS7-based_6.1        | low    | vidana mem value 3 standard deviations outside normal range. | 2022-08-15 17:53:05 |
+| 381 | CentOS7-based_6.1        | low    | vidana mem value 4 standard deviations outside normal range. | 2022-08-15 17:48:05 |
+| 380 | CentOS7-based_6.1        | low    | vidana mem value 4 standard deviations outside normal range. | 2022-08-15 17:43:05 |
+| 379 | CentOS7-based_6.1        | low    | vidana mem value 4 standard deviations outside normal range. | 2022-08-15 17:37:06 |
+| 378 | CentOS7-based_6.1        | medium | vidana mem value 5 standard deviations outside normal range. | 2022-08-15 17:32:05 |
+| 377 | CentOS7-based_6.1        | medium | vidana mem value 5 standard deviations outside normal range. | 2022-08-15 17:27:05 |
+| 376 | CentOS7-based_6.1        | medium | vidana mem value 6 standard deviations outside normal range. | 2022-08-15 17:22:05 |
+| 375 | CentOS7-based_6.1        | medium | vidana mem value 7 standard deviations outside normal range. | 2022-08-15 17:16:06 |
++-----+--------------------------+--------+--------------------------------------------------------------+---------------------+
+

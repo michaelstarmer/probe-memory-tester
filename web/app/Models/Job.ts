@@ -29,6 +29,9 @@ export default class Job extends BaseModel {
   public jenkinsJob: string
 
   @column()
+  public gitCommit: string | null
+
+  @column()
   public buildNumber: Number | null
 
   @belongsTo(() => Snapshot)
