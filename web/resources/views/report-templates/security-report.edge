@@ -13,15 +13,21 @@
         <table style="margin-top: 60px;" width="100%" border="0" cellpadding="0" cellspacing="0" class="meta-data">
             <tr>
                 <td height="25">
-                    <span class="italic">Product:</span><br />
-                    <span>VB330 ({{ job.jenkinsJob }})</span>
-                </td>
-                <td height="25">
-                </td>
-                <td height="25">
-                    <span class="italic">Date performed:</span><br />
-                    <span>{{ job.createdAt.setLocale('no').toFormat('f') }}</span>
-                </td>
+                    <span class="italic">Product</span><br />
+                        <span>VB330</span>
+                    </td>
+                    <td height="25">
+                        <span class="italic">Type</span><br />
+                        <span>{{job.jenkinsJob}}</span>
+                    </td>
+                    <td height="25">
+                        <span class="italic">Build Number</span><br />
+                        <span>{{job.buildNumber}}</span>
+                    </td>
+                    <td height="25">
+                        <span class="italic">Date performed</span><br />
+                        <span>{{job.createdAt.setLocale('no').toFormat('f')}}</span>
+                    </td>
             </tr>
         </table>
     </div>
