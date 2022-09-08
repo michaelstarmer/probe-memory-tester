@@ -28,7 +28,7 @@ class WebApi:
 
     def createJob(self, payload):
         print('Create job')
-        response = self._post('api/jobs/create', payload)
+        response = self._post('api/jobs', payload)
         return response
 
     def getSettings(self):

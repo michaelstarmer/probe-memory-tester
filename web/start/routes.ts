@@ -13,6 +13,7 @@ Route.post('/api/settings', 'ApiController.set_probe_config')
 Route.get('/api/jobs', 'ApiController.all_jobs')
 Route.get('/api/jobs/next', 'ApiController.get_next_job')
 Route.get('/api/jobs/active', 'ApiController.get_running_job')
+Route.post('/api/jobs', 'ApiController.create_job')
 Route.post('/api/jobs/create', 'ApiController.create_job')
 Route.get('/api/jobs/last', 'ApiController.last_job')
 
