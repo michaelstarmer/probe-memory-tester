@@ -37,5 +37,8 @@ payload = {
 }
 jobCreated = api.createJob(payload)
 print('payload', payload)
-print('jobCreated', jobCreated)
-Log.success('New job created!')
+if jobCreated:
+    print('jobCreated', jobCreated)
+    Log.success('New job created!')
+else:
+    Log.error('Job not created')
