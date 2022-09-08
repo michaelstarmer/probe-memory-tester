@@ -9,7 +9,7 @@ from webapi import WebApi
 import json
 
 PROBE_IP = '10.0.28.140'
-API_HOST = 'http://localhost:3333'
+API_HOST = 'http://memtest.dev.btech'
 api = WebApi(API_HOST)
 
 ssh = paramiko.SSHClient()
@@ -42,7 +42,7 @@ def getAllProbeProcs():
 
 def saveProcStats(jobId, payload):
     response = requests.post(
-        f'http://localhost:3333/api/jobs/{jobId}/proc-stats', json=payload)
+        f'http://memtest.dev.btech/api/jobs/{jobId}/proc-stats', json=payload)
     if response.status_code != 200:
         print(response)
         sys.exit(f"Bad request ({response.status_code})!")

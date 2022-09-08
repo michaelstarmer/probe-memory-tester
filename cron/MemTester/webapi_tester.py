@@ -1,6 +1,6 @@
 from webapi import WebApi
 
-api = WebApi('http://localhost:3333')
+api = WebApi('http://memtest.dev.btech')
 
 settings = api.getSettings()
 print('settings:')

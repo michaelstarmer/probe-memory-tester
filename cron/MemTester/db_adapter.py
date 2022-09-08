@@ -30,7 +30,7 @@ class Queue:
             print(f'db error: {e}')
 
     def getWaitingManualJob(self):
-        job = requests.get('http://localhost:3333/api/jobs/next')
+        job = requests.get('http://memtest.dev.btech/api/jobs/next')
         if job:
             return json.loads(job.content)
         return None
@@ -67,7 +67,7 @@ class Queue:
         print('Queue starting job!')
         try:
             startedJob = requests.get(
-                f'http://localhost:3333/api/jobs/{id}/start')
+                f'http://memtest.dev.btech/api/jobs/{id}/start')
             if not startedJob.status_code == 200:
                 print('Error starting job')
                 return False

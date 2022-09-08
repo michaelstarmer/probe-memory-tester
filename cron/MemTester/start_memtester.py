@@ -16,7 +16,7 @@ import sys
 from update_probe_sw import update_probe_sw
 from logger import Log
 
-API_HOST = 'http://localhost:3333'
+API_HOST = 'http://memtest.dev.btech'
 if os.environ.get('API_HOST'):
     API_HOST = os.environ['API_HOST']
 
@@ -152,7 +152,7 @@ if __name__ == '__main__':
         response = requests.get(f'{API_HOST}/api/queue/next')
         if response.status_code != 200:
             print(
-                f'Bad request - {response.status_code} (localhost:3333/api/queue/next)')
+                f'Bad request - {response.status_code} (http://memtest.dev.btech/api/queue/next)')
             exit()
 
         payload = json.loads(response.content)

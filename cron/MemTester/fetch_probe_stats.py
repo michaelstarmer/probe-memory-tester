@@ -16,7 +16,7 @@ VM_HOST = '10.0.28.239'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
-API_HOST = 'http://localhost:3333'
+API_HOST = 'http://memtest.dev.btech'
 
 api = WebApi(API_HOST)
 settings = api.getSettings()

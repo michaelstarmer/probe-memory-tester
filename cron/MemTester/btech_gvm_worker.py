@@ -3,7 +3,7 @@ from btech_gvm import GvmSSH
 from webapi import WebApi
 from logger import Log
 
-api = WebApi('http://localhost:3333')
+api = WebApi('http://memtest.dev.btech')
 gvm = GvmSSH(hostname='10.0.28.89', username='kali', password='kali')
 currentJob = api.getCurrentJob()
 if not currentJob:

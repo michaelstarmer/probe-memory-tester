@@ -3,7 +3,7 @@ from jenkins_btech import JenkinsBuild
 from logger import Log
 import json
 
-api = WebApi('http://localhost:3333')
+api = WebApi('http://memtest.dev.btech')
 settings = api.getSettings()
 probeIp = settings['probe_ip']
 jobNameAutoTest = settings['jenkins_job']
