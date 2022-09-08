@@ -202,7 +202,7 @@ export default class ApiController {
 
             const newJob = new Job()
             newJob.merge({
-                memory: payload.memory || null,
+                memory: payload.memory || 0,
                 cpu: payload.cpu,
                 xmlFileId: payload.xmlFileId,
                 jenkinsJob: payload.jenkinsJob,
