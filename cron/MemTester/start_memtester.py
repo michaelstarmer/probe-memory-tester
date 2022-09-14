@@ -29,7 +29,7 @@ def set_snapshot(sid):
     snapid = sid
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('10.0.28.202', username='root', password='ldap2retro!')
+    ssh.connect('10.0.28.202', username='root', password='ldap2retro')
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f'vim-cmd vmsvc/snapshot.revert {vmid} {sid} true || exit 1')
@@ -43,7 +43,7 @@ def power_on_vm(vmid):
 
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect('10.0.28.202', username='root', password='ldap2retro!')
+    ssh.connect('10.0.28.202', username='root', password='ldap2retro')
     try:
         (stdin, stdout, stderr) = ssh.exec_command(
             f'vim-cmd vmsvc/power.on "{vmid}" || exit 1')

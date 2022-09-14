@@ -12,7 +12,7 @@ from stress import install_stress_ng, set_memory
 import os
 
 apiclient = WebApi('http://memtest.dev.btech')
-esxi = ESXiClient('10.0.28.202', 'root', 'ldap2retro!')
+esxi = ESXiClient('10.0.28.202', 'root', 'ldap2retro')
 
 settings = {}
 settings = apiclient.getSettings()
