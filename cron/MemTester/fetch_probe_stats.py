@@ -61,6 +61,7 @@ def getAllProbeProcs():
 
 
 def get_proc_mem():
+    print('Get proc mem from VM_HOST:', VM_HOST)
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(VM_HOST, username='root', password='elvis')
