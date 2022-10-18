@@ -74,6 +74,8 @@ def get_proc_mem():
         mem_values = ''.join(stdout.readlines()).split()
 
         return mem_values
+    except TimeoutError:
+        api.logToJob('Timeout Error while getting process memory!', 'error')
     except Exception as e:
         print('get proc mem error!', e)
 
