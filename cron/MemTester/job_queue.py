@@ -20,7 +20,7 @@ probeIp = settings['probe_ip']
 autoTestJenkinsJob = settings['jenkins_job']
 
 esxiVmId = 29
-esxiSnapshotId = 7
+esxiSnapshotId = 8
 
 if settings.get('esxi_snapshot_id'):
     esxiSnapshotId = settings['esxi_snapshot_id']
@@ -43,7 +43,7 @@ Log.info('Job ready to start testing.')
 if (jobReadyToStart):
     print('Changing snapshot for manual test.')
     apiclient.logToJob(jobId, 'Reverting to default snapshot')
-    snapshotSet = esxi.set_snapshot(29, 7)
+    snapshotSet = esxi.set_snapshot(29, 8)
     if not snapshotSet:
         apiclient.logToJob(jobId, 'Error setting snapshot', 'error')
         apiclient.setJobStatus(jobId, 'failed')
