@@ -12,7 +12,7 @@ import paramiko
 from webapi import WebApi
 from logger import Log
 
-VM_HOST = '10.0.28.239'
+VM_HOST = '10.0.28.140'
 DEV_HOST = '192.168.147.131'
 PORT = 3333
 
