@@ -103,7 +103,7 @@ def startTestRun(memory=0, duration=0):
         Log.warn('### RUNNING DEVELOPMENT MODE ###')
         print('')
         Log.info('Changing snapshot...')
-        change_snapshot(vmid=29, snapshot_id=2)
+        change_snapshot(vmid=29, snapshot_id=7)
         Log.success('OK')
         Log.info('Updating probe software...')
         update_probe_sw('10.0.28.239', 'root', 'elvis', '6.1')
@@ -177,7 +177,7 @@ if __name__ == '__main__':
     duration_minutes = duration * 60
 
     # snapshot_id = nextJob.get('version')
-    snapshot_id = 2  # default to 6.0.0-2
+    snapshot_id = 7  # default to 6.0.0-2
     print(f'\nSnapshot ID: {snapshot_id}')
 
     print("Running memory test:")
