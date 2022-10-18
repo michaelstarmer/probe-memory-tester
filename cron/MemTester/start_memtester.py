@@ -103,7 +103,7 @@ def startTestRun(memory=0, duration=0):
         Log.warn('### RUNNING DEVELOPMENT MODE ###')
         print('')
         Log.info('Changing snapshot...')
-        change_snapshot(vmid=29, snapshot_id=8)
+        change_snapshot(vmid=29, snapshot_id=9)
         Log.success('OK')
         Log.info('Updating probe software...')
         update_probe_sw('10.0.28.239', 'root', 'elvis', '6.1')
