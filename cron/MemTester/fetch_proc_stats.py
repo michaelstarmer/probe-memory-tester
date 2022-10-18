@@ -8,7 +8,7 @@ from logger import Log
 from webapi import WebApi
 import json
 
-PROBE_IP = '10.0.28.140'
+PROBE_IP = '10.0.28.141'
 API_HOST = 'http://memtest.dev.btech'
 api = WebApi(API_HOST)
 

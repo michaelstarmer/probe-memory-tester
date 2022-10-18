@@ -82,7 +82,7 @@ class Probe:
             result = subprocess.run([
                 f'wget',
                 f'--post-file={xmlFile}',
-                '10.0.28.140/probe/core/importExport/data.xml'],
+                '10.0.28.141/probe/core/importExport/data.xml'],
                 capture_output=True, check=True)
             print('result:', result)
         return result

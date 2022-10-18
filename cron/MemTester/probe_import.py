@@ -8,9 +8,7 @@ XML_FILE = './export-heavy-load.xml'
 ROOT_DIR = os.path.abspath(os.curdir)
 
 
-
-
-probe = Probe('10.0.28.140')
+probe = Probe('10.0.28.141')
 
 exportFile = probe.export_config('export.xml')
 
@@ -20,4 +18,3 @@ print('path exists:', os.path.exists('./export.xml'))
 if os.path.exists('./export.xml'):
     resultImport = probe.import_config(f'export.xml')
     print('result', resultImport)
-
