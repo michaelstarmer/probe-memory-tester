@@ -1,16 +1,16 @@
 <a href="/jobs/{{job.id}}" class="job-card my-2 px-3 py-4 {{ job.procStatAlerts.length > 0 ? 'bg-warning' : '' }}">
     <div class="row">
-        <div class="col-2">
+        <div class="col-1 px-1">
             @if(job.status == 'completed')
-            <span class="badge bg-success rounded-pill mx-1">Done</span>
+            <span class="badge bg-success rounded-pill">Done</span>
             @elseif(job.status == 'running')
-            <span class="badge bg-info rounded-pill mx-1">Running</span>
+            <span class="badge bg-info rounded-pill">Running</span>
             @elseif(job.status == 'initializing')
-            <span class="badge bg-warning rounded-pill mx-1">Initializing</span>
+            <span class="badge bg-warning rounded-pill">Initializing</span>
             @elseif(job.status == 'failed')
-            <span class="badge bg-danger rounded-pill mx-1">Failed</span>
+            <span class="badge bg-danger rounded-pill">Failed</span>
             @else
-            <span class="badge bg-secondary rounded-pill mx-1">Queued</span>
+            <span class="badge bg-secondary rounded-pill">Queued</span>
             @endif
         </div>
         <div class="col-4">
