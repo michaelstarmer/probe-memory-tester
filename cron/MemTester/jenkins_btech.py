@@ -42,6 +42,7 @@ class JenkinsBuild:
             return None
         self.build = build
         self.buildNumber = build['number']
+        self.dashVersion = self.getDashVersion()
         if len(build['changeSet']['items']):
             commitId = build['changeSet']['items'][0]['commitId'][:8]
             self.gitCommit = commitId[:8]

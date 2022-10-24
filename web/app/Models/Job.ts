@@ -29,6 +29,9 @@ export default class Job extends BaseModel {
   public jenkinsJob: string
 
   @column()
+  public dashVersion: string
+
+  @column()
   public gitCommit: string | null
 
   @column()
