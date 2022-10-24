@@ -14,6 +14,7 @@ class JenkinsBuild:
         self.build = None
         self.buildNumber = None
         self.gitCommit = None
+        self.dashVersion = None
         self.version = version
         if not job:
             self.job = f'CentOS7-based_{version}'
@@ -100,6 +101,14 @@ class JenkinsBuild:
     def getVersion(self):
         artifact = self.searchArtifactExt(self.getBuildArtifacts(), 'rpm')
         return artifact['fileName']
+
+    def getDashVersion(self):
+        # get the artifact which contains dash version
+        artifact = self.getVersion()
+        # regex the dash version
+        match = re.match(r'btech-probe-(\d\.\d\.\d_\d*_\d*)', artifact)
+        if match:
+            self.dashVersion = match.group(1)
 
     def downloadBinary(self, extension='', location='./'):
         artifact = self.searchArtifactExt(self.getBuildArtifacts(), extension)

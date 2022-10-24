@@ -34,6 +34,7 @@ payload = {
     'xmlFileId': 5,
     'securityAudit': True,
     'gitCommit': latestJenkinsBuild.gitCommit,
+    'dashVersion': latestJenkinsBuild.dashVersion,
 }
 jobCreated = api.createJob(payload)
 print('payload', payload)
