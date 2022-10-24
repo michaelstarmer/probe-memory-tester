@@ -40,7 +40,8 @@ if securityAudit['status'] == 'completed':
     exit()
 
 # task_id = 'b6c05466-6a92-4505-bc33-2a9ee3016b3d' # "test triggered scan"
-task_id = 'b9a9290e-cde2-4023-ad0f-290944828868'  # "test triggered w/o ssh auth"
+# task_id = 'b9a9290e-cde2-4023-ad0f-290944828868'  # "test triggered w/o ssh auth"
+task_id = '48dc63a9-28b1-4eae-9209-0b224427c001'
 
 if securityAudit['status'] == 'waiting':
     try:
