@@ -10,7 +10,7 @@ jobNameAutoTest = settings['jenkins_job']
 
 jenkins = JenkinsBuild(version=None, job=jobNameAutoTest)
 latestJenkinsBuild = jenkins.loadLastSuccessfulBuild()
-
+latestJenkinsBuild.getDashVersion()
 
 print(latestJenkinsBuild.job)
 print(latestJenkinsBuild.buildNumber)
