@@ -118,6 +118,16 @@ main {
     }
 }
 
+ul.alarm-list {
+    list-style: none;
+    padding: 0;
+
+    a,
+    a:hover {
+        color: inherit;
+    }
+}
+
 .title {
     font-size: 50px;
     /* line-height: 50px;

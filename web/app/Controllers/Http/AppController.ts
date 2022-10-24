@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
+import ProcStatAlert from 'App/Models/ProcStatAlert';
 import Setting from 'App/Models/Setting'
 const xml2js = require('xml2js')
 const axios = require('axios');
@@ -16,6 +17,35 @@ export default class AppController {
                 statsQuery.groupLimit(10)
             })
             .preload('procStatAlerts')
+            .orderBy('created_at', 'desc')
+            .limit(10)
+
+        const jobsActive = await Job.query()
+            .whereIn('status', ['waiting', 'running'])
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => statsQuery.groupLimit(10))
+            .preload('procStatAlerts')
+            .orderBy('created_at', 'desc')
+            .limit(10)
+
+        const jobsCompleted = await Job.query()
+            .where('status', 'completed')
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => statsQuery.groupLimit(10))
+            .preload('procStatAlerts')
+            .orderBy('created_at', 'desc')
+            .limit(10)
+
+        const jobsFailed = await Job.query()
+            .where('status', 'failed')
+            .preload('xmlConfig')
+            .preload('systemStats', statsQuery => statsQuery.groupLimit(10))
+            .preload('procStatAlerts')
+            .orderBy('created_at', 'desc')
+            .limit(10)
+
+        const latestAlerts = await ProcStatAlert.query()
+            .preload('job')
             .orderBy('created_at', 'desc')
             .limit(10)
 
@@ -42,8 +72,19 @@ export default class AppController {
                 probeData.isAvailable = false;
             }
 
+            console.log({ active: jobsActive, completed: jobsCompleted, failed: jobsFailed })
 
-            return view.render('landing', { jobs, probeData, jenkinsJob })
+
+            return view.render('landing', {
+                jobs: {
+                    active: jobsActive,
+                    completed: jobsCompleted,
+                    failed: jobsFailed,
+                },
+                alerts: latestAlerts,
+                probeData,
+                jenkinsJob
+            })
 
         } catch (error) {
             console.error('DB error!', error)

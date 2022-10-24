@@ -1,6 +1,6 @@
 <a href="/jobs/{{job.id}}" class="job-card my-2 px-3 py-4 {{ job.procStatAlerts.length > 0 ? 'bg-warning' : '' }}">
     <div class="row">
-        <div class="col-1">
+        <div class="col-2">
             @if(job.status == 'completed')
             <span class="badge bg-success rounded-pill mx-1">Done</span>
             @elseif(job.status == 'running')
@@ -13,7 +13,7 @@
             <span class="badge bg-secondary rounded-pill mx-1">Queued</span>
             @endif
         </div>
-        <div class="col">
+        <div class="col-4">
             <span class="job-card--title">{{job.jenkinsJob}}</span>
         </div>
         <div class="col">
@@ -22,13 +22,7 @@
             </svg>
             <span> {{ job.gitCommitShort || 'N/A' }}</span>
         </div>
-        <div class="col">
-            <span class="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-memory" viewBox="0 0 16 16">
-                    <path d="M1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.586a1 1 0 0 0 .707-.293l.353-.353a.5.5 0 0 1 .708 0l.353.353a1 1 0 0 0 .707.293H15a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1Zm.5 1h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5Zm5 0h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5Zm4.5.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-4ZM2 10v2H1v-2h1Zm2 0v2H3v-2h1Zm2 0v2H5v-2h1Zm3 0v2H8v-2h1Zm2 0v2h-1v-2h1Zm2 0v2h-1v-2h1Zm2 0v2h-1v-2h1Z"/>
-                </svg> {{job.memory}} GB RAM
-            </span>
-        </div>
+
         <div class="col">
             <span>
 

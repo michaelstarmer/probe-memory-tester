@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import ProcStat from './ProcStat'
+import Job from './Job'
 
 export default class ProcStatAlert extends BaseModel {
   protected tableName = 'proc_stat_alerts';
@@ -32,6 +33,9 @@ export default class ProcStatAlert extends BaseModel {
 
   @belongsTo(() => ProcStat)
   public procStat: BelongsTo<typeof ProcStat>
+
+  @belongsTo(() => Job)
+  public job: BelongsTo<typeof Job>
 
 
 }

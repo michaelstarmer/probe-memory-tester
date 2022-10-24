@@ -1,79 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+@layout('layouts/default')
+@set('nav', 'home')
+@section('head')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+@endsection
+@section('body')
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Probe Memory Tester</title>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="style.css">
-  <style>
+  
+<div class="container mt-5">
+  <h2>All jobs, ordered by date</h2>
+  <div class="container my-5">
+    @each(job in jobs)
+    @!component('components/job-card-alt', {job})
+    
+    @endeach
 
-  </style>
-</head>
+  </div>
+</div>
+@end
 
-<body>
-
-  <main>
-
-    <div class="container-fluid my-3">
-
-      @each(job in jobs)
-      <div class="card card--job">
-        <div class="card-body">
-          <h6 class="card-title">
-            {{job.jenkinsJob}}
-          </h6>
-          <h6 class="card-subtitle mb-2 text-muted">
-            Build #{{job.buildNumber}}
-            @if(job.status == 'completed')
-            <span class="badge bg-success rounded-pill mx-1">Done</span>
-            @elseif(job.status == 'running')
-            <span class="badge bg-info rounded-pill mx-1">Running</span>
-            @elseif(job.status == 'initializing')
-            <span class="badge bg-warning rounded-pill mx-1">Initializing</span>
-            @elseif(job.status == 'failed')
-            <span class="badge bg-danger rounded-pill mx-1">Failed</span>
-            @else
-            <span class="badge bg-secondary rounded-pill mx-1">Queued</span>
-            @endif
-          </h6>
-          <div class="my-3">
-            <div>
-              <strong>Type: </strong>
-              @if(job.isManual)
-              MANUAL
-              @else
-              AUTOMATIC
-              @endif
-            </div>
-            <div>
-              <strong>Created: </strong> {{ job.createdAt && job.createdAt.setLocale('no').toFormat('f')}}
-            </div>
-          </div>
-          <a href="/jobs/{{job.id}}" class="card-link">View test details</a>
-        </div>
-      </div>
-      @endeach
-
-    </div>
-
-  </main>
-  <footer>
-    {{--  <div class="container-fluid justify-content-center my-5 py-5" style="background-color: rgb(220, 220, 220)">
-      <a href="/apidoc" target="_blank" class="text-center">
-        <h5>API documentation</h5>
-      </a>
-    </div>  --}}
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>

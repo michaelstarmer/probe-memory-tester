@@ -5,16 +5,14 @@
 @endsection
 @section('body')
 
-<div class="container-fluid mb-3">
+<div class="container mb-3">
 
   <div class="row justify-content-md-center">
 
   </div>
-  <div class="row justify-content-md-center">
+  <div class="row">
 
-
-
-    <div class="col-12 col-lg-6 d-flex flex-column justify-content-between mt-2">
+    <div class="col-12 col-lg-4 d-flex flex-column justify-content-between mt-2">
 
       <div class="card">
         @if(error)
@@ -23,11 +21,7 @@
         </div>
         @endif
 
-
-
         <div class="desktop vm-card">
-
-
           <h6 class="desktop-title mb-3">
             @if(probeData.ip)
             {{probeData.ip}}
@@ -51,11 +45,7 @@
           <div class="status-lamp status-lamp--green">&nbsp;</div>
           <div class="inline-block status-text"> Online</div>
           @endif
-
         </div>
-
-
-
 
         <div class="card-body text-center">
           <a href="/settings" class="btn btn-warning btn-sm">Settings</a>
@@ -66,19 +56,36 @@
           </button>
 
           @if(!probeData.isOffline)
-          {{--  <a href="http://{{probeData.ip}}:8080/monitorix-cgi/monitorix.cgi?mode=localhost&graph=all&when=1day&color=black"
-          target="_blank" class="btn btn-primary btn-sm">Monitor</a> --}}
           @endif
-          {{--  <a href="#" class="card-link">Another link</a>  --}}
         </div>
         @if(jenkinsJob)
         <div class="text-center mb-2">
           Tracking: <a target="_blank" href="http://build.dev.btech/job/{{jenkinsJob.value}}">{{jenkinsJob.value}}</a>
-          {{--  <a href="http://trac.dev.btech/trac/wiki/minnetester">View in Trac</a>  --}}
         </div>
         @endif
 
       </div>
+    </div>
+
+    <div class="col-12 col-lg-6 offset-lg-2 mt-2">
+      <h3>Alerts</h3>
+      <ul class="alarm-list">
+        @each(alert in alerts)
+        <li class="py-1"><a href="/jobs/{{ alert.job.id }}">
+          <span><strong>{{alert.createdAt.setLocale('no').toFormat('f')}}: </strong></span>
+        @if(alert.level == 'low')
+          {{alert.message}}: (<span class="log-alert--low">{{alert.level}}</span>)
+        @elseif(alert.level == 'medium')
+          {{alert.message}}: (<span class="log-alert--medium">{{alert.level}}</span>)
+        @elseif(alert.level == 'high')
+          {{alert.message}}: (<span class="log-alert--high">{{alert.level}}</span>)
+        @else
+          {{alert.level}}: {{alert.message}}
+        @end
+        </a>
+        </li>
+        @end
+      </ul>
     </div>
   </div>
 </div>
@@ -109,24 +116,59 @@
     </div>
   </div>
 </div>
-<div class="container my-3">
 
-  @each(job in jobs)
-  @if(job.status != 'completed')
-  @!component('components/job-card-alt', {job})
-  @endif
-  @endeach
-
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div>
+        <h3>Active</h3>
+        @if(jobs.active && jobs.active.length)
+          @each(job in jobs.active)
+          @if(['waiting', 'running'].includes(job.status))
+          @!component('components/job-card-alt', {job})
+          @endif
+          @endeach
+        @else
+          <p>No active jobs running</p>
+        @endif
+      </div>
+      <div class="mt-5">
+        <h3>Completed</h3>
+        @if(jobs.completed)
+          @each(job in jobs.completed)
+          @if(job.status == 'completed')
+          @!component('components/job-card-alt', {job})
+          @endif
+          @endeach
+        @else
+          <p>No completed jobs</p>
+        @endif
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <h3>Failed</h3>
+      @if(jobs.failed && jobs.failed.length)
+        @each(job in jobs.failed)
+        @if(job.status == 'failed')
+        @!component('components/job-card-alt', {job})
+        @endif
+        @endeach
+      @else
+        <p>No failed jobs</p>
+      @endif
+    </div>
+  </div>
+</div>
+<div class="container my-5">
+  
 </div>
 
 <div class="container my-5">
-  <h3>Completed</h3>
-  @each(job in jobs)
-  @if(job.status == 'completed')
-  @!component('components/job-card-alt', {job})
-  @endif
-  @endeach
+  
+</div>
 
+<div class="container my-5">
+  
 </div>
 
 <div class="container text-center pb-5">

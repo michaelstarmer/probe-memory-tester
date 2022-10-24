@@ -14,6 +14,7 @@ export default class JobsController {
             .preload('systemStats', statsQuery => {
                 statsQuery.groupLimit(10)
             })
+            .preload('procStatAlerts')
             .orderBy('created_at', 'desc')
 
         try {
