@@ -1,9 +1,9 @@
 html,
 body {
-    background-color: #F7F8FA;
+    background-color: rgb(28, 30, 31);
     font-family: 'Poppins', sans-serif;
     height: 100vh;
-    color: #46444c;
+    color: rgb(187, 181, 172);
     font-size: 0.9rem;
 }
 
@@ -118,6 +118,48 @@ main {
     }
 }
 
+.form-select {
+    color: rgb(209, 205, 199);
+    background-color: rgb(24, 26, 27);
+    border-color: rgb(60, 65, 68);
+}
+
+.form-control {
+    color: rgb(209, 205, 199);
+    background-color: rgb(24, 26, 27);
+    border-color: rgb(60, 65, 68);
+}
+
+.container-dark {
+    color: rgb(187, 181, 172) !important;
+}
+
+.table {
+    color: rgb(209, 205, 199);
+    border-color: rgb(56, 61, 63);
+}
+
+.modal-content {
+    background-color: rgb(24, 26, 27);
+    border-color: rgba(140, 138, 115, .2);
+    outline-color: initial;
+
+    .modal-header {
+        border-bottom-color: rgb(56, 61, 63);
+    }
+
+    .modal-footer {
+        border-top-color: rgb(56, 61, 63);
+    }
+}
+
+.btn.btn-default {
+    color: rgb(209, 205, 199);
+    text-decoration-color: initial;
+    background-color: transparent;
+    border-color: transparent;
+}
+
 ul.alarm-list {
     list-style: none;
     padding: 0;
@@ -139,7 +181,7 @@ ul.alarm-list {
     font-family: 'Inconsolta', monospace;
     font-size: 14px;
     padding: 5px;
-    background-color: #ECF0F1;
+    background-color: rgb(30, 39, 41);
 }
 
 
@@ -242,6 +284,8 @@ main code {
     align-items: center;
 }
 
+
+
 table.table tbody th {
     font-weight: 700;
 }
@@ -254,7 +298,7 @@ table.table tbody th {
 
 #log {
     font-family: 'Inconsolata', monospace;
-    text-shadow: 0 0 5px #C8C8C8;
+    text-shadow: rgb(55 60 62) 0px 0px 5px;
     height: 500px;
     overflow: scroll;
 }
@@ -396,9 +440,15 @@ table.table tbody th {
     overflow-y: hidden;
 }
 
+.card {
+    background-color: rgb(24, 26, 27);
+    border-color: rgba(140, 130, 115, .13);
+}
+
 .job-card {
-    display: flex;
+    // display: flex;
     text-decoration: none;
+    background-color: rgb(24, 26, 27);
     color: inherit;
 
     .card {
@@ -412,9 +462,12 @@ table.table tbody th {
     display: block;
     text-decoration: none;
     color: inherit;
-    background-color: #fff;
+    // background-color: #fff;
+    background-color: rgb(24, 26, 27);
     border-radius: 7px;
-    box-shadow: 2px 2px 8px #ECF0F1;
+    // box-shadow: 2px 2px 8px #ECF0F1;
+    box-shadow: rgb(30 39 41) 2px 2px 8px;
+    text-decoration-color: initial;
 
     &--title {
         font-weight: 500;
@@ -425,7 +478,9 @@ table.table tbody th {
     }
 }
 
-
+.border-warning {
+    border: 1px solid #ffc187;
+}
 
 #devlabel {
     position: absolute;
