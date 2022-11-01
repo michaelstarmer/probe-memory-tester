@@ -28,7 +28,7 @@ export default class Job extends BaseModel {
   @column()
   public jenkinsJob: string
 
-  @column()
+  @column({ columnName: 'dash_version' })
   public dashVersion: string
 
   @column()
