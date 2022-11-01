@@ -1,5 +1,6 @@
 import React from "react";
 import './JobListItem.css'
+import { Link } from 'react-router-dom'
 
 interface BadgeProps {
     status: string,
@@ -30,10 +31,8 @@ type Job = {
 }
 
 export function JobListItem(job: Job) {
-    console.log(job.status)
-
     return (
-        <a href="/jobs/{{job.id}}" className="job-card my-2 px-3 py-4 {{ job.procStatAlerts.length > 0 ? 'border-warning' : '' }}">
+        <Link to={`/jobs/${job.id}`} className="job-card my-2 px-3 py-4 {{ job.procStatAlerts.length > 0 ? 'border-warning' : '' }}">
             <div className="row">
                 <div className="col-1 px-1">
                     <Badge status={job.status} />
@@ -64,7 +63,7 @@ export function JobListItem(job: Job) {
                     {job.started_at}
                 </div>
             </div>
-        </a>
+        </Link>
 
     )
 }

@@ -69,9 +69,9 @@ const probeData = {
 
 const jobsData = atom(async (get) => {
     try {
-        const response = await api.get("http://localhost:3333/api/jobs")
+        const response = await api.get("http://localhost:3333/api/jobs?limit=10")
         if (response && response.data) {
-            console.log(response.data)
+            // console.log(response.data)
             return response.data;
         }
 

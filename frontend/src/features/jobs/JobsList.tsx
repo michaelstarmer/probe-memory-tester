@@ -21,7 +21,6 @@ const renderList = (jobs: [Object: JobProps]) => {
 }
 export function JobsList(props: { jobs: [Object: JobProps] }) {
     let jobs: [Object: JobProps] = props.jobs;
-    console.log(props.jobs)
     return (
         <div className="container-fluid my-5">
             <div className="row">

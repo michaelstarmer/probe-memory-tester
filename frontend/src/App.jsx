@@ -7,8 +7,6 @@ import SettingsPage from './pages/Settings';
 import UploadsPage from './pages/Uploads';
 import JobPage from './pages/Job';
 
-
-
 function App() {
   return (
     <Router>

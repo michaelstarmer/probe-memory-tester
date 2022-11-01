@@ -1,0 +1,23 @@
+.uppercase {
+    text-transform: uppercase;
+}
+
+.color-completed {
+    color: #008000;
+}
+
+.color-waiting {
+    color: #17161A;
+}
+
+.color-running {
+    color: #17A2B8;
+}
+
+.color-initializing {
+    color: orange;
+}
+
+.color-failed {
+    color: red;
+}

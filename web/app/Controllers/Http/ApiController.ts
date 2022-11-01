@@ -36,8 +36,9 @@ export default class ApiController {
         return response.json({ success: true, message: 'Config updated.' });
     }
 
-    public async all_jobs({ response, params }: HttpContextContract) {
-        const { limit } = params;
+    public async jobs({ response, request }: HttpContextContract) {
+        const { limit } = request.qs();
+
         const jobs = await Job.query()
             .preload('xmlConfig')
             .preload('systemStats', statsQuery => {
