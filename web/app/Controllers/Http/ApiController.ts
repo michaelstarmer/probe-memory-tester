@@ -36,13 +36,16 @@ export default class ApiController {
         return response.json({ success: true, message: 'Config updated.' });
     }
 
-    public async all_jobs({ response }: HttpContextContract) {
+    public async all_jobs({ response, params }: HttpContextContract) {
+        const { limit } = params;
         const jobs = await Job.query()
             .preload('xmlConfig')
             .preload('systemStats', statsQuery => {
                 statsQuery.groupLimit(50)
                 statsQuery.orderBy('created_at', 'desc')
             })
+            .orderBy('createdAt', 'desc')
+            .limit(limit)
         try {
             return response.json(jobs);
         } catch (error) {
