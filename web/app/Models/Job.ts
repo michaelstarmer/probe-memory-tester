@@ -66,7 +66,12 @@ export default class Job extends BaseModel {
     }
   }
 
-  @column.dateTime({ autoUpdate: false })
+  @column.dateTime({
+    autoUpdate: false,
+    serialize: (value: DateTime | null) => {
+      return value ? value.setLocale('no').toFormat('F') : value
+    }
+  })
   public startedAt: DateTime | null
 
   @afterFind()
@@ -83,6 +88,8 @@ export default class Job extends BaseModel {
       }
     }
   }
+
+
 
   @beforeSave()
   public static async checkStartTime(job: Job) {
