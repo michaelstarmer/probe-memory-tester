@@ -1,0 +1,23 @@
+.desktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.desktop img {
+    max-width: 60%;
+}
+
+.vm-card {
+    background-image: url('/public/monitor-tp.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
