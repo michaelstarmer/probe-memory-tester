@@ -24,6 +24,15 @@ export class API {
             return response
         }
     }
+
+    static async post(url, data, options = null) {
+        console.log(`GET request -> ${url}`)
+        const response = await client.post(url, data)
+        if (response && response.data) {
+            console.log('Get 200:', response.data)
+            return response
+        }
+    }
 }
 
 export default API;

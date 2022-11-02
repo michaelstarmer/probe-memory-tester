@@ -16,7 +16,7 @@ const Snippet = styled.div`
     position: fixed;
     bottom: 0;
     left: 0;
-    height: 400px;
+    height: 350px;
     width: 600px;
     /* box-shadow: 3px 5px 6px 8px #000; */
     transition: 50ms ease-in-out;
@@ -85,7 +85,7 @@ export function JobLog({ id }) {
     }
 
     return (
-        <Snippet id="log" className="snippet">
+        <Snippet id="log" className="snippet log-hide">
             <LogTitle className="p-2 d-flex justify-content-between" onClick={() => handleClick()}>
                 <span>log</span>
                 <span>
