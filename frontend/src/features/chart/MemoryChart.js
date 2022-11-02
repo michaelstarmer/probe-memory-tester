@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import moment from 'moment'
 // import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart } from 'recharts'
-const formatAxis = tickItem => moment(tickItem).format('LTS')
+const formatAxis = tickItem => moment(tickItem).format('LT')
 const labelFormatAxis = tickItem => moment(tickItem).format('llll')
 
 export const MemoryChart = ({data}) => {
