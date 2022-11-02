@@ -31,6 +31,8 @@ Route.post('/api/jobs/:jobId/proc-stats', 'ApiController.add_proc_stats')
 Route.get('/api/jobs/:jobId/security-audit/status/:status', 'ApiController.set_security_audit_status')
 Route.post('/api/jobs/:jobId/security-audit', 'ApiController.update_security_audit')
 
+Route.get('/api/alerts/latest', 'ApiController.latest_alerts')
+
 Route.post('/api/stats', 'SystemStatController.create')
 Route.get('/api/stats/job/:jobId', 'SystemStatController.stats_by_job_id')
 Route.post('/api/stats/job/:jobId', 'SystemStatController.create_by_job')

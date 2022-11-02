@@ -9,6 +9,7 @@ import JobSecurityAudit from 'App/Models/JobSecurityAudit'
 import Setting from 'App/Models/Setting'
 import ProcStat from 'App/Models/ProcStat'
 import Logger from '@ioc:Adonis/Core/Logger'
+import ProcStatAlert from 'App/Models/ProcStatAlert'
 
 
 export default class ApiController {
@@ -37,9 +38,10 @@ export default class ApiController {
     }
 
     public async jobs({ response, request }: HttpContextContract) {
-        const { limit } = request.qs();
+        const { limit, status } = request.qs();
 
         const jobs = await Job.query()
+            .where('status', status)
             .preload('xmlConfig')
             .preload('systemStats', statsQuery => {
                 statsQuery.groupLimit(50)
@@ -257,6 +259,20 @@ export default class ApiController {
         } catch (error) {
             console.error(error)
             return response.json(error);
+        }
+    }
+
+    public async latest_alerts({ response }: HttpContextContract) {
+        const alerts = await ProcStatAlert
+            .query()
+            .preload('job')
+            .orderBy('created_at', 'desc')
+            .limit(10)
+        try {
+            return response.json(alerts);
+        } catch (error) {
+            console.error('failed to fetch latest alerts!', error)
+            return response.json(error)
         }
     }
 
