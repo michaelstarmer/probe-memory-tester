@@ -1,14 +1,15 @@
-.log-wrap {
-    
+.log-show {
+    transform: translateY(150px);
 }
+
+.log-hide {
+    transform: translateY(350px);
+}
+
+.log-wrap {}
+
 .log-wrap--title {
     background-color: rgba(200, 200, 200, .5);
-}
-#log {
-    font-family: 'Inconsolata', monospace;
-    text-shadow: rgb(55 60 62) 0px 0px 5px;
-    height: 500px;
-    overflow: scroll;
 }
 
 .log-error {
