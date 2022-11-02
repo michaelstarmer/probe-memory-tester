@@ -8,33 +8,56 @@ import UploadsPage from './pages/Uploads';
 import JobPage from './pages/Job';
 import moment from 'moment';
 import 'moment/locale/en-gb'
+import styled from 'styled-components';
 moment().locale('en-gb')
+
+const NavLink = ({to, children}) => {
+  return <li className="nav-item">
+        <Link to={to} className='nav-link'>
+          {children}
+        </Link>
+      </li>
+}
+
+const NavBrand = ({title}) => {
+  const H4 = styled.h4`
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    color: #ffffff8c;
+  `
+  return (
+  <Link to="/" className="navbar-brand">
+    <H4>{title}</H4>
+  </Link>)
+}
+
+const NavBar = ({title, children}) => {
+  const Nav = styled.nav`
+    
+  `
+  return (
+    <nav id="nav" className="navbar navbar-expand-lg navbar-dark">
+        <div className="container-fluid">
+          <NavBrand title="Memtest" />
+          <div id="c-nav">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <NavLink to="/new-job">New Job</NavLink>
+              <NavLink to="/uploads">Uploads</NavLink>
+              <NavLink to="/settings">Settings</NavLink>
+            </ul>
+          </div>
+        </div>
+      </nav>
+  )
+}
 
 function App() {
   return (
     <Router>
       <main className="App">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
-              <h4>MEMTEST</h4>
-            </Link>
-            <div id="c-nav">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <Link to="/new-job" className='nav-link'>New Job</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/uploads" className="nav-link">Uploads</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/settings" className='nav-link'>Settings</Link>
-                </li>
-
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <NavBar title="Memtest1" />
         <Suspense fallback="loading">
           <Routes>
             <Route exact path="/jobs/:id" element={<JobPage />} />

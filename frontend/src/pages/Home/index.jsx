@@ -7,7 +7,7 @@ import { atom, useAtom, useSetAtom } from 'jotai'
 import API from '../../utils/api'
 import CmdModal from "../../features/modal/CmdModal";
 import AlertList from "./AlertList";
-
+import JobListItem from '../../features/jobs/JobListItem'
 
 const Text = styled.p`
     font-size: 12px;
@@ -147,34 +147,34 @@ function Home(props) {
     return (
         <>
             <div className='container-fluid mb-3'>
-                <div className='row'>
-                    <div className="col-12 col-lg-4 d-flex flex-column justify-content-between mt-2">
-                        <VmCard props={props} probeData={probeData} />
-                    </div>
-                    <div class="col-12 col-lg-6 offset-lg-2 mt-2">
-                        <h3>Alerts</h3>
-                        <AlertList />
-                    </div>
-                </div>
+                
             </div>
             <div className='container-fluid my-5'>
                 <div className="row">
-                    <div className="col-12 col-lg-6">
-                        <h3>Active</h3>
-                        <Suspense fallback="Loading jobs...">
-                            <ActiveJobs />
-                        </Suspense>
-                        <h3>Completed</h3>
+                    <div className='col-12 col-lg-4 offset-lg-1 mt-2'>
+                        <div className="row">
+                            <div className="col-12 col-lg-8 offset-lg-2 mb-5">
+                                <VmCard props={props} probeData={probeData} />
+
+                            </div>
+                            <div className="col-12 col-lg-12 d-flex justify-content-center">
+
+                                <AlertList />
+                            </div>
+                        <div className="my-5"></div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-lg-5 offset-lg-1">
+                        
                         <Suspense fallback="Loading jobs...">
                             <CompletedJobs />
                         </Suspense>
-                    </div>
-                    <div className='col-12 col-lg-6'>
-                        <h3>Failed</h3>
+                        <h3 className="mt-3">Failed</h3>
                         <Suspense fallback="Loading jobs...">
                             <FailedJobs />
                         </Suspense>
                     </div>
+                    
 
                 </div>
 

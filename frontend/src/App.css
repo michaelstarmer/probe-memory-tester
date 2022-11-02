@@ -11,7 +11,9 @@ a {
   color: #5A45FF;
   text-decoration: none;
 }
-
+#nav {
+  background-color:  rgba(35, 35, 35, 1);
+}
 main {
   margin: auto;
 }

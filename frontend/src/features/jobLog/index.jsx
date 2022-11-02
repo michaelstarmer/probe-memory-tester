@@ -7,6 +7,20 @@ import './JobLog.css'
 import { ReactComponent as IconArrowDown } from './icons/chevron-down.svg'
 import { ReactComponent as IconArrowUp } from './icons/chevron-up.svg'
 
+const Icon = styled.span`
+    /* background: rgba(204, 142, 53, .8); */
+    border: 1px solid #fff;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1rem;
+    &:hover {
+        border-color: rgb(204, 142, 53);
+        background: rgba(204, 142, 53, 1.0);
+    }
+`
 
 const Snippet = styled.div`
     font-family: 'Inconsolta', monospace;
@@ -68,9 +82,6 @@ const renderLog = (logs) => {
         </div>
     });
     return logsElements
-
-
-
 }
 
 export function JobLog({ id }) {
@@ -88,11 +99,11 @@ export function JobLog({ id }) {
         <Snippet id="log" className="snippet log-hide">
             <LogTitle className="p-2 d-flex justify-content-between" onClick={() => handleClick()}>
                 <span>log</span>
-                <span>
+                <Icon>
                     {
-                        logMinimized ? <IconArrowUp /> : <IconArrowDown />
+                        logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" />
                     }
-                </span>
+                </Icon>
             </LogTitle>
             <LogContent>
                 {renderLog(log)}

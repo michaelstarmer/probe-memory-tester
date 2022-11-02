@@ -1,10 +1,12 @@
 import React from "react";
 import './JobListItem.css'
 import { Link } from 'react-router-dom'
-
+import styled from 'styled-components'
 interface BadgeProps {
     status: string,
 }
+
+const Text = styled.span``
 
 const Badge = (props: BadgeProps) => {
     const { status } = props;

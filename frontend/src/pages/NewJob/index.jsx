@@ -1,3 +1,7 @@
+import React from "react";
+import styled from "styled-components";
+import './NewJob.css'
+
 export function NewJobPage() {
     return (
         <div class="container my-5">
@@ -79,7 +83,7 @@ export function NewJobPage() {
                                 <div class="form-group">
                                     <label>Select a file</label>
                                     <select name="xmlFileId" id="xmlFileId" size="5" class="form-select"
-                                        onchange="showXmlInfo()" required>
+                                         required>
 
 
                                         <option value="file.id" data-filename="file.filenam"
@@ -93,9 +97,6 @@ export function NewJobPage() {
                             </div>
                             <div id="metadata" class="col-12 col-lg-5 form-group hidden">
                                 <h5>About XML</h5>
-                                <div id="selectedXmlFileDescription"></div>
-                                <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
-                                <div id="selectedXmlFileUploadedAt"></div>
                             </div>
                         </div>
 
