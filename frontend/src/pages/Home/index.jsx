@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import './Home.css'
 import { atom, useAtom, useSetAtom } from 'jotai'
-import api from '../../utils/api'
+import API from '../../utils/api'
 import CmdModal from "../../features/modal/CmdModal";
 import AlertList from "./AlertList";
 
@@ -50,7 +50,7 @@ const probeData = {
 
 const activeJobs = atom(async (get) => {
     try {
-        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=running")
+        const response = await API.get("/api/jobs?limit=10&status=running")
         if (response && response.data) {
             // console.log(response.data)
             return response.data;
@@ -64,7 +64,7 @@ const activeJobs = atom(async (get) => {
 
 const completedJobs = atom(async (get) => {
     try {
-        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=completed")
+        const response = await API.get("/api/jobs?limit=10&status=completed")
         if (response && response.data) {
             // console.log(response.data)
             return response.data;
@@ -78,7 +78,7 @@ const completedJobs = atom(async (get) => {
 
 const failedJobs = atom(async (get) => {
     try {
-        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=failed")
+        const response = await API.get("/api/jobs?limit=10&status=failed")
         if (response && response.data) {
             // console.log(response.data)
             return response.data;

@@ -1,19 +1,30 @@
 import React from "react";
 import styled from 'styled-components';
 import { atom, useAtom } from 'jotai';
-import api from '../../utils/api'
+import API from '../../utils/api'
 import { useParams, Link } from "react-router-dom";
 import "./Job.css"
 import MemoryChart from '../../features/chart/MemoryChart'
+import ProcessesChart from '../../features/chart/ProcessesChart'
 import JobLog from '../../features/jobLog'
 import JobDataTable from './JobDataTable'
 
 const jobData = atom(async (get) => {
     let { id } = useParams()
-    const url = `http://localhost:3333/api/jobs/${id}`
-    const response = await api.get(url)
+    const url = `/api/jobs/${id}`
+    const response = await API.get(url)
     if (response && response.data) {
         console.log(response.data)
+        return response.data;
+    }
+})
+
+const processesData = atom(async (get) => {
+    let { id } = useParams()
+    const url = `/api/jobs/${id}/proc-stats`
+    const response = await API.get(url)
+    if (response && response.data) {
+        console.log('procStats:', response.data)
         return response.data;
     }
 })
@@ -56,7 +67,8 @@ const StatusHeader = ({ status }) => {
 
 const Job = () => {
     const [job] = useAtom(jobData);
-    console.log(job)
+    const [procStats] = useAtom(processesData)
+
     return (
         <>
             <StatusHeader status={job.status} />
@@ -90,6 +102,11 @@ const Job = () => {
                     </div>
                 </div>
             </Hero>
+
+            <div className="container-fluid py-3 mt-5">
+                <ProcessesChart data={procStats} />
+            </div>
+
             <div className="container-fluid py-3 mt-5" >
                 <div className="row">
                     <div className="col-12 col-lg-6 mb-5 d-flex flex-column justify-content-center log-wrap">

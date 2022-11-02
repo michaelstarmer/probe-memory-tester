@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { atom, useAtom } from 'jotai';
-import api from '../../utils/api'
+import API from '../../utils/api'
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import './JobLog.css'
@@ -43,8 +43,8 @@ const LogEntry = styled.div`
 
 const logData = atom(async (get) => {
     let { id } = useParams()
-    const url = `http://localhost:3333/api/jobs/${id}/log`;
-    const response = await api.get(url)
+    const url = `/api/jobs/${id}/log`;
+    const response = await API.get(url)
     if (response && response.data) {
         console.log(response.data)
         return response.data;

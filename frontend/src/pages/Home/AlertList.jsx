@@ -1,12 +1,12 @@
 import React from "react";
 import { atom, useAtom } from "jotai";
-import api from "../../utils/api";
+import API from "../../utils/api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const alertData = atom(async (get) => {
-    const url = 'http://localhost:3333/api/alerts/latest'
-    const response = await api.get(url);
+    const url = '/api/alerts/latest'
+    const response = await API.get(url);
     if (response && response.data) {
         console.log(response.data)
         return response.data;
