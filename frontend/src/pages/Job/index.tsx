@@ -4,7 +4,8 @@ import { atom, useAtom } from 'jotai';
 import api from '../../utils/api'
 import { useParams, Link } from "react-router-dom";
 import "./Job.css"
-import MemoryChart from '../../features/chart/Chart'
+import MemoryChart from '../../features/chart/MemoryChart'
+import JobLog from '../../features/jobLog'
 
 const jobData = atom(async (get) => {
     let { id } = useParams()
@@ -145,13 +146,17 @@ const Job = () => {
                     </div>
                 </div>
             </Hero>
+            <div className="container-fluid py-3 mt-5" >
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-lg-6 mb-5 d-flex flex-column justify-content-center log-wrap">
+                            <JobLog />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </>
-
-
-
-
-
     )
 }
 

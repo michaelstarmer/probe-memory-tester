@@ -6,6 +6,9 @@ import NewJobPage from './pages/NewJob';
 import SettingsPage from './pages/Settings';
 import UploadsPage from './pages/Uploads';
 import JobPage from './pages/Job';
+import moment from 'moment';
+import 'moment/locale/en-gb'
+moment().locale('en-gb')
 
 function App() {
   return (

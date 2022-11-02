@@ -19,25 +19,6 @@ export default class SystemStat extends BaseModel {
   @column()
   public mem: number
 
-  @column()
-  public eweCpu: number
-  @column()
-  public eweMem: number
-
-  @column()
-  public etrCpu: number
-  @column()
-  public etrMem: number
-
-  @column()
-  public ottCpu: number
-  @column()
-  public ottMem: number
-
-  @column()
-  public vidanaCpu: number
-  @column()
-  public vidanaMem: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
