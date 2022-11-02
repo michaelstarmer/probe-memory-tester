@@ -2,6 +2,14 @@ import React from "react";
 import { atom, useAtom } from 'jotai';
 import api from '../../utils/api'
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
+
+const Snippet = styled.div`
+    font-family: 'Inconsolta', monospace;
+    font-size: 14px;
+    padding: 5px;
+    background-color: rgb(30, 39, 41);
+`
 
 const logData = atom(async (get) => {
     let { id } = useParams()
@@ -26,11 +34,10 @@ const renderLog = (logs) => {
 
 export function JobLog({ id }) {
     const [ log ] = useAtom(logData)
-    console.log(log)
     return (
-        <div id="log" className="snippet">
+        <Snippet id="log" className="snippet">
             {renderLog(log)}
-        </div>
+        </Snippet>
 
     )
 }

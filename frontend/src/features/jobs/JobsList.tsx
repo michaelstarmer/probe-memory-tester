@@ -16,20 +16,14 @@ interface JobProps {
 
 
 const renderList = (jobs: [Object: JobProps]) => {
-    return jobs.map(it => <JobListItem id={it.id} jenkins_job={it.jenkins_job} status={it.status} dash_version={it.dash_version} remaining={it.remaining} duration={it.duration} started_at={it.started_at} />)
 
+    return jobs.map(it => <JobListItem id={it.id} jenkins_job={it.jenkins_job} status={it.status} dash_version={it.dash_version} remaining={it.remaining} duration={it.duration} started_at={it.started_at} />)
 }
-export function JobsList(props: { jobs: [Object: JobProps] }) {
+export function JobsList(props: { jobs: [Object: JobProps], showOnly }) {
     let jobs: [Object: JobProps] = props.jobs;
     return (
-        <div className="container-fluid my-5">
-            <div className="row">
-                <div className="col-md-12 col-xl-6">
+        renderList(props.jobs)
 
-                    {renderList(props.jobs)}
-                </div>
-            </div>
-        </div>
     )
 }
 export default JobsList;

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import './Home.css'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import api from '../../utils/api'
+import CmdModal from "../../features/modal/CmdModal";
+import AlertList from "./AlertList";
 
 
 const Text = styled.p`
@@ -39,27 +41,6 @@ const ProbeIp = styled.h6`
     font-size: 24px;
 `
 
-const jobs = [
-    {
-        id: 1,
-        jenkinsJob: 'CentOS7-based',
-        dashVersion: '6.1.0_10_33',
-        status: 'running',
-        remaining: 30,
-        duration: 30,
-        createdAt: '2022-10-28 10:00:00'
-    },
-    {
-        id: 2,
-        jenkinsJob: 'CentOS7-based',
-        dashVersion: '6.1.0_10_34',
-        status: 'completed',
-        remaining: 0,
-        duration: 30,
-        createdAt: '2022-10-28 12:00:00'
-    },
-]
-
 const probeData = {
     ip: '10.0.28.140',
     swVersion: '6.1.0-10',
@@ -67,9 +48,9 @@ const probeData = {
     jenkinsJob: 'CentOS7-based'
 }
 
-const jobsData = atom(async (get) => {
+const activeJobs = atom(async (get) => {
     try {
-        const response = await api.get("http://localhost:3333/api/jobs?limit=10")
+        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=running")
         if (response && response.data) {
             // console.log(response.data)
             return response.data;
@@ -81,8 +62,46 @@ const jobsData = atom(async (get) => {
 
 })
 
-const Jobs = () => {
-    const [ jobs ] = useAtom(jobsData);
+const completedJobs = atom(async (get) => {
+    try {
+        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=completed")
+        if (response && response.data) {
+            // console.log(response.data)
+            return response.data;
+        }
+
+    } catch (error) {
+        console.error("Failed to fetch", error)
+    }
+
+})
+
+const failedJobs = atom(async (get) => {
+    try {
+        const response = await api.get("http://localhost:3333/api/jobs?limit=10&status=failed")
+        if (response && response.data) {
+            // console.log(response.data)
+            return response.data;
+        }
+
+    } catch (error) {
+        console.error("Failed to fetch", error)
+    }
+
+})
+
+const ActiveJobs = () => {
+    const [ jobs ] = useAtom(activeJobs);
+    return jobs && jobs.length > 0 ? <JobsList jobs={jobs} /> : <div className="p-3"><h5>Empty</h5></div>;
+}
+
+const FailedJobs = () => {
+    const [ jobs ] = useAtom(failedJobs);
+    return <JobsList jobs={jobs} />;
+}
+
+const CompletedJobs = () => {
+    const [ jobs ] = useAtom(completedJobs);
     return <JobsList jobs={jobs} />;
 }
 
@@ -119,27 +138,49 @@ const VmCard = (props) => {
                     JenkinsJob
                 </a>
             </div>
-
-
-
         </div>
+
     )
 }
 
 function Home(props) {
     return (
-        <div className=''>
-            <div className='container mb-3'>
+        <>
+            <div className='container-fluid mb-3'>
                 <div className='row'>
                     <div className="col-12 col-lg-4 d-flex flex-column justify-content-between mt-2">
                         <VmCard props={props} probeData={probeData} />
                     </div>
+                    <div class="col-12 col-lg-6 offset-lg-2 mt-2">
+                        <h3>Alerts</h3>
+                        <AlertList />
+                    </div>
                 </div>
             </div>
-            <Suspense fallback="Loading jobs...">
-                <Jobs />
-            </Suspense>
-        </div>
+            <div className='container-fluid my-5'>
+                <div className="row">
+                    <div className="col-12 col-lg-6">
+                        <h3>Active</h3>
+                        <Suspense fallback="Loading jobs...">
+                            <ActiveJobs />
+                        </Suspense>
+                        <h3>Completed</h3>
+                        <Suspense fallback="Loading jobs...">
+                            <CompletedJobs />
+                        </Suspense>
+                    </div>
+                    <div className='col-12 col-lg-6'>
+                        <h3>Failed</h3>
+                        <Suspense fallback="Loading jobs...">
+                            <FailedJobs />
+                        </Suspense>
+                    </div>
+
+                </div>
+
+            </div>
+            <CmdModal probeIp={probeData.ip} />
+        </>
     )
 }
 
