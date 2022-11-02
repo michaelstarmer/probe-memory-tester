@@ -454,6 +454,23 @@ export default class ApiController {
         return response.status(200).json({ success: true })
     }
 
+    public async job_proc_stats({ params, response }: HttpContextContract) {
+        const procStats = await ProcStat
+            .query()
+            .where('job_id', params.jobId)
+
+        console.log('# of proc stats:', procStats.length)
+        let stats: {} = {};
+        procStats.map(it => {
+            if (!stats[it.name]) {
+                stats[it.name] = []
+            }
+            stats[it.name].push(it)
+        })
+        console.log(stats['ana'])
+        return response.json(stats['ana'].concat(stats['vidana']))
+    }
+
     public async add_proc_stats({ params, request, response }: HttpContextContract) {
         let payload = request.body()
         const job = await Job.find(params.jobId);
