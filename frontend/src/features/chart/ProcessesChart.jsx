@@ -6,6 +6,7 @@ const labelFormatAxis = tickItem => moment(tickItem).format('llll')
 
 export function ProcessesChart({ data }) {
     console.log('pc DATA:', data)
+    return <></>
     return (<div style={{ width: '100%' }}>
         <ResponsiveContainer width="100%" height={200}>
             <AreaChart

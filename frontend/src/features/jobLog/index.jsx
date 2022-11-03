@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import './JobLog.css'
 // import IconLoader from "./Icon";
+import Spinner from "../loader/Spinner";
 import { ReactComponent as IconLoader } from './Icon/loader.svg'
 
 import { ReactComponent as IconArrowDown } from './Icon/chevron-down.svg'
@@ -39,7 +40,6 @@ const LoaderContainer = styled.div`
 const Loader = styled.div`
     animation: spin 10s linear infinite;
     margin-bottom: .8rem;
-    /* animation-duration: 1s; */
 
     @keyframes spin {
         from {
@@ -53,9 +53,7 @@ const Loader = styled.div`
 
 const renderLoaderAnimation = () => {
     return <LoaderContainer>
-        <Loader>
-            <IconLoader background="#fff" color="#fff" />
-        </Loader>
+        <Spinner />
         <div>
             Loading logs...
         </div>
@@ -68,7 +66,7 @@ const renderLog = (logs) => {
     }
     const logsElements = logs.map(element => {
         return <div key={element.id}>
-           <span className={`log-${element.type}`}>[ {element.created_at} ]</span> {element.message}
+           <div className={`log-${element.type} mt-2`}>[ {element.created_at} ]:</div>{element.message}
         </div>
     });
     return logsElements

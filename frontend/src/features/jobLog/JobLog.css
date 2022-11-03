@@ -1,9 +1,11 @@
-.log-show {
-    transform: translateY(150px);
+.example::-webkit-scrollbar {
+    display: none;
 }
 
+
+
 .log-hide {
-    transform: translateY(300px);
+    transform: translateY(400px);
 }
 
 .log-wrap {}
