@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { atom, useAtom } from 'jotai';
 import API from '../../utils/api'
 import { useParams } from "react-router-dom";
@@ -6,110 +6,61 @@ import styled from "styled-components";
 import './JobLog.css'
 import { ReactComponent as IconArrowDown } from './icons/chevron-down.svg'
 import { ReactComponent as IconArrowUp } from './icons/chevron-up.svg'
-
-const Icon = styled.span`
-    /* background: rgba(204, 142, 53, .8); */
-    border: 1px solid #fff;
-    height: 30px;
-    width: 30px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 50%;
-    font-size: 1rem;
-    &:hover {
-        border-color: rgb(204, 142, 53);
-        background: rgba(204, 142, 53, 1.0);
-    }
-`
-
-const Snippet = styled.div`
-    font-family: 'Inconsolta', monospace;
-    font-size: 14px;
-    background-color: rgb(30, 39, 41);
-    text-shadow: rgb(55 60 62) 0px 0px 5px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 350px;
-    width: 600px;
-    /* box-shadow: 3px 5px 6px 8px #000; */
-    transition: 50ms ease-in-out;
-`
-
-const LogTitle = styled.div`
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    text-transform: uppercase;
-    position: relative;
-    width: 100%;
-    height: 50px;
-    /* color: white; */
-    /* background: rgba(20, 20, 20, .8); */
-    background: rgba(150, 150, 150, .1);
-    font-size: 1.2rem;
-`
-
-const LogEntry = styled.div`
-    color: ${props => props.color};
-`
-
-
+import Icon from './Icon'
+import Snippet from './Snippet'
+import Title from "./Title";
+import LogContent from "./LogContent";
+import moment from 'moment';
+import 'moment/locale/en-gb'
+moment().locale('en-gb')
 
 const logData = atom(async (get) => {
     let { id } = useParams()
     const url = `/api/jobs/${id}/log`;
     const response = await API.get(url)
     if (response && response.data) {
-        console.log(response.data)
-        return response.data;
+        return response.data.reverse();
     }
 })
 
-const LogContent = styled.div`
-    overflow-y: scroll;
-    height: 100%;
-    scrollbar-width: thin;
-
-`
-
 const renderLog = (logs) => {
-    if (!logs) {
-        return <div id="log-loading">Loading logs...</div>
-    }
     const logsElements = logs.map(element => {
-        return <div className={`log-${element.type}`}>
-            {element.type}: {element.message}
+        return <div key={element.id}>
+           <span className={`log-${element.type}`}>[ {element.created_at} ]</span> {element.message}
         </div>
     });
     return logsElements
 }
 
 export function JobLog({ id }) {
+    const bottomRef = useRef(null);
     const [ log ] = useAtom(logData)
+    const [ logEntries, setEntries ] = useState([])
     const [ logMinimized, setLogMinimized ] = useState(false);
+    useEffect(() => {
+        setInterval(() => {
+            if (!logEntries.length || logEntries.length < log.length) {
+                setEntries(current => [...current, ...log.slice(current.length)])
+            }
+        }, 600)
+    }, [])
+    useState(() => {
 
-    const handleClick = () => {
-        console.log('Hiding log')
-        console.log({ logMinimized })
-        setLogMinimized(!logMinimized)
-        document.getElementById('log').classList.toggle('log-hide');
-    }
-
+    })
+    
+    const handleClick = () => setLogMinimized(!logMinimized)
     return (
-        <Snippet id="log" className="snippet log-hide">
-            <LogTitle className="p-2 d-flex justify-content-between" onClick={() => handleClick()}>
+        <Snippet id="log" className={`snippet ${logMinimized ? 'log-hide' : ''}`}>
+            <Title onClick={handleClick}>
                 <span>log</span>
                 <Icon>
-                    {
-                        logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" />
-                    }
+                    { logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" /> }
                 </Icon>
-            </LogTitle>
-            <LogContent>
-                {renderLog(log)}
+            </Title>
+            <LogContent ref={bottomRef}>
+                {renderLog(logEntries)}
             </LogContent>
         </Snippet>
-
     )
 }
 

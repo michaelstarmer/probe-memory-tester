@@ -13,10 +13,17 @@
     background-color: rgba(225, 177, 44,1.0);
 }
 
-.log-error {
+.log-error,
+.log-high {
     color: red;
 }
 
-.log-warn {
+.log-warn,
+.log-medium {
     color: #d48806;
+}
+
+.log-info,
+.log-low {
+    color: #4364e4;
 }
