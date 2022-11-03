@@ -339,13 +339,16 @@ export default class ApiController {
         const { id } = params;
         const job = await Job.find(id)
         await job?.load('logs')
+        await job?.load('procStatAlerts')
 
         if (!job) {
             return response.status(400).json({ error: `Job not found with ID: ${id}` });
         }
 
-
-        return response.json(job.logs)
+        console.log('Logs for job', id)
+        console.log('Log length:', job.logs.length)
+        console.log('alert length:', job.procStatAlerts.length)
+        return response.json([...job.logs, ...job.procStatAlerts])
     }
 
     public async get_job_alerts({ params, response }: HttpContextContract) {
@@ -468,7 +471,7 @@ export default class ApiController {
             stats[it.name].push(it)
         })
         console.log(stats['ana'])
-        return response.json(stats['ana'].concat(stats['vidana']))
+        return response.json(stats['ana'])
     }
 
     public async add_proc_stats({ params, request, response }: HttpContextContract) {

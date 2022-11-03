@@ -96,7 +96,7 @@ WHERE PS.name = '${procstat.name}' AND J.jenkins_job = '${procstat.job.jenkinsJo
       const recentAlertSpanMinutes = 5;
 
       const r1 = await Database.rawQuery(`
-SELECT A.id, A.level, A.message, A.created_at FROM proc_stat_alerts A
+SELECT A.id, A.type, A.message, A.created_at FROM proc_stat_alerts A
 LEFT JOIN proc_stats S ON S.id = A.proc_stat_id
 WHERE S.name = "${procstat.name}"
 AND A.created_at > '${DateTime.now().minus({ minutes: recentAlertSpanMinutes }).toSQL()}
@@ -116,20 +116,20 @@ AND S.job_id = ${procstat.jobId}'
       }
 
       Logger.info(`${k}: value outside normal range (${v['stdDevFactor']} SD).`);
-      let alertLevel = 'low';
+      let alertType = 'low';
 
 
       if (v['stdDevFactor'] >= 5) {
-        alertLevel = 'medium';
+        alertType = 'medium';
       } else if (v['stdDevFactor'] >= 10) {
-        alertLevel = 'high';
+        alertType = 'high';
       }
 
       const newAlert = {
         message: `${procstat.name} ${k} value ${v['stdDevFactor']} standard deviations outside normal range.`,
         jobId: procstat.jobId,
         procStatId: procstat.id,
-        level: alertLevel,
+        type: alertType,
       }
 
       try {

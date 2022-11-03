@@ -73,14 +73,14 @@
         @each(alert in alerts)
         <li class="py-1"><a href="/jobs/{{ alert.job.id }}">
           <span><strong>{{alert.createdAt.setLocale('no').toFormat('f')}}: </strong></span>
-        @if(alert.level == 'low')
-          {{alert.message}}: (<span class="log-alert--low">{{alert.level}}</span>)
-        @elseif(alert.level == 'medium')
-          {{alert.message}}: (<span class="log-alert--medium">{{alert.level}}</span>)
-        @elseif(alert.level == 'high')
-          {{alert.message}}: (<span class="log-alert--high">{{alert.level}}</span>)
+        @if(alert.type == 'low')
+          {{alert.message}}: (<span class="log-alert--low">{{alert.type}}</span>)
+        @elseif(alert.type == 'medium')
+          {{alert.message}}: (<span class="log-alert--medium">{{alert.type}}</span>)
+        @elseif(alert.type == 'high')
+          {{alert.message}}: (<span class="log-alert--high">{{alert.type}}</span>)
         @else
-          {{alert.level}}: {{alert.message}}
+          {{alert.type}}: {{alert.message}}
         @end
         </a>
         </li>

@@ -436,8 +436,8 @@
         if (singleLog.type) {
             newLogDiv.classList.add(`log-${singleLog.type}`)
         }
-        else if (singleLog.level) {
-            newLogDiv.classList.add(`log-alert--${singleLog.level}`);
+        else if (singleLog.type) {
+            newLogDiv.classList.add(`log-alert--${singleLog.type}`);
         }
         newLogDiv.textContent = `${singleLog.created_at}: ${singleLog.message}`;
         logElement.appendChild(newLogDiv);
@@ -464,7 +464,7 @@
                 jobLog.push(logItem)
             }
             // alert logs
-            else if (logItem.level && !alertLog[i]) { // alert log
+            else if (logItem.type && !alertLog[i]) { // alert log
                 addDivToLogging(logItem)
                 alertLog.push(logItem)
             }
