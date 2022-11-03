@@ -16,7 +16,7 @@ const Span = styled.span`
     }
 `
 export const Icon = props => {
-    return <Span>{props.children}</Span>
+    return <Span {...props}>{props.children}</Span>
 }
 
 export default Icon;

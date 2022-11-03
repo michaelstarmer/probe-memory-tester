@@ -15,12 +15,9 @@ export const Overview = ({job}) => {
         <Div className="container-fluid container-dark">
                 <div className="container py-5">
                     <div className="row">
-                        <div className="col-md-12 col-lg-4 mb-3 d-flex flex-column justify-content-center">
-                            <div className="row">
-                                <div className="col-12">
-                                    <JobDataTable {...job} />
-                                </div>
-                            </div>
+                        <div className="col-md-12 col-xl-5 mb-3 d-flex flex-column justify-content-center">
+                            
+                            <JobDataTable {...job} />
                             <div className="row my-3">
                                 <div className="col-12">
                                     <button type="button" className="btn btn-secondary" data-bs-toggle="modal"
@@ -36,7 +33,7 @@ export const Overview = ({job}) => {
                                 </div>
                             </div>
                         </div>
-                        <div id="chart" className="col-12 col-lg-6 offset-lg-2">
+                        <div id="chart" className="col-12 col-xl-6 offset-xl-1">
                             <MemoryChart data={job.systemStats} />
                         </div>
                     </div>

@@ -4,8 +4,12 @@ import API from '../../utils/api'
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import './JobLog.css'
-import { ReactComponent as IconArrowDown } from './icons/chevron-down.svg'
-import { ReactComponent as IconArrowUp } from './icons/chevron-up.svg'
+// import IconLoader from "./Icon";
+import { ReactComponent as IconLoader } from './Icon/loader.svg'
+
+import { ReactComponent as IconArrowDown } from './Icon/chevron-down.svg'
+import { ReactComponent as IconArrowUp } from './Icon/chevron-up.svg'
+
 import Icon from './Icon'
 import Snippet from './Snippet'
 import Title from "./Title";
@@ -23,7 +27,45 @@ const logData = atom(async (get) => {
     }
 })
 
+const LoaderContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    /* background: rgba(200, 200, 200, .1); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+const Loader = styled.div`
+    animation: spin 10s linear infinite;
+    margin-bottom: .8rem;
+    /* animation-duration: 1s; */
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`
+
+const renderLoaderAnimation = () => {
+    return <LoaderContainer>
+        <Loader>
+            <IconLoader background="#fff" color="#fff" />
+        </Loader>
+        <div>
+            Loading logs...
+        </div>
+    </LoaderContainer>
+}
+
 const renderLog = (logs) => {
+    if (!logs || logs.length < 1) {
+        return renderLoaderAnimation()
+    }
     const logsElements = logs.map(element => {
         return <div key={element.id}>
            <span className={`log-${element.type}`}>[ {element.created_at} ]</span> {element.message}

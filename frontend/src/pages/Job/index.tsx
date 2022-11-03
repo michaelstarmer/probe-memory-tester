@@ -5,8 +5,9 @@ import { useParams, Link } from "react-router-dom";
 import "./Job.css"
 import StatusHeader from './StatusHeader'
 import ProcessesChart from '../../features/chart/ProcessesChart'
-import JobLog from '../../features/jobLog'
 import Overview from './Overview'
+import LogWindow from './LogWindow'
+import JobLog from '../../features/jobLog'
 
 const jobData = atom(async (get) => {
     let { id } = useParams()
