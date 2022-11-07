@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { atom, useAtom } from 'jotai';
 import API from '../../utils/api'
 import { useParams, Link } from "react-router-dom";
@@ -68,7 +68,11 @@ const procStatTestData = {
 
 const renderProcessStats = procStats => {
     return Object.keys(procStats).map(it => {
-        return <div className="col-12 col-lg-4"><ProcessesChart procName={it} data={procStats[it]} /></div>
+        return <div className="col-12 col-lg-4">
+            <Suspense fallback="Loading...">
+                <ProcessesChart procName={it} data={procStats[it]} />
+            </Suspense>
+        </div>
     })
 }
 

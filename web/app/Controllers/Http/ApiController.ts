@@ -481,6 +481,12 @@ export default class ApiController {
         return response.json(stats)
     }
 
+    public async compare_job({ params, response }: HttpContextContract) {
+        const { id, jobId } = params;
+        console.log(`Comparing job ${id} to job ${jobId}`);
+        return response.json({ id, jobId })
+    }
+
     public async add_proc_stats({ params, request, response }: HttpContextContract) {
         let payload = request.body()
         const job = await Job.find(params.jobId);

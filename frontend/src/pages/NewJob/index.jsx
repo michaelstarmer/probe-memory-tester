@@ -1,8 +1,82 @@
 import React from "react";
 import styled from "styled-components";
 import './NewJob.css'
+import { useForm } from 'react-hook-form'
+import { atom, useAtom } from 'jotai';
+import { useState } from "react";
+import BuildNumberSelect from "./BuildNumberSelect";
+import API from '../../utils/api'
 
-export function NewJobPage() {
+const postNewJob = (data) => {
+    console.log('Post new job')
+}
+
+const jenkinsJobs = atom(async (get) => {
+    const { data } = await API.get('http://build.dev.btech/api/json?pretty=true')
+    let jobs = [];
+    if (data && data.jobs) {
+        data.jobs.map(it => {
+            if (it.name.search(/CentOS\d-based/i) === 0)
+                jobs.push(it.name)
+        })
+    }
+    return jobs;
+})
+
+
+
+const renderSelectJob = (jobs) => {
+    return jobs.map(it => <option value={it}>{it}</option>)
+}
+
+export function NewJobPage(props) {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [ selectedJob, setSelectedJob ] = useState()
+    const onSubmit = data => postNewJob(data);
+    let [ jobs ] = useAtom(jenkinsJobs);
+
+
+    return (
+        <div className="row justify-content-md-center">
+            <div className="col-12 col-lg-8">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="row">
+                        <div className="col-12 col-lg-8">
+                            <div className="form-group mt-3">
+                                <label>Jenkins job</label>
+                                <select {...register("jenkinsJob")} onChange={e => setSelectedJob(e.target.value)} className="form-select">
+                                    <option disabled selected>Select job</option>
+                                    {jobs && renderSelectJob(jobs)}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="form-group mt-3">
+                            <label for="selectBuildNumber">Build no.</label>
+                            <select {...register('buildNumbers')} id="selectBuildNumber" class="form-select" required>
+                                <option disabled selected>Build number</option>
+                                {
+                                    selectedJob && <BuildNumberSelect jobName={selectedJob} />
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <input defaultValue="test" {...register("example")} />
+            <input {...register("exampleRequired", { required: true })} />
+
+            {errors.exampleRequired && <span>This field is required</span>}
+            <input type="submit" />
+        </form>
+    )
+
     return (
         <div class="container my-5">
 
@@ -83,7 +157,7 @@ export function NewJobPage() {
                                 <div class="form-group">
                                     <label>Select a file</label>
                                     <select name="xmlFileId" id="xmlFileId" size="5" class="form-select"
-                                         required>
+                                        required>
 
 
                                         <option value="file.id" data-filename="file.filenam"

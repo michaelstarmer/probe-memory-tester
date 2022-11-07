@@ -147,25 +147,25 @@ function Home(props) {
     return (
         <>
             <div className='container-fluid mb-3'>
-                
+
             </div>
             <div className='container-fluid my-5'>
                 <div className="row">
-                    <div className='col-12 col-lg-4 offset-lg-1 mt-2'>
+                    <div className='col-12 col-xl-4 mt-2'>
                         <div className="row">
-                            <div className="col-12 col-lg-8 offset-lg-2 mb-5">
+                            <div className="col-12 col-xl-8 offset-xl-2 mb-5">
                                 <VmCard props={props} probeData={probeData} />
 
                             </div>
-                            <div className="col-12 col-lg-12 d-flex justify-content-center">
+                            <div className="col-12 col-xl-12 d-flex justify-content-center">
 
                                 <AlertList />
                             </div>
-                        <div className="my-5"></div>
+                            <div className="my-5"></div>
                         </div>
                     </div>
-                    <div className="col-12 col-lg-5 offset-lg-1">
-                        
+                    <div className="col-12 col-xl-6 offset-xl-1">
+
                         <Suspense fallback="Loading jobs...">
                             <CompletedJobs />
                         </Suspense>
@@ -174,7 +174,7 @@ function Home(props) {
                             <FailedJobs />
                         </Suspense>
                     </div>
-                    
+
 
                 </div>
 
