@@ -3,7 +3,7 @@ import styled from "styled-components";
 import './NewJob.css'
 import { useForm } from 'react-hook-form'
 import { atom, useAtom } from 'jotai';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BuildNumberSelect from "./BuildNumberSelect";
 import API from '../../utils/api'
 
@@ -31,9 +31,21 @@ const renderSelectJob = (jobs) => {
 
 export function NewJobPage(props) {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [ selectedJob, setSelectedJob ] = useState()
     const onSubmit = data => postNewJob(data);
     let [ jobs ] = useAtom(jenkinsJobs);
+    const [ builds, setBuilds ] = useState([]);
+    const [ jobName, setJobName ] = useState();
+
+    useEffect(() => {
+        const getBuilds = async (value) => {
+            const response = await API.get(`http://build.dev.btech/job/${jobName}/api/json?pretty=true`)
+            if (builds.length < 1) {
+                setBuilds(response.data.builds)
+            }
+        }
+        if (jobName)
+            getBuilds(jobName)
+    }, [ jobName ])
 
 
     return (
@@ -44,23 +56,40 @@ export function NewJobPage(props) {
                         <div className="col-12 col-lg-8">
                             <div className="form-group mt-3">
                                 <label>Jenkins job</label>
-                                <select {...register("jenkinsJob")} onChange={e => setSelectedJob(e.target.value)} className="form-select">
+                                <select {...register("jenkinsJob")} onChange={e => setJobName(e.target.value)} className="form-select">
                                     <option disabled selected>Select job</option>
                                     {jobs && renderSelectJob(jobs)}
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="form-group mt-3">
-                            <label for="selectBuildNumber">Build no.</label>
-                            <select {...register('buildNumbers')} id="selectBuildNumber" class="form-select" required>
-                                <option disabled selected>Build number</option>
-                                {
-                                    selectedJob && <BuildNumberSelect jobName={selectedJob} />
-                                }
+                        <div class="col-12 col-lg-4">
+                            <div class="form-group mt-3">
+                                <label for="selectBuildNumber">Build no.</label>
+                                <select {...register('buildNumbers')} id="selectBuildNumber" class="form-select" required>
+                                    <option disabled selected>Build number</option>
+                                    {
+                                        builds.map(it => <option value={it.number}>{it.number}</option>)
+                                    }
 
-                            </select>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group mt-3">
+                                <label>Test duration</label>
+                                <select name="duration" class="form-select">
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="120">2 hours</option>
+                                    <option value="460">6 hours</option>
+                                    <option value="720">12 hours</option>
+                                    <option value="1440">24 hours</option>
+                                    <option value="2880">48 hours</option>
+                                    <option value="4320">72 hours</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
