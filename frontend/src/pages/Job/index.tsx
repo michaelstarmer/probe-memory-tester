@@ -27,17 +27,62 @@ const processesData = atom(async (get) => {
     }
 })
 
+const procStatTestData = {
+    ana: [
+        {
+            id: 123,
+            name: "ana",
+            job_id: 149,
+            mem: 0.1,
+            cpu: 0.8,
+            created_at: "2022-11-01T15:24:05.000+01:00"
+        },
+        {
+            id: 124,
+            name: "ana",
+            job_id: 149,
+            mem: 0.2,
+            cpu: 0.7,
+            created_at: "2022-11-01T15:25:05.000+01:00"
+        }
+    ],
+    ewe: [
+        {
+            id: 125,
+            name: "ewe",
+            job_id: 149,
+            mem: 0.1,
+            cpu: 0.8,
+            created_at: "2022-11-01T15:24:05.000+01:00"
+        },
+        {
+            id: 126,
+            name: "ewe",
+            job_id: 149,
+            mem: 0.2,
+            cpu: 0.7,
+            created_at: "2022-11-01T15:25:05.000+01:00"
+        }
+    ]
+}
+
+const renderProcessStats = procStats => {
+    return Object.keys(procStats).map(it => {
+        return <div className="col-12 col-lg-4"><ProcessesChart procName={it} data={procStats[it]} /></div>
+    })
+}
 
 const Job = () => {
     const [job] = useAtom(jobData);
     const [procStats] = useAtom(processesData)
-
     return (
         <>
             <StatusHeader status={job.status} />
             <Overview job={job} />
             <div className="container-fluid py-3 mt-5">
-                <ProcessesChart data={procStats} />
+                <div className="row">
+                    {renderProcessStats(procStats)}
+                </div>
             </div>
 
             <div className="container-fluid py-3 mt-5" >
@@ -57,8 +102,6 @@ export function JobPage(props) {
         <div className="container-fluid">
             <Job />
         </div>
-
-
     )
 }
 

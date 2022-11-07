@@ -66,7 +66,7 @@ const renderLog = (logs) => {
     }
     const logsElements = logs.map(element => {
         return <div key={element.id}>
-           <div className={`log-${element.type} mt-2`}>[ {element.created_at} ]:</div>{element.message}
+            <span className={`log-${element.type} mt-2`}>{element.created_at}: </span>{element.message}
         </div>
     });
     return logsElements
@@ -80,21 +80,21 @@ export function JobLog({ id }) {
     useEffect(() => {
         setInterval(() => {
             if (!logEntries.length || logEntries.length < log.length) {
-                setEntries(current => [...current, ...log.slice(current.length)])
+                setEntries(current => [ ...current, ...log.slice(current.length) ])
             }
         }, 600)
     }, [])
     useState(() => {
 
     })
-    
+
     const handleClick = () => setLogMinimized(!logMinimized)
     return (
         <Snippet id="log" className={`snippet ${logMinimized ? 'log-hide' : ''}`}>
             <Title onClick={handleClick}>
                 <span>log</span>
                 <Icon>
-                    { logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" /> }
+                    {logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" />}
                 </Icon>
             </Title>
             <LogContent ref={bottomRef}>

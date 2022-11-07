@@ -4,16 +4,20 @@ import { AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer
 const formatAxis = tickItem => moment(tickItem).format('LT')
 const labelFormatAxis = tickItem => moment(tickItem).format('llll')
 
-export function ProcessesChart({ data }) {
+export function ProcessesChart({ procName, data }) {
     console.log('pc DATA:', data)
-    return <></>
+    // return <>
+    //     <h5>Process Chart (Size: {data.length})</h5>
+    // </>
     return (<div style={{ width: '100%' }}>
+        <h6>{procName}</h6>
         <ResponsiveContainer width="100%" height={200}>
             <AreaChart
+                key={data}
                 width={500}
                 height={100}
                 data={data}
-                syncId="graph-mem"
+                syncId={`${procName}-mem`}
                 margin={{
                     top: 10,
                     right: 30,
@@ -22,7 +26,7 @@ export function ProcessesChart({ data }) {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="created_at" tickFormatter={formatAxis} />
                 <YAxis />
                 <Tooltip labelFormatter={labelFormatAxis} />
                 {/* <Area type="monotone" dataKey="name" stroke="#8884d8" fill="#8884d8" /> */}

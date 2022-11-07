@@ -127,6 +127,34 @@
                 }
             }
         },
+        "/jobs/{jobId}": {
+            "get": {
+                "summary": "Get job",
+                "description": "Get job by ID",
+                "operationId": "getJobs",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid value"
+                    }
+                }
+            }
+        },
         "/jobs/next": {
             "get": {
                 "summary": "Get job waiting to start",
@@ -285,6 +313,36 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/Log"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/proc-stats": {
+            "get": {
+                "summary": "Process stats",
+                "description": "Returns recorded stats belonging to a the processes on a praticular job.",
+                "operationId": "procStatsByJobId",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Stat"
                             }
                         }
                     },
@@ -496,9 +554,6 @@
                     "type": "string",
                     "format": "date-time"
                 }
-            },
-            "xml": {
-                "name": "q"
             }
         },
         "Log": {

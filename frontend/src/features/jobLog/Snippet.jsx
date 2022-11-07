@@ -11,7 +11,7 @@ const SnippetDiv = styled.div`
     bottom: 0;
     left: 0;
     height: 450px;
-    width: 300px;
+    width: 400px;
     /* box-shadow: 3px 5px 6px 8px #000; */
     transition: 50ms ease-in-out;
     

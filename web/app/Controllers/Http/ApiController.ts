@@ -457,21 +457,28 @@ export default class ApiController {
         return response.status(200).json({ success: true })
     }
 
-    public async job_proc_stats({ params, response }: HttpContextContract) {
-        const procStats = await ProcStat
-            .query()
-            .where('job_id', params.jobId)
+    public async job_proc_stats({ params, request, response }: HttpContextContract) {
+        const { name } = request.qs();
+
+        let procStats = await ProcStat.query().where('job_id', params.jobId)
+
+        if (name) {
+            procStats = await ProcStat.query().where('job_id', params.jobId).where('name', name);
+        }
 
         console.log('# of proc stats:', procStats.length)
         let stats: {} = {};
+
         procStats.map(it => {
             if (!stats[it.name]) {
                 stats[it.name] = []
             }
             stats[it.name].push(it)
         })
-        console.log(stats['ana'])
-        return response.json(stats['ana'])
+        const totalStatsCount = procStats.length;
+        const uniqueProcessesCount = Object.keys(stats).length;
+        console.log(`Returned a total of ${totalStatsCount} readings, divided into ${uniqueProcessesCount} processes.`)
+        return response.json(stats)
     }
 
     public async add_proc_stats({ params, request, response }: HttpContextContract) {
