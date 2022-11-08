@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Job from 'App/Models/Job'
 import ProcStatAlert from 'App/Models/ProcStatAlert';
 import Setting from 'App/Models/Setting'
+import Ws from 'App/Services/Ws';
 const xml2js = require('xml2js')
 const axios = require('axios');
 
@@ -72,7 +73,7 @@ export default class AppController {
                 probeData.isAvailable = false;
             }
 
-            console.log({ active: jobsActive, completed: jobsCompleted, failed: jobsFailed })
+            // console.log({ active: jobsActive, completed: jobsCompleted, failed: jobsFailed })
 
 
             return view.render('landing', {
@@ -112,7 +113,7 @@ export default class AppController {
 
 
 
-    async edit_host({ view, request }: HttpContextContract) {
+    async edit_host({ view, response, request }: HttpContextContract) {
         const probeIp = await Setting.findBy('key', 'probe_ip')
         const jenkinsJob = await Setting.findBy('key', 'jenkins_job')
         const duration = await Setting.findBy('key', 'duration')
@@ -120,6 +121,10 @@ export default class AppController {
         const esxi_snapshot_id = await Setting.findBy('key', 'esxi_snapshot_id')
         const { error } = request.all();
         console.log(error)
+        Ws.io.emit('log', { message: 'test' })
+        Ws.io.emit('log', { message: 'test1' })
+        Ws.io.emit('log', { message: 'test2' })
+        return response.json({})
 
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
         const jobs: string[] = []
