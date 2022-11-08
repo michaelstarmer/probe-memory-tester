@@ -424,7 +424,7 @@ export default class ApiController {
         try {
             await job.merge({ status }).save()
             await job.related('logs').save(log)
-            return response.status(200).json({ success: true })
+            return response.status(200).json(job)
         } catch (error) {
             console.error(error)
             return response.status(400).json({ error });

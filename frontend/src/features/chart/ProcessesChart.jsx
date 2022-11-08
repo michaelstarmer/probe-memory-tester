@@ -5,10 +5,6 @@ const formatAxis = tickItem => moment(tickItem).format('LT')
 const labelFormatAxis = tickItem => moment(tickItem).format('llll')
 
 export function ProcessesChart({ procName, data }) {
-    console.log('pc DATA:', data)
-    // return <>
-    //     <h5>Process Chart (Size: {data.length})</h5>
-    // </>
     return (<div style={{ width: '100%' }}>
         <h6>{procName}</h6>
         <ResponsiveContainer width="100%" height={200}>

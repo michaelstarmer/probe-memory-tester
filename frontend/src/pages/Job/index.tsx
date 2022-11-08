@@ -1,13 +1,18 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect, useRef } from "react";
 import { atom, useAtom } from 'jotai';
+import { useResetAtom, atomWithReset } from 'jotai/utils'
 import API from '../../utils/api'
 import { useParams, Link } from "react-router-dom";
 import "./Job.css"
 import StatusHeader from './StatusHeader'
 import ProcessesChart from '../../features/chart/ProcessesChart'
-import Overview from './Overview'
+import styled from 'styled-components'
 import LogWindow from './LogWindow'
 import JobLog from '../../features/jobLog'
+import { MDBBtn } from "mdb-react-ui-kit";
+import MemoryChart from '../../features/chart/MemoryChart'
+import JobDataTable from './JobDataTable'
+import CmdModal from "../../features/modal/CmdModal";
 
 const jobData = atom(async (get) => {
     let { id } = useParams()
@@ -27,44 +32,6 @@ const processesData = atom(async (get) => {
     }
 })
 
-const procStatTestData = {
-    ana: [
-        {
-            id: 123,
-            name: "ana",
-            job_id: 149,
-            mem: 0.1,
-            cpu: 0.8,
-            created_at: "2022-11-01T15:24:05.000+01:00"
-        },
-        {
-            id: 124,
-            name: "ana",
-            job_id: 149,
-            mem: 0.2,
-            cpu: 0.7,
-            created_at: "2022-11-01T15:25:05.000+01:00"
-        }
-    ],
-    ewe: [
-        {
-            id: 125,
-            name: "ewe",
-            job_id: 149,
-            mem: 0.1,
-            cpu: 0.8,
-            created_at: "2022-11-01T15:24:05.000+01:00"
-        },
-        {
-            id: 126,
-            name: "ewe",
-            job_id: 149,
-            mem: 0.2,
-            cpu: 0.7,
-            created_at: "2022-11-01T15:25:05.000+01:00"
-        }
-    ]
-}
 
 const renderProcessStats = procStats => {
     return Object.keys(procStats).map(it => {
@@ -76,17 +43,95 @@ const renderProcessStats = procStats => {
     })
 }
 
-const Job = () => {
+const stopJobRequest = async (id) => {
+
+    const response = await API.get(`/api/jobs/${id}/stop`);
+    if (response && response.status == 200) {
+        console.log('Job deleted successfully:', response);
+        return response.data
+    }
+}
+
+const Div = styled.div`
+    background: rgba(150, 150, 150, .1);
+`
+
+
+
+const Job = (props) => {
     const [job] = useAtom(jobData);
+    const { id } = useParams()
     const [procStats] = useAtom(processesData)
+    const [basicModal, setBasicModal] = useState(false)
+    // const [data, setData] = useRef({id: null, status: null, remaining: null})
+    const [jobStatus, setJobStatus] = useState(null)
+    const [jobLog, setJobLog] = useState([])
+    const [isUpdated, setIsUpdated] = useState(true)
+
+
+    const toggleShow = () => setBasicModal(!basicModal)
+    const handleClick = () => {
+        console.log('Stopping...')
+        // setData(null)
+        job(stopJobRequest(id))
+
+    }
+
+    useEffect(() => {
+        const getJobData = async (value) => {
+
+            const response = await API.get(`/api/jobs/${id}`)
+            setJobStatus(response.data.status)
+            setJobLog(response.data.log)
+
+
+        }
+        const interval = setInterval(() => {
+            setIsUpdated(false)
+            getJobData(id)
+            setIsUpdated(true)
+        }, 2000)
+        return () => clearInterval(interval)
+    }, [id])
+
     return (
         <>
-            <StatusHeader status={job.status} />
-            <Overview job={job} />
+            <StatusHeader status={jobStatus} />
+            <Div className="container-fluid container-dark">
+                <div className="container py-5">
+                    <div className="row">
+                        <div className="col-md-12 col-xl-5 mb-3 d-flex flex-column justify-content-center">
+
+                            <JobDataTable {...job} />
+
+                        </div>
+                        <div id="chart" className="col-12 col-xl-6 offset-xl-1">
+                            <MemoryChart data={job.systemStats} />
+                        </div>
+                        <div className="row my-3">
+                            <div className="col-12">
+                                <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple onClick={toggleShow}>
+                                    Commands
+                                </MDBBtn>
+                                <CmdModal onClick={toggleShow} toggleShow={toggleShow} setShow={setBasicModal} basicModal={basicModal} probeIp={'10.0.28.141'} />
+                                {
+                                    ['initializing', 'running'].includes(job.status)
+                                    && <button type="button" onClick={handleClick} id="btn-stop-job" className="btn btn-danger btn-sm">
+                                        Stop test
+                                    </button>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </Div>
             <div className="container-fluid py-3 mt-5">
                 <div className="row">
                     {renderProcessStats(procStats)}
                 </div>
+
             </div>
 
             <JobLog />
