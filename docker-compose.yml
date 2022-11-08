@@ -23,7 +23,10 @@ services:
       - public:/app/build/public/public
 
   react:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        API_HOST: 'http://memtest.dev.btech'
     restart: unless-stopped
     container_name: react
     ports:
