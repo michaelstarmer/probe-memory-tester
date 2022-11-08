@@ -25,15 +25,14 @@ services:
   react:
     build:
       context: ./frontend
-      args:
-        API_HOST: 'http://memtest.dev.btech'
     restart: unless-stopped
     container_name: react
     ports:
       - 3000:3000
     environment:
-      API_HOST: 'http://memtest.dev.btech'
-#      API_HOST: 'http://web:3333'
+      API_HOST: 'web'
+      NODE_ENV: production
+  #      API_HOST: 'http://web:3333'
 
   mariadb:
     image: mariadb
