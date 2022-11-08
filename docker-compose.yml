@@ -3,6 +3,7 @@ version: '3.6'
 services:
   cron:
     build: ./cron
+    restart: unless-stopped
     network_mode: "host"
     container_name: cron
     volumes:
@@ -14,6 +15,7 @@ services:
 
   web:
     build: ./web
+    restart: unless-stopped
     container_name: web
     ports:
       - 3333:3333
@@ -22,12 +24,14 @@ services:
 
   react:
     build: ./frontend
+    restart: unless-stopped
     container_name: react
     ports:
       - 3000:3000
 
   mariadb:
     image: mariadb
+    restart: unless-stopped
     container_name: mariadb
     ports:
       - 3306:3306
