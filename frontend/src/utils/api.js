@@ -20,7 +20,9 @@ export class API {
     static async get(url, options = null) {
         let API_HOST = 'localhost:3333'
         if (process.env.NODE_ENV === 'production') {
-            API_HOST = 'web'
+            API_HOST = 'http://memtest.dev.btech:3333'
+            console.log('NODE_ENV is production. Using:', API_HOST)
+            console.log('REACT_API_HOST using:', process.env.REACT_API_HOST)
         }
         const client = axios.create({ baseURL: API_HOST, timeout: 3000 });
         console.log(`GET request -> ${url}`)
@@ -35,7 +37,9 @@ export class API {
     static async post(url, data, options = null) {
         let API_HOST = 'localhost:3333'
         if (process.env.NODE_ENV === 'production') {
-            API_HOST = 'web'
+            API_HOST = 'http://memtest.dev.btech:3333'
+            console.log('NODE_ENV is production. Using:', API_HOST)
+            console.log('REACT_API_HOST using:', process.env.REACT_API_HOST)
         }
         const client = axios.create({ baseURL: API_HOST, timeout: 3000 });
         console.log(`GET request -> ${url}`)

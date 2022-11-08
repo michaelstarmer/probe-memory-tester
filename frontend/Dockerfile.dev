@@ -4,7 +4,7 @@ COPY . .
 RUN npm i serve
 RUN npm ci
 RUN npm run build
-# ARG REACT_API_HOST
-# ENV REACT_API_HOST=$REACT_API_HOST
+ARG REACT_API_HOST
+ENV NODE_ENV development
 EXPOSE 3000
 CMD [ "npx", "serve", "build" ]
