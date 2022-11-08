@@ -54,7 +54,7 @@ services:
 volumes:
   public:
 networks:
-  probe-test-net:
+  default:
     driver: bridge
     ipam:
       driver: default
