@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const client = axios.create({ baseURL: 'http://localhost:3333', timeout: 3000 });
+const API_HOST = process.env.API_HOST ? process.env.API_HOST : 'http://localhost:3333'
+const client = axios.create({ baseURL: API_HOST, timeout: 3000 });
 const headers = {
     "content-type": "application/json",
     "accept": "application/json",
@@ -9,7 +10,7 @@ const headers = {
 export class API {
     constructor(isProd = false) {
         this.isProd = isProd;
-        this.client = axios.create({ baseURL: 'http://localhost:3333', timeout: 3000 })
+        this.client = axios.create({ baseURL: API_HOST, timeout: 3000 })
         this.headers = {
             "content-type": "application/json",
             "accept": "application/json",

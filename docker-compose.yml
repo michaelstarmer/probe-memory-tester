@@ -28,6 +28,9 @@ services:
     container_name: react
     ports:
       - 3000:3000
+    environment:
+      API_HOST: 'http://memtest.dev.btech'
+#      API_HOST: 'http://web:3333'
 
   mariadb:
     image: mariadb
