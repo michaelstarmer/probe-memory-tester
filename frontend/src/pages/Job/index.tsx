@@ -89,10 +89,10 @@ const Job = () => {
                 </div>
             </div>
 
+            <JobLog />
             <div className="container-fluid py-3 mt-5" >
                 <div className="row">
                     <div className="col-12 col-lg-6 mb-5 d-flex flex-column justify-content-center log-wrap">
-                        <JobLog />
                     </div>
                 </div>
             </div>

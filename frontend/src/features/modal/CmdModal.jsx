@@ -1,19 +1,93 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
-import Modal from 'react-bootstrap/Modal'
+import React, { useState } from "react";
+import {
+    MDBBtn,
+    MDBModal,
+    MDBModalDialog,
+    MDBModalContent,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+} from 'mdb-react-ui-kit'
+import { ModalBody } from "react-bootstrap";
+import styled from "styled-components";
 
-export const CmdModal = ({ probeIp }) => {
+const ModalContent = styled(MDBModalContent)`
+    background-color: rgb(24, 26, 27);
+    border-color: rgba(140, 138, 115, .2);
+    outline-color: initial;
+`
+
+const ModalHeader = styled(MDBModalHeader)`
+    border-bottom-color: rgb(56, 61, 63);
+
+`
+
+const ModalFooter = styled(MDBModalFooter)`
+    border-top-color: rgb(56, 61, 63);
+`
+
+export const CmdModal = (props, { probeIp }) => {
+
     return (
-        <Modal.Dialog>
-            <Modal.Header closeButton>Title</Modal.Header>
-            <Modal.Body>
-                <p>Body</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary">Close</Button>
-                <Button variant="primary">Save changes</Button>
-            </Modal.Footer>
-        </Modal.Dialog>
+        <>
+            <MDBModal show={props.basicModal} setShow={props.setShow} tabindex='-1'>
+                <MDBModalDialog>
+                    <ModalContent>
+                        <ModalHeader>
+                            <MDBModalTitle>Modal title</MDBModalTitle>
+                            <MDBBtn className="btn-close" color='none' onClick={props.onClick}></MDBBtn>
+                        </ModalHeader>
+                        <ModalBody>
+                            <div class="modal-body">
+                                <p>This is a list of relevant bash commands for interacting with ESXi or the VM host itself.</p>
+                                <div class="mb-3">
+                                    <h6>SSH probe:</h6>
+                                    <div class="snippet">
+                                        <span>root@</span><span>{probeIp}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>ESXi get all VMs</h6>
+                                    <div class="snippet">
+                                        <span>sshpass -p ldap2retro ssh 10.0.28.202 vim-cmd vmsvc/getallvms</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>ESXi power on</h6>
+                                    <div class="snippet">
+                                        <span>sshpass -p ldap2retro ssh 10.0.28.202 vim-cmd vmsvc/power.on 29</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>ESXi reboot VM</h6>
+                                    <div class="snippet">
+                                        <span>sshpass -p ldap2retro ssh 10.0.28.202 vim-cmd vmsvc/power.reset 29</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>ESXi get all snapshots for VM</h6>
+                                    <div class="snippet">
+                                        <span>sshpass -p ldap2retro ssh 10.0.28.202 vim-cmd vmsvc/snapshot.get 29</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>ESXi revert to default snapshot</h6>
+                                    <div class="snippet">
+                                        <span>
+                                            sshpass -p ldap2retro ssh 10.0.28.202 vim-cmd vmsvc/snapshot.revert 29 6 true
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ModalFooter>
+                                <MDBBtn onClick={() => props.toggleShow()} noRipple class="btn btn-secondary" data-bs-dismiss="modal">Close</MDBBtn>
+                            </ModalFooter>
+                        </ModalBody>
+                    </ModalContent>
+                </MDBModalDialog>
+            </MDBModal>
+        </>
     )
     return (
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

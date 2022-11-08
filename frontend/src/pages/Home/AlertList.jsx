@@ -49,9 +49,10 @@ const Alert = ({ job_id, level, message, created_at }) => {
 
 export function AlertList() {
     let [ alerts ] = useAtom(alertData)
+    console.log(alerts)
     return (
         <Ul className="">
-            {alerts.map(it => <Alert job_id={it.job_id} level={it.level} message={it.message} created_at={it.created_at} />)}
+            {alerts.map(it => <Alert job_id={it.job_id} level={it.type} message={it.message} created_at={it.created_at} />)}
         </Ul>
     )
 }

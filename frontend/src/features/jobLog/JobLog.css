@@ -5,14 +5,15 @@
 
 
 .log-hide {
-    transform: translateY(400px);
+    transform: translate(0, 415px);
+
 }
 
 .log-wrap {}
 
 .log-wrap--title {
     /* background-color: rgba(200, 200, 200, .5); */
-    background-color: rgba(225, 177, 44,1.0);
+    background-color: rgba(225, 177, 44, 1.0);
 }
 
 .log-error,

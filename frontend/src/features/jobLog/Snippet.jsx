@@ -4,7 +4,8 @@ import './JobLog.css'
 const SnippetDiv = styled.div`
     font-family: 'Inconsolta', monospace;
     font-size: 14px;
-    background-color: rgba(30, 39, 41, .9);
+    background-color: rgba(30, 39, 41, 1);
+    color: #fff;
     text-shadow: rgb(55 60 62) 0px 0px 5px;
     position: fixed;
     /* overflow-y: scroll; */

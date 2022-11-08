@@ -18,7 +18,7 @@ export class API {
     }
 
     static async get(url, options = null) {
-        let API_HOST = 'localhost:3333'
+        let API_HOST = 'http://localhost:3333'
         if (process.env.NODE_ENV === 'production') {
             API_HOST = 'http://memtest.dev.btech:3333'
             console.log('NODE_ENV is production. Using:', API_HOST)
@@ -35,7 +35,7 @@ export class API {
     }
 
     static async post(url, data, options = null) {
-        let API_HOST = 'localhost:3333'
+        let API_HOST = 'http://localhost:3333'
         if (process.env.NODE_ENV === 'production') {
             API_HOST = 'http://memtest.dev.btech:3333'
             console.log('NODE_ENV is production. Using:', API_HOST)

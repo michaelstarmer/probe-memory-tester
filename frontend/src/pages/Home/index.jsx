@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import JobsList from "../../features/jobs/JobsList.tsx";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import API from '../../utils/api'
 import CmdModal from "../../features/modal/CmdModal";
 import AlertList from "./AlertList";
 import JobListItem from '../../features/jobs/JobListItem'
+import { MDBBtn } from "mdb-react-ui-kit";
 
 const Text = styled.p`
     font-size: 12px;
@@ -125,12 +126,13 @@ const VmCard = (props) => {
 
 
             <div className="card-body text-center">
-                <Link to="/settings" className="btn btn-warning btn-sm">Settings</Link>
-                <a href="/apidoc" className="btn btn-secondary btn-sm">API doc</a>
 
-                <button type="button" className="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <Link to="/settings" noRipple className="btn btn-block btn-warning btn-sm mx-1">Settings</Link>
+                <a href="/apidoc" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
+                <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple toggleShow={props.toggleShow} onClick={props.toggleShow}>
                     Commands
-                </button>
+                </MDBBtn>
+
             </div>
 
             <div className="text-center mb-2">
@@ -144,6 +146,8 @@ const VmCard = (props) => {
 }
 
 function Home(props) {
+    const [ basicModal, setBasicModal ] = useState(false)
+    const toggleShow = () => setBasicModal(!basicModal)
     return (
         <>
             <div className='container-fluid mb-3'>
@@ -154,7 +158,7 @@ function Home(props) {
                     <div className='col-12 col-xl-4 mt-2'>
                         <div className="row">
                             <div className="col-12 col-xl-8 offset-xl-2 mb-5">
-                                <VmCard props={props} probeData={probeData} />
+                                <VmCard props={props} toggleShow={toggleShow} probeData={probeData} />
 
                             </div>
                             <div className="col-12 col-xl-12 d-flex justify-content-center">
@@ -179,7 +183,7 @@ function Home(props) {
                 </div>
 
             </div>
-            <CmdModal probeIp={probeData.ip} />
+            <CmdModal onClick={toggleShow} toggleShow={toggleShow} setShow={setBasicModal} basicModal={basicModal} probeIp={probeData.ip} />
         </>
     )
 }

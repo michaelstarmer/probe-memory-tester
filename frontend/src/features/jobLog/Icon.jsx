@@ -4,12 +4,12 @@ import styled from "styled-components";
 const Span = styled.span`
     /* background: rgba(204, 142, 53, .8); */
     border: 1px solid #fff;
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     text-align: center;
     cursor: pointer;
     border-radius: 50%;
-    font-size: 1rem;
+    font-size: 1px;
     &:hover {
         border-color: rgb(204, 142, 53);
         background: rgba(204, 142, 53, 1.0);
