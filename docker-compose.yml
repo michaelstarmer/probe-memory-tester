@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
     container_name: react
     ports:
-      - 3000:3000
+      - 8080:80
     environment:
       API_HOST: 'web'
 
