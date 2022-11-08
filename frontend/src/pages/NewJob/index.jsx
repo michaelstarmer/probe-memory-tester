@@ -9,6 +9,7 @@ import API from '../../utils/api'
 
 const postNewJob = (data) => {
     console.log('Post new job')
+    console.log(data)
 }
 
 const jenkinsJobs = atom(async (get) => {
@@ -23,18 +24,41 @@ const jenkinsJobs = atom(async (get) => {
     return jobs;
 })
 
+const xmlFiles = atom(async (get) => {
+    const { data } = await API.get('/api/xml')
+    if (data) {
+        console.log(data)
+        return data
+    }
+})
+
 
 
 const renderSelectJob = (jobs) => {
     return jobs.map(it => <option value={it}>{it}</option>)
 }
 
+const renderXmlDetailsPane = (xml) => {
+    if (xml) {
+
+    return <div id="metadata" class="col-12 col-lg-5 form-group hidden">
+        <h5>About XML</h5>
+        <div id="selectedXmlFileDescription"></div>
+        <div id="selectedXmlFileName" class="mb-2" style="word-wrap: break-word;"></div>
+        <div id="selectedXmlFileUploadedAt"></div>
+    </div>
+    }
+}
+
 export function NewJobPage(props) {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors, isDirty, isSubmitting, touchedFields, submitCount } } = useForm();
     const onSubmit = data => postNewJob(data);
     let [ jobs ] = useAtom(jenkinsJobs);
+    let [ xmls ] = useAtom(xmlFiles)
     const [ builds, setBuilds ] = useState([]);
     const [ jobName, setJobName ] = useState();
+    const [ xmlFile, setXmlFile ] = useState();
+
 
     useEffect(() => {
         const getBuilds = async (value) => {
@@ -91,7 +115,33 @@ export function NewJobPage(props) {
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
+
+                    <div class="row">
+                            <div class="col-12 mt-3">
+                                <h5>XML configuration</h5>
+                                <p class="text-muted">
+                                    Custom config files can also be <a href="/uploads">uploaded here</a>.
+                                </p>
+                            </div>
+                            <div class="col-12 col-lg-7 mb-3">
+                                <div class="form-group">
+                                    <label>Select a file</label>
+                                    <select {...register('xmlFile')} id="xmlFileId" size="5" class="form-select"
+                                        required>
+                                        {
+                                            xmls
+                                            && xmls.map(it => 
+                                            <option value={it.id} onClick={() => setXmlFile(it)} >
+                                                {it.filename}
+                                            </option>)
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            { renderXmlDetailsPane(xmlFile) }
+                        </div>
                 </form>
             </div>
         </div>
