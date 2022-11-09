@@ -51,10 +51,10 @@ const probeData = {
 
 const activeJobs = atom(async (get) => {
     try {
-        const response = await API.get("/api/jobs?limit=10&status=running")
-        if (response && response.data) {
-            // console.log(response.data)
-            return response.data;
+        const runningJobs = await API.get("/api/jobs?limit=10&status=running")
+        if (runningJobs.data) {
+            console.log(runningJobs.data)
+            return runningJobs.data;
         }
 
     } catch (error) {
@@ -62,6 +62,8 @@ const activeJobs = atom(async (get) => {
     }
 
 })
+
+
 
 const completedJobs = atom(async (get) => {
     try {
@@ -93,7 +95,7 @@ const failedJobs = atom(async (get) => {
 
 const ActiveJobs = () => {
     const [ jobs ] = useAtom(activeJobs);
-    return jobs && jobs.length > 0 ? <JobsList jobs={jobs} /> : <div className="p-3"><h5>Empty</h5></div>;
+    return <JobsList jobs={jobs} />
 }
 
 const FailedJobs = () => {
@@ -157,7 +159,7 @@ function Home(props) {
                 <div className="row">
                     <div className='col-12 col-xl-4 mt-2'>
                         <div className="row">
-                            <div className="col-12 col-xl-8 offset-xl-2 mb-5">
+                            <div className="col-12 col-lg-10 offset-lg-1 mb-5">
                                 <VmCard props={props} toggleShow={toggleShow} probeData={probeData} />
 
                             </div>
@@ -169,13 +171,12 @@ function Home(props) {
                         </div>
                     </div>
                     <div className="col-12 col-xl-6 offset-xl-1">
-                        <Suspense fallback="Loading jobs...">
+                        <Suspense fallback="Loading active jobs">
                             <ActiveJobs />
                         </Suspense>
                         <Suspense fallback="Loading jobs...">
                             <CompletedJobs />
                         </Suspense>
-                        <h3 className="mt-3">Failed</h3>
                         <Suspense fallback="Loading jobs...">
                             <FailedJobs />
                         </Suspense>

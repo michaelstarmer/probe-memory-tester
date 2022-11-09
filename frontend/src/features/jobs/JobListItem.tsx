@@ -13,7 +13,7 @@ const Badge = (props: BadgeProps) => {
     if (status == 'completed')
         return <span className="badge bg-success rounded-pill">Done</span>
     else if (status == 'running')
-        return <span className="badge bg-success rounded-pill">Running</span>
+        return <span className="badge bg-info rounded-pill">Running</span>
     else if (status == 'initializing')
         return <span className="badge bg-warning rounded-pill">Initializing</span>
     else if (status == 'failed')

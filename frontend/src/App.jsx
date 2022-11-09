@@ -11,15 +11,15 @@ import 'moment/locale/en-gb'
 import styled from 'styled-components';
 moment().locale('en-gb')
 
-const NavLink = ({to, children}) => {
+const NavLink = ({ to, children }) => {
   return <li className="nav-item">
-        <Link to={to} className='nav-link'>
-          {children}
-        </Link>
-      </li>
+    <Link to={to} className='nav-link'>
+      {children}
+    </Link>
+  </li>
 }
 
-const NavBrand = ({title}) => {
+const NavBrand = ({ title }) => {
   const H4 = styled.h4`
     text-transform: uppercase;
     margin: 0;
@@ -28,28 +28,28 @@ const NavBrand = ({title}) => {
     color: #ffffff8c;
   `
   return (
-  <Link to="/" className="navbar-brand">
-    <H4>{title}</H4>
-  </Link>)
+    <Link to="/" className="navbar-brand">
+      <H4>{title}</H4>
+    </Link>)
 }
 
-const NavBar = ({title, children}) => {
+const NavBar = ({ title, children }) => {
   const Nav = styled.nav`
     
   `
   return (
     <nav id="nav" className="navbar navbar-expand-lg navbar-dark">
-        <div className="container-fluid">
-          <NavBrand title="Memtest" />
-          <div id="c-nav">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <NavLink to="/new-job">New Job</NavLink>
-              <NavLink to="/uploads">Uploads</NavLink>
-              <NavLink to="/settings">Settings</NavLink>
-            </ul>
-          </div>
+      <div className="container-fluid">
+        <NavBrand title="Memtest" />
+        <div id="c-nav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <NavLink to="/new-job">New Job</NavLink>
+            <NavLink className='nav-item' to="http://memtest.dev.btech/uploads">Uploads</NavLink>
+            <NavLink to="/settings">Settings</NavLink>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
   )
 }
 
