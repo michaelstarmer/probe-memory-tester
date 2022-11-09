@@ -24,6 +24,7 @@
     "@adonisjs/core": "^5.4.0",
     "@adonisjs/i18n": "^1.5.4",
     "@adonisjs/lucid": "^16.3.2",
+    "@adonisjs/redis": "^7.3.2",
     "@adonisjs/repl": "^3.1.0",
     "@adonisjs/session": "^6.4.0",
     "@adonisjs/shield": "^7.0.0",
@@ -41,6 +42,7 @@
     "redoc": "^2.0.0-rc.64",
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
+    "socket.io": "^4.5.3",
     "source-map-support": "^0.5.21",
     "xml2js": "^0.4.23"
   }

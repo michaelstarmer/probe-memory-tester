@@ -24,6 +24,7 @@ Route.get('/api/jobs/:id', 'ApiController.get_job_by_id')
 Route.get('/api/jobs/:id/alerts', 'ApiController.get_job_alerts')
 Route.get('/api/jobs/:id/stop', 'ApiController.stop_job')
 Route.get('/api/jobs/:id/status/:status', 'ApiController.set_job_status')
+Route.get('/api/jobs/:id/dashVersion/:dashVersion', 'ApiController.set_job_dash_version')
 Route.get('/api/jobs/:id/start', 'ApiController.start_job_by_id')
 Route.post('/api/jobs/:id/log', 'ApiController.create_job_log')
 Route.get('/api/jobs/:id/log', 'ApiController.get_job_log')
@@ -64,3 +65,5 @@ Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
 Route.get('/api/queue/active', 'ApiController.get_running_job')
 /* end deprecated routes */
+
+Route.get('/socket', 'ApiController.job_log_socket')

@@ -10,9 +10,17 @@ import Setting from 'App/Models/Setting'
 import ProcStat from 'App/Models/ProcStat'
 import Logger from '@ioc:Adonis/Core/Logger'
 import ProcStatAlert from 'App/Models/ProcStatAlert'
-
+import Ws from 'App/Services/Ws'
+import Redis from '@ioc:Adonis/Addons/Redis'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class ApiController {
+    async job_log_socket({ response }: HttpContextContract)
+    {
+        Ws.io.emit('log', {message: 'test'})
+        
+    }
+
     async get_probe_config({ response }: HttpContextContract) {
         const payload = {}
         const setting = await Setting.all()
@@ -89,6 +97,7 @@ export default class ApiController {
             jobJson.systemStats = systemStats.concat(jobJson.systemStats.slice(-10))
         }
 
+        
         try {
             return response.json(jobJson);
         } catch (error) {
@@ -179,51 +188,131 @@ export default class ApiController {
         }
     }
 
-    public async create_job({ request, response }: HttpContextContract) {
-        const payload = request.only(['memory', 'xmlFileId', 'duration', 'jenkinsJob', 'dashVersion', 'gitCommit', 'buildNumber', 'cpu', 'securityAudit']);
+    public async create_custom_job({request, response}: HttpContextContract) {
+        let { jenkinsJob, duration, xmlFileId, memory, securityAudit, buildNumber } = request.all();
+        let gitCommit: string = '';
 
+        const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/api/json?pretty=true`
+        const { data } = await axios.get(jenkinsJobUrl);
+
+        if (buildNumber) {
+            const buildUrl = `http://10.0.31.142/job/${jenkinsJob}/${buildNumber}/api/json?pretty=true`
+            console.log(`Verifying that build number ${buildNumber} exists @ ${buildUrl}`)
+            try {
+                const jenkinsResponse = await axios.get(buildUrl);
+                const { data } = jenkinsResponse;
+                console.log(data)
+                const commitId: string = data['changeSet']['items'][0]['commitId']
+                if (!commitId) {
+                    console.error('CommitId not found!');
+                    
+                    return response.redirect('/jobs/new')
+                }
+                gitCommit = commitId;
+                console.log({ commitId })
+
+            } catch (error) {
+                console.error('Invalid build number!', error);
+                
+                return response.redirect('/jobs/new')
+            }
+        }
+        // if no build number specified, default to latest build
+        if (data && !buildNumber) {
+            buildNumber = data['builds'][0]['number']
+        }
         try {
-            if (!payload.xmlFileId || !payload.jenkinsJob)
+            const job = await Job.create({
+                memory: memory || 0,
+                jenkinsJob,
+                gitCommit,
+                buildNumber,
+                xmlFileId,
+                duration,
+                isManual: true,
+            })
+            console.log("Manual job created successfully:")
+            console.log(`ID:        ${job.id}`)
+            console.log(`Build:     ${job.jenkinsJob} / ${job.buildNumber}`)
+            console.log(`Url:       http://${request.hostname()}/jobs/${job.id}`)
+
+            if (securityAudit) {
+                const jobSecurityAudit = new JobSecurityAudit()
+                await job.related('securityAudit').create(jobSecurityAudit)
+            }
+            response.json(job)
+        } catch (error) {
+            console.error('error creating manual job!', error);
+            return response.json(error)
+        }
+    }
+
+
+    public async create_job({ request, response }: HttpContextContract) {
+        let { jenkinsJob, duration, xmlFileId, memory, securityAudit, buildNumber } = request.all();
+        let gitCommit: string = '';
+        try {
+            if (!xmlFileId || !jenkinsJob)
                 return response.json({ error: 'Missing parameters. Required: memory, xmlFileId, duration, jenkinsJob' })
 
-            if (!payload.duration)
+            if (!duration)
                 return response.json({ error: 'Missing parameter: duration' })
 
-            console.log('payload:', payload)
 
             // set default value
-            if (!payload.cpu) {
-                payload.cpu = 8
-            }
-
-            if (!payload.buildNumber) {
-                const jenkinsJobUrl = `http://10.0.31.142/job/${payload.jenkinsJob}/lastSuccessfulBuild/api/json?pretty=true`
+            
+            if (!buildNumber) {
+                const jenkinsJobUrl = `http://10.0.31.142/job/${jenkinsJob}/lastSuccessfulBuild/api/json?pretty=true`
                 const { data } = await axios.get(jenkinsJobUrl);
 
                 if (data) {
-                    payload.buildNumber = data['build']['number']
+                    buildNumber = data['build']['number']
                 }
             }
+            
+            if (buildNumber) {
+                const buildUrl = `http://10.0.31.142/job/${jenkinsJob}/${buildNumber}/api/json?pretty=true`
+                console.log(`Verifying that build number ${buildNumber} exists @ ${buildUrl}`)
+                try {
+                    const jenkinsResponse = await axios.get(buildUrl);
+                    const { data } = jenkinsResponse;
+                    console.log(data)
+                    const commitId: string = data['changeSet']['items'][0]['commitId']
+                    if (!commitId) {
+                        console.error('CommitId not found!');
+                        
+                        return response.redirect('/jobs/new')
+                    }
+                    gitCommit = commitId;
+                    console.log({ commitId })
+    
+                } catch (error) {
+                    console.error('Invalid build number!', error);
+                    
+                    return response.redirect('/jobs/new')
+                }
+            }
+            // if no build number specified, default to latest build
+            
 
 
             const newJob = new Job()
             newJob.merge({
-                memory: payload.memory || 0,
-                cpu: payload.cpu,
-                xmlFileId: payload.xmlFileId,
-                jenkinsJob: payload.jenkinsJob,
-                buildNumber: payload.buildNumber,
-                gitCommit: payload.gitCommit,
-                dashVersion: payload.dashVersion,
+                memory: memory || 0,
+                cpu: 0,
+                xmlFileId,
+                jenkinsJob,
+                buildNumber,
+                gitCommit,
             })
 
-            if (payload.duration) {
+            if (duration) {
 
-                newJob.duration = payload.duration;
+                newJob.duration = duration;
             }
             await newJob.save()
 
-            if (payload.securityAudit) {
+            if (securityAudit) {
                 await newJob.related('securityAudit').create({ status: 'waiting' })
                 console.log('Added security audit request to job.')
             }
@@ -386,6 +475,17 @@ export default class ApiController {
 
     }
 
+    public async set_job_dash_version({ request, response, params }: HttpContextContract) {
+        const { id, dashVersion} = params;
+        const job = await Job.findBy('id', id)
+        if (!job) {
+            return response.json({error: "No job found"})
+        }
+        await job.merge({ dashVersion }).save()
+        return response.status(200).json({ success: true })
+
+    }
+
     public async find_identical_jobs({ request, response, params }: HttpContextContract) {
         const { jenkinsJob, buildNumber } = params;
 
@@ -424,7 +524,7 @@ export default class ApiController {
         try {
             await job.merge({ status }).save()
             await job.related('logs').save(log)
-            return response.status(200).json({ success: true })
+            return response.status(200).json(job)
         } catch (error) {
             console.error(error)
             return response.status(400).json({ error });
@@ -458,13 +558,22 @@ export default class ApiController {
     }
 
     public async job_proc_stats({ params, request, response }: HttpContextContract) {
-        const { name } = request.qs();
-
-        let procStats = await ProcStat.query().where('job_id', params.jobId)
-
+        const { name, limit } = request.qs();
+        let query = `SELECT * FROM proc_stats WHERE job_id = ${params.jobId}`
         if (name) {
-            procStats = await ProcStat.query().where('job_id', params.jobId).where('name', name);
+            query += ` AND name = '${name}'`
         }
+        query+=` ORDER BY created_at ASC`
+        if (limit) {
+            query += ` LIMIT ${limit}`
+        }
+        
+        const result = await Database.rawQuery(query)
+        if (!result || result[0].length < 1) {
+            return response.json({})
+        }
+        let procStats = result[0]
+
 
         console.log('# of proc stats:', procStats.length)
         let stats: {} = {};
@@ -478,6 +587,9 @@ export default class ApiController {
         const totalStatsCount = procStats.length;
         const uniqueProcessesCount = Object.keys(stats).length;
         console.log(`Returned a total of ${totalStatsCount} readings, divided into ${uniqueProcessesCount} processes.`)
+        let tmp = []
+        Object.keys(stats).map(it => tmp.push(it))
+        console.log(tmp)
         return response.json(stats)
     }
 

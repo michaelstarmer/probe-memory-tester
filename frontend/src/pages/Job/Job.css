@@ -1,3 +1,12 @@
+.slide-out {
+    /* transform: translate(600px, 0); */
+    /* transform: translateX(-250px); */
+}
+.slide-in {
+    /* transform: translateX(250px); */
+    /* width: 100%; */
+    /* width: 1000px; */
+}
 table a { text-decoration: none; }
 .uppercase {
     text-transform: uppercase;

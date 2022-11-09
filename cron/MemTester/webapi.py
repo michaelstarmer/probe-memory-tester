@@ -38,6 +38,10 @@ class WebApi:
     def setJobStatus(self, id, status):
         response = self._get(f'api/jobs/{id}/status/{status}')
         return response
+    
+    def setDashVersion(self, id, dashVersion):
+        response = self._get(f'api/jobs/{id}/dashVersion/{dashVersion}')
+        return response
 
     def addProcStats(self, jobId, payload):
         response = self._post(

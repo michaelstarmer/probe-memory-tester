@@ -6,6 +6,7 @@ import { std } from 'mathjs'
 import Logger from '@ioc:Adonis/Core/Logger'
 import Database from '@ioc:Adonis/Lucid/Database'
 import JobLog from './JobLog'
+import Redis from '@ioc:Adonis/Addons/Redis'
 
 export default class ProcStat extends BaseModel {
   @column({ isPrimary: true })
@@ -149,9 +150,8 @@ AND S.job_id = ${procstat.jobId}'
 
 
     }
-
-
   }
+
 
 
   @column.dateTime({ autoCreate: true })

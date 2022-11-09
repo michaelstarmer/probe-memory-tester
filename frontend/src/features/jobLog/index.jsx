@@ -72,11 +72,10 @@ const renderLog = (logs) => {
     return logsElements
 }
 
-export function JobLog({ id }) {
+export function JobLog(props,{ id }) {
     const bottomRef = useRef(null);
     const [ log ] = useAtom(logData)
     const [ logEntries, setEntries ] = useState([])
-    const [ logMinimized, setLogMinimized ] = useState(false);
     useEffect(() => {
         setInterval(() => {
             if (!logEntries.length || logEntries.length < log.length) {
@@ -88,13 +87,12 @@ export function JobLog({ id }) {
 
     })
 
-    const handleClick = () => setLogMinimized(!logMinimized)
     return (
-        <Snippet id="log" className={`snippet ${logMinimized ? 'log-hide' : ''}`}>
-            <Title onClick={handleClick}>
+        <Snippet id="log" className={`snippet ${props.logMinimized ? 'log-hide' : ''}`}>
+            <Title onClick={props.toggleLog}>
                 <span>log</span>
                 <Icon>
-                    {logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" />}
+                    {props.logMinimized ? <IconArrowUp color="#fff" /> : <IconArrowDown color="#fff" />}
                 </Icon>
             </Title>
             <LogContent ref={bottomRef}>

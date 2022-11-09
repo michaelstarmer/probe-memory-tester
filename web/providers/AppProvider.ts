@@ -1,22 +1,25 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
-
+import Logger from '@ioc:Adonis/Core/Logger'
 export default class AppProvider {
-  constructor (protected app: ApplicationContract) {
+  constructor(protected app: ApplicationContract) {
   }
 
-  public register () {
+  public register() {
     // Register your own bindings
   }
 
-  public async boot () {
+  public async boot() {
     // IoC container is ready
   }
 
-  public async ready () {
-    // App is ready
+  public async ready() {
+    if (this.app.environment === 'web') {
+      await import('../start/socket')
+      Logger.info('Socket.io server started.')
+    }
   }
 
-  public async shutdown () {
+  public async shutdown() {
     // Cleanup, since app is going down
   }
 }

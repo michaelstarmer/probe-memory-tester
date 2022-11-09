@@ -54,8 +54,19 @@ services:
         '--default-time-zone=+02:00'
       ]
 
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=ldap2retro
+      # - REDIS_REPLICATION_MODE=master
+    volumes:
+      - 'redis-vol:/bitnami'
+
 volumes:
   public:
+  redis-vol:
 networks:
   default:
     driver: bridge

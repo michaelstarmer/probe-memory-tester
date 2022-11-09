@@ -10,9 +10,9 @@ export const MemoryChart = ({ data }) => {
     console.log(moment().locale())
     return (<div style={{ width: '100%' }}>
         <h6>Memory%</h6>
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={100}>
             <AreaChart
-                width={500}
+                width={300}
                 height={100}
                 data={data}
                 syncId="graph-mem"
@@ -23,20 +23,20 @@ export const MemoryChart = ({ data }) => {
                     bottom: 0,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="2 2" strokeOpacity={.15} />
                 <XAxis dataKey="timestamp" tickFormatter={formatAxis} />
                 <YAxis type="number" domain={[ 0, 100 ]} />
                 {/* <Legend labelFormatter={labelFormatAxis} /> */}
                 <Tooltip labelFormatter={labelFormatAxis} />
-                <Area type="monotone" dataKey="mem" stroke="#8884d8" fill="#8884d8" />
+                <Area type="monotone" dataKey="mem" stroke="#987F67" fill="#987F67" />
 
             </AreaChart>
 
         </ResponsiveContainer>
         <h6>CPU%</h6>
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={100}>
             <AreaChart
-                width={500}
+                width={300}
                 height={100}
                 data={data}
                 syncId="graph-cpu"
@@ -47,12 +47,12 @@ export const MemoryChart = ({ data }) => {
                     bottom: 0,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" strokeOpacity={.15} />
                 <XAxis dataKey="timestamp" tickFormatter={formatAxis} />
                 <YAxis type="number" />
                 {/* <Legend labelFormatter={labelFormatAxis} /> */}
                 <Tooltip labelFormatter={labelFormatAxis} />
-                <Area type="monotone" dataKey="cpu" stroke="#82ca9d" fill="#82ca9d" />
+                <Area type="monotone" dataKey="cpu" stroke="#bdc3c7" fill="#bdc3c7" />
 
             </AreaChart>
         </ResponsiveContainer>

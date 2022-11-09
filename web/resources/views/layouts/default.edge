@@ -32,6 +32,7 @@
     @if(flashMessages.has('errors'))
     @!component('components/alert-error', { error: flashMessages.get('errors') })
     @endif
+    
     @!section('body')
   </main>
 
@@ -62,6 +63,14 @@
   <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  {{--  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>  --}}
+    {{--  <script>
+      const socket = io('/')
+      socket.on('log', (data) => {
+        console.log(data)
+        socket.emit('log', { message: 'data' })
+      })
+    </script>  --}}
 </body>
 
 </html>
