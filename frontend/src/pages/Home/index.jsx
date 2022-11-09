@@ -132,7 +132,7 @@ const VmCard = (props) => {
 
                 {/* <Link to="/settings" noRipple className="btn btn-block btn-warning btn-sm mx-1">Settings</Link> */}
                 <MDBBtn size="lg" noRipple toggleShow={props.toggleShowSettings} onClick={props.toggleShowSettings} className="btn btn-block btn-warning btn-sm mx-1">Settings</MDBBtn>
-                <a href="/apidoc" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
+                <a href="http://localhost:3333/apidoc" target="_blank" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
                 <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple toggleShow={props.toggleShow} onClick={props.toggleShow}>
                     Commands
                 </MDBBtn>
