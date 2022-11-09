@@ -71,16 +71,16 @@ const Job = (props) => {
     const [jobStatus, setJobStatus] = useState(null)
     const [jobLog, setJobLog] = useState([])
     const [isUpdated, setIsUpdated] = useState(true)
-    const [ logMinimized, setLogMinimized ] = useState(false);
+    const [logMinimized, setLogMinimized] = useState(true);
     const btechProcs = [
-    'ana',       'capture',
-    'database',  'dbana',
-    'esyslog',   'etr',
-    'ewe',       'flashserver',
-    'microbitr', 'ott',
-    'psi',       'relay',
-    'sap',       'storage',
-    'vidana' ]
+        'ana', 'capture',
+        'database', 'dbana',
+        'esyslog', 'etr',
+        'ewe', 'flashserver',
+        'microbitr', 'ott',
+        'psi', 'relay',
+        'sap', 'storage',
+        'vidana']
 
 
     const toggleShow = () => setBasicModal(!basicModal)
@@ -102,7 +102,7 @@ const Job = (props) => {
         }
         const getProcStats = async (value) => {
             await API.get(`/api/jobs/${id}/proc-stats?limit=15`)
-            
+
         }
         const interval = setInterval(() => {
             // procStats(null)
@@ -117,34 +117,34 @@ const Job = (props) => {
     return (
         <ViewContainer className={`job-view ${logMinimized ? 'slide-in' : null}`}>
             <Div className="container-fluid py-3 container-dark">
-            
+
                 <StatusHeader status={jobStatus} />
-                
-                    <div className="row">
-                        <div className="col-md-12 col-xl-4 offset-xl-1 mb-3 d-flex flex-column justify-content-center">
 
-                            <JobDataTable {...job} />
-                            <div className="col-12">
-                                <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple onClick={toggleShow}>
-                                    Commands
-                                </MDBBtn>
-                                <CmdModal onClick={toggleShow} toggleShow={toggleShow} setShow={setBasicModal} basicModal={basicModal} probeIp={'10.0.28.141'} />
-                                {
-                                    ['initializing', 'running'].includes(job.status)
-                                    && <button type="button" onClick={handleClick} id="btn-stop-job" className="btn btn-danger btn-sm">
-                                        Stop test
-                                    </button>
-                                }
+                <div className="row">
+                    <div className="col-md-12 col-xl-4 offset-xl-1 mb-3 d-flex flex-column justify-content-center">
 
-                            </div>
-                        </div>
-                        <div id="chart" className="col-12 col-xl-5 offset-xl-1">
-                            <MemoryChart data={job.systemStats} />
-                        </div>
-                        <div className="row my-3">
-                            
+                        <JobDataTable {...job} />
+                        <div className="col-12">
+                            <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple onClick={toggleShow}>
+                                Commands
+                            </MDBBtn>
+                            <CmdModal onClick={toggleShow} toggleShow={toggleShow} setShow={setBasicModal} basicModal={basicModal} probeIp={'10.0.28.141'} />
+                            {
+                                ['initializing', 'running'].includes(job.status)
+                                && <button type="button" onClick={handleClick} id="btn-stop-job" className="btn btn-danger btn-sm">
+                                    Stop test
+                                </button>
+                            }
+
                         </div>
                     </div>
+                    <div id="chart" className="col-12 col-xl-5 offset-xl-1">
+                        <MemoryChart data={job.systemStats} />
+                    </div>
+                    <div className="row my-3">
+
+                    </div>
+                </div>
 
 
             </Div>
