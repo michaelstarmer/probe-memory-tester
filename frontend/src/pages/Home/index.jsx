@@ -6,6 +6,7 @@ import './Home.css'
 import { atom, useAtom, useSetAtom } from 'jotai'
 import API from '../../utils/api'
 import CmdModal from "../../features/modal/CmdModal";
+import SettingsModal from "../../features/modal/SettingsModal";
 import AlertList from "./AlertList";
 import JobListItem from '../../features/jobs/JobListItem'
 import { MDBBtn } from "mdb-react-ui-kit";
@@ -129,7 +130,8 @@ const VmCard = (props) => {
 
             <div className="card-body text-center">
 
-                <Link to="/settings" noRipple className="btn btn-block btn-warning btn-sm mx-1">Settings</Link>
+                {/* <Link to="/settings" noRipple className="btn btn-block btn-warning btn-sm mx-1">Settings</Link> */}
+                <MDBBtn size="lg" noRipple toggleShow={props.toggleShowSettings} onClick={props.toggleShowSettings} className="btn btn-block btn-warning btn-sm mx-1">Settings</MDBBtn>
                 <a href="/apidoc" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
                 <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple toggleShow={props.toggleShow} onClick={props.toggleShow}>
                     Commands
@@ -149,7 +151,9 @@ const VmCard = (props) => {
 
 function Home(props) {
     const [ basicModal, setBasicModal ] = useState(false)
+    const [ settingsModal, setSettingsModal ] = useState(false)
     const toggleShow = () => setBasicModal(!basicModal)
+    const toggleShowSettings = () => setSettingsModal(!settingsModal)
     return (
         <>
             <div className='container-fluid mb-3'>
@@ -160,7 +164,7 @@ function Home(props) {
                     <div className='col-12 col-xl-4 mt-2'>
                         <div className="row">
                             <div className="col-12 col-lg-10 offset-lg-1 mb-5">
-                                <VmCard props={props} toggleShow={toggleShow} probeData={probeData} />
+                                <VmCard props={props} toggleShow={toggleShow} toggleShowSettings={toggleShowSettings} probeData={probeData} />
 
                             </div>
                             <div className="col-12 col-xl-12 d-flex justify-content-center">
@@ -187,6 +191,7 @@ function Home(props) {
 
             </div>
             <CmdModal onClick={toggleShow} toggleShow={toggleShow} setShow={setBasicModal} basicModal={basicModal} probeIp={probeData.ip} />
+            <SettingsModal onClick={toggleShowSettings} toggleShowSettings={toggleShowSettings} setShow={setSettingsModal} settingsModal={settingsModal} probeIp={probeData.ip} />
         </>
     )
 }
