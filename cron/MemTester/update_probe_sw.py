@@ -37,17 +37,19 @@ def update_probe_sw(probeIp, probeUser, probePass, swVersion=None, jobName=''):
     latestBuild = jenkins.loadLastSuccessfulBuild()
     currentProbeVersion = probe.getVersion()
     upgradeVersion = latestBuild.getVersion()
+    latestBuild.getDashVersion()
 
     print(f"""###### Probe upgrade ######
     PROBE
-    \tIP       : {probeIp}
-    \tVersion  : {currentProbeVersion}
+    \tIP           : {probeIp}
+    \tVersion      : {currentProbeVersion}
     TARGET
-    \tJob      : {JENKINS_PROBE_JOB}
-    \tVersion  : {upgradeVersion}
-    \tBuild no.: {latestBuild.buildNumber}
-    \tGitCommit: {latestBuild.gitCommit}
-    \tUrl      : {latestBuild.buildUrl}
+    \tJob          : {JENKINS_PROBE_JOB}
+    \tVersion      : {upgradeVersion}
+    \tBuild no.    : {latestBuild.buildNumber}
+    \tGitCommit    : {latestBuild.gitCommit}
+    \tUrl          : {latestBuild.buildUrl}
+    \tDashVersion  : {latestBuild.dashVersion}
     """)
 
     print('Downloading binary from Jenkins...')
