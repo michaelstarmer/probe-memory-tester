@@ -169,7 +169,9 @@ function Home(props) {
                         </div>
                     </div>
                     <div className="col-12 col-xl-6 offset-xl-1">
-
+                        <Suspense fallback="Loading jobs...">
+                            <ActiveJobs />
+                        </Suspense>
                         <Suspense fallback="Loading jobs...">
                             <CompletedJobs />
                         </Suspense>
