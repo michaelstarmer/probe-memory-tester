@@ -223,7 +223,7 @@ export default class ApiController {
         }
         try {
             const job = await Job.create({
-                memory,
+                memory: memory || 0,
                 jenkinsJob,
                 gitCommit,
                 buildNumber,
