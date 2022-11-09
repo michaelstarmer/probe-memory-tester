@@ -110,7 +110,9 @@ const CompletedJobs = () => {
 }
 
 
-const VmCard = (props) => {
+const VmCard = (props, { probeData, probe_ip }) => {
+    console.log(probe_ip)
+
     return (
         <div className="card bg-dark">
 
@@ -118,21 +120,21 @@ const VmCard = (props) => {
 
             <div className="desktop vm-card">
                 <ProbeIp className="mb-3">
-                    10.0.28.141
+                    {props.probe_ip}
                 </ProbeIp>
                 <Text>
                     6.1.0-10
                 </Text>
             </div>
 
-            <ProbeStatus props={probeData.isOffline} />
+            <ProbeStatus props={props} />
 
 
             <div className="card-body text-center">
 
                 {/* <Link to="/settings" noRipple className="btn btn-block btn-warning btn-sm mx-1">Settings</Link> */}
                 <MDBBtn size="lg" noRipple toggleShow={props.toggleShowSettings} onClick={props.toggleShowSettings} className="btn btn-block btn-warning btn-sm mx-1">Settings</MDBBtn>
-                <a href="http://localhost:3333/apidoc" target="_blank" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
+                <a href="http://memtest.dev.btech/apidoc" target="_blank" noRipple className="btn btn-block btn-secondary btn-sm mx-1">API doc</a>
                 <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple toggleShow={props.toggleShow} onClick={props.toggleShow}>
                     Commands
                 </MDBBtn>
@@ -149,11 +151,23 @@ const VmCard = (props) => {
     )
 }
 
+const fetchProbeData = atom(async (get) => {
+    const response = await API.get('/api/probe-config')
+    if (response && response.status == 200) {
+        console.log('probeconfig:', response.data)
+        return response.data
+    }
+})
+
 function Home(props) {
+    const [ probeData ] = useAtom(fetchProbeData)
     const [ basicModal, setBasicModal ] = useState(false)
     const [ settingsModal, setSettingsModal ] = useState(false)
     const toggleShow = () => setBasicModal(!basicModal)
     const toggleShowSettings = () => setSettingsModal(!settingsModal)
+    useState(() => {
+
+    })
     return (
         <>
             <div className='container-fluid mb-3'>
@@ -164,7 +178,7 @@ function Home(props) {
                     <div className='col-12 col-xl-4 mt-2'>
                         <div className="row">
                             <div className="col-12 col-lg-10 offset-lg-1 mb-5">
-                                <VmCard props={props} toggleShow={toggleShow} toggleShowSettings={toggleShowSettings} probeData={probeData} />
+                                <VmCard props={props} probe_ip={probeData.probe_ip} toggleShow={toggleShow} toggleShowSettings={toggleShowSettings} />
 
                             </div>
                             <div className="col-12 col-xl-12 d-flex justify-content-center">
