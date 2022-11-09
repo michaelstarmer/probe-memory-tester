@@ -64,3 +64,5 @@ Route.post('/api/queue', 'ApiController.create_job')
 Route.get('/api/queue/next', 'ApiController.next_job')
 Route.get('/api/queue/active', 'ApiController.get_running_job')
 /* end deprecated routes */
+
+Route.get('/socket', 'ApiController.job_log_socket')

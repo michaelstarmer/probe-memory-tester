@@ -176,14 +176,7 @@
 </div>
 
 @!component('components/cmd-modal', { probeIp: probeData.ip })
-<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script>
-      const socket = io('/')
-      socket.on('news', (data) => {
-        console.log(data)
-        socket.emit('log', { message: 'data' })
-      })
-    </script>
+
 <script>
   function createGraph(jobs)
     {

@@ -14,6 +14,7 @@ import MemoryChart from '../../features/chart/MemoryChart'
 import JobDataTable from './JobDataTable'
 import CmdModal from "../../features/modal/CmdModal";
 
+
 const jobData = atom(async (get) => {
     let { id } = useParams()
     const url = `/api/jobs/${id}`
@@ -35,7 +36,7 @@ const processesData = atom(async (get) => {
 
 const renderProcessStats = procStats => {
     return Object.keys(procStats).map(it => {
-        return <div className="col-12 col-lg-4">
+        return <div className="col-12 col-lg-6">
             <Suspense fallback="Loading...">
                 <ProcessesChart procName={it} data={procStats[it]} />
             </Suspense>
@@ -53,10 +54,13 @@ const stopJobRequest = async (id) => {
 }
 
 const Div = styled.div`
-    background: rgba(150, 150, 150, .1);
+    background: rgba(35, 35, 36, 1);
 `
 
-
+const ViewContainer = styled.div`
+    
+    
+`
 
 const Job = (props) => {
     const [job] = useAtom(jobData);
@@ -67,48 +71,59 @@ const Job = (props) => {
     const [jobStatus, setJobStatus] = useState(null)
     const [jobLog, setJobLog] = useState([])
     const [isUpdated, setIsUpdated] = useState(true)
+    const [ logMinimized, setLogMinimized ] = useState(false);
+    const btechProcs = [
+    'ana',       'capture',
+    'database',  'dbana',
+    'esyslog',   'etr',
+    'ewe',       'flashserver',
+    'microbitr', 'ott',
+    'psi',       'relay',
+    'sap',       'storage',
+    'vidana' ]
 
 
     const toggleShow = () => setBasicModal(!basicModal)
     const handleClick = () => {
         console.log('Stopping...')
-        // setData(null)
         job(stopJobRequest(id))
 
+    }
+    const toggleLog = () => {
+        console.log('toggle log', logMinimized)
+        setLogMinimized(!logMinimized)
     }
 
     useEffect(() => {
         const getJobData = async (value) => {
-
             const response = await API.get(`/api/jobs/${id}`)
             setJobStatus(response.data.status)
             setJobLog(response.data.log)
-
-
+        }
+        const getProcStats = async (value) => {
+            await API.get(`/api/jobs/${id}/proc-stats?limit=15`)
+            
         }
         const interval = setInterval(() => {
+            // procStats(null)
             setIsUpdated(false)
             getJobData(id)
             setIsUpdated(true)
+            // procStats(processesData)
         }, 2000)
         return () => clearInterval(interval)
     }, [id])
 
     return (
-        <>
-            <StatusHeader status={jobStatus} />
-            <Div className="container-fluid container-dark">
-                <div className="container py-5">
+        <ViewContainer className={`job-view ${logMinimized ? 'slide-in' : null}`}>
+            <Div className="container-fluid py-3 container-dark">
+            
+                <StatusHeader status={jobStatus} />
+                
                     <div className="row">
-                        <div className="col-md-12 col-xl-5 mb-3 d-flex flex-column justify-content-center">
+                        <div className="col-md-12 col-xl-4 offset-xl-1 mb-3 d-flex flex-column justify-content-center">
 
                             <JobDataTable {...job} />
-
-                        </div>
-                        <div id="chart" className="col-12 col-xl-6 offset-xl-1">
-                            <MemoryChart data={job.systemStats} />
-                        </div>
-                        <div className="row my-3">
                             <div className="col-12">
                                 <MDBBtn size="lg" className="btn btn-secondary btn-sm mx-1" noRipple onClick={toggleShow}>
                                     Commands
@@ -123,25 +138,31 @@ const Job = (props) => {
 
                             </div>
                         </div>
+                        <div id="chart" className="col-12 col-xl-5 offset-xl-1">
+                            <MemoryChart data={job.systemStats} />
+                        </div>
+                        <div className="row my-3">
+                            
+                        </div>
                     </div>
-                </div>
+
 
             </Div>
-            <div className="container-fluid py-3 mt-5">
+            <div className="container py-3 mt-5">
                 <div className="row">
                     {renderProcessStats(procStats)}
                 </div>
 
             </div>
 
-            <JobLog />
+            <JobLog props={props} logMinimized={logMinimized} toggleLog={toggleLog} />
             <div className="container-fluid py-3 mt-5" >
                 <div className="row">
                     <div className="col-12 col-lg-6 mb-5 d-flex flex-column justify-content-center log-wrap">
                     </div>
                 </div>
             </div>
-        </>
+        </ViewContainer>
     )
 }
 

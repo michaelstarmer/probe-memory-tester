@@ -124,7 +124,7 @@ export default class AppController {
         Ws.io.emit('log', { message: 'test' })
         Ws.io.emit('log', { message: 'test1' })
         Ws.io.emit('log', { message: 'test2' })
-        return response.json({})
+        // return response.json({})
 
         const jobsUrl = 'http://build.dev.btech/api/json?pretty=true'
         const jobs: string[] = []

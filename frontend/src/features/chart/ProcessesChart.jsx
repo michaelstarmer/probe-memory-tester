@@ -6,8 +6,8 @@ const labelFormatAxis = tickItem => moment(tickItem).format('llll')
 
 export function ProcessesChart({ procName, data }) {
     return (<div style={{ width: '100%' }}>
-        <h6>{procName}</h6>
-        <ResponsiveContainer width="100%" height={200}>
+        <div className="text-center">{procName}</div>
+        <ResponsiveContainer width="100%" height={100}>
             <AreaChart
                 key={data}
                 width={500}
@@ -21,17 +21,21 @@ export function ProcessesChart({ procName, data }) {
                     bottom: 0,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="created_at" tickFormatter={formatAxis} />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.15} />
+                <XAxis dataKey="created_at" tickFormatter={formatAxis} fontSize="11px" />
+                <YAxis fontSize="11px"/>
                 <Tooltip labelFormatter={labelFormatAxis} />
+                
                 {/* <Area type="monotone" dataKey="name" stroke="#8884d8" fill="#8884d8" /> */}
-                <Area type="monotone" dataKey="mem" stroke="#fa6900" fill="#fa6900" stackId="1" />
-                <Area type="monotone" dataKey="cpu" stroke="#fa1000" fill="#fa1000" stackId="1" />
+                <Area type="monotone" dataKey="mem" stroke="#987F67" fill="#987F67" stackId="1" />
+                <Area type="monotone" dataKey="cpu" stroke="#678098" fill="#678098" stackId="1" />
 
             </AreaChart>
 
+            
+
         </ResponsiveContainer>
+
     </div>
 
     )
