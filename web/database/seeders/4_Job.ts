@@ -6,6 +6,8 @@ const jobs: object[] = [
   {
     memory: 4,
     cpu: undefined,
+    gitCommit: '30566fbf',
+    dashVersion: '6.1.0_11_10',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 1,
@@ -16,6 +18,8 @@ const jobs: object[] = [
   {
     memory: 4,
     cpu: undefined,
+    gitCommit: '56526fbf',
+    dashVersion: '6.1.0_11_11',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 4,
@@ -26,6 +30,8 @@ const jobs: object[] = [
   {
     memory: 4,
     cpu: undefined,
+    gitCommit: '66321fcf',
+    dashVersion: '6.1.0_11_12',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 10,
@@ -36,6 +42,8 @@ const jobs: object[] = [
   {
     memory: 4,
     cpu: undefined,
+    gitCommit: '89126fbf',
+    dashVersion: '6.1.0_11_13',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 11,
@@ -46,6 +54,8 @@ const jobs: object[] = [
   {
     memory: 4,
     cpu: undefined,
+    gitCommit: '62526ftf',
+    dashVersion: '6.1.0_11_14',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.1',
     buildNumber: 12,
@@ -56,6 +66,8 @@ const jobs: object[] = [
   {
     memory: 6,
     cpu: undefined,
+    gitCommit: '46526feg',
+    dashVersion: '6.1.0_11_15',
     xmlFileId: 2,
     jenkinsJob: 'CentOS7-based_6.0',
     buildNumber: 1,
